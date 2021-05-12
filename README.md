@@ -18,6 +18,7 @@ Don't forget to create and run **Doctrine migrations** to update your database w
 **As derivated SDK (for example Emonsite) :**
 
 First, edit the constants in the derivated SDK class (here Service\Sdk\Emonsite : DEFAULT_API_URL, DEFAULT_API_FORMAT...).
+
 Example controller using Emonsite SDK (derivated class from `ApiPlatformSdk`, which can also be used as standalone SDK) :
 
 ```php
@@ -49,6 +50,7 @@ class MyController
 **As standalone ApiPlatformSdk :**
 
 The SDK can also be used as standalone, without specific SDK loaded. You will have to explicitly declare API URL, format, and credentials (if applicable).
+
 Example controller using ApiPlatformSdk as standalone :
 
 ```php
