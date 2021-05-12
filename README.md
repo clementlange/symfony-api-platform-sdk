@@ -92,7 +92,8 @@ class MyController
 		$this->apiPlatformSdk->setPage(3); // Add pagination (if needed) : page 3
 		$this->apiPlatformSdk->addParameter('provider' => '/providers/6'); // Add query string parameter : &provider=/providers/6
 		$this->apiPlatformSdk->addParameter('site_id' => '536424be8e905c8c5cbbf781'); // Add query string parameter : &site_id=536424be8e905c8c5cbbf781
-		 // API Request : /products
+		
+		// API Request : /products
 		$products = $this->apiPlatformSdk->get('products');
 
 		dump($products);
@@ -105,14 +106,14 @@ Other available verbs include:
 
 ```php
 // HTTP POST
-$this->apiPlatformSdk->post('/uri');
+$apiPlatformSdk->post('/uri');
 
 // HTTP PATCH
-$this->apiPlatformSdk->patch('/uri');
+$apiPlatformSdk->patch('/uri');
 
 // HTTP PUT
-$this->apiPlatformSdk->put('/uri');
+$apiPlatformSdk->put('/uri');
 
 // HTTP DELETE
-$this->apiPlatformSdk->delete('/uri');
+$apiPlatformSdk->delete('/uri');
 ```
