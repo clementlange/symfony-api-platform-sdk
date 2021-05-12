@@ -43,10 +43,10 @@ class MyController
 }
 ```
 
+The SDK can also be used as standalone, without specific SDK loaded.
 
 ### Usage (standalone ApiPlatformSdk)
 
-The SDK can also be used as standalone, without specific SDK loaded.
 Example controller using ApiPlatformSdk as standalone :
 
 ```php
