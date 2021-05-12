@@ -11,7 +11,9 @@ Copy files and folders in corresponding folders of your Symfony project.
 - /Service/ApiPlatformSdk.php
 - /Service/Sdk/ (and files)
 
-## Usage (specific SDK)
+## Usage (derivated SDK, example Emonsite)
+
+First, edit the constants in the derivated SDK class (here Service\Sdk\Emonsite : DEFAULT_API_URL, DEFAULT_API_FORMAT...).
 
 Example controller using Emonsite SDK (derivated class from `ApiPlatformSdk`, which can also be used as standalone SDK) :
 
@@ -40,6 +42,7 @@ class MyController
 	}
 }
 ```
+
 
 ## Usage (standalone ApiPlatformSdk)
 
