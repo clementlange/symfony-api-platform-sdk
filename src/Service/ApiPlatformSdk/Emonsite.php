@@ -8,7 +8,10 @@
  * Specific to e-monsite and herits from ApiPlatformSdk
  */
 
-namespace App\Service;
+namespace App\Service\ApiPlatformSdk;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ApiTokenRepository;
 
 class Emonsite extends ApiPlatformSdk
 {
@@ -44,13 +47,15 @@ class Emonsite extends ApiPlatformSdk
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository)
     {
         // Initialize with default credentials and configuration
         $this->setApiUrl(self::DEFAULT_API_URL);
         $this->setLogin(self::DEFAULT_LOGIN);
         $this->setPassword(self::DEFAULT_PASSWORD);
         $this->setFormat(self::DEFAULT_FORMAT);
+
+        parent::__construct($em, $apiTokenRepository);
     }
 
 

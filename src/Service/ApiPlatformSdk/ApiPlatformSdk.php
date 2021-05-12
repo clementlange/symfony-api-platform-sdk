@@ -11,7 +11,7 @@
  * Repository - App\Repository\ApiTokenRepository
  */
 
-namespace App\Service;
+namespace App\Service\ApiPlatformSdk;
 
 use Symfony\Component\HttpClient\HttpClient;
 use App\Entity\ApiToken;
@@ -65,7 +65,9 @@ class ApiPlatformSdk
         $this->apiTokenRepository = $apiTokenRepository;
 
         // API login with default credentials
-        $this->authenticate();
+        if ($this->getApiUrl()) {
+            $this->authenticate();
+        }
     }
 
     

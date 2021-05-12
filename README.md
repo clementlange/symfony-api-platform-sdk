@@ -8,10 +8,17 @@ Copy files and folders in corresponding folders of your Symfony project.
 
 - /Entity/ApiToken.php
 - /Repository/ApiTokenRepository.php
-- /Service/ApiPlatformSdk.php
-- /Service/Sdk/ (and files)
+- /Service/ApiPlatformSdk/ (and subclasses)
+
+Imporant : API token entity uses UUID as unique identifier. You need to add `ramsey/uuid` and `ramsey/uuid-doctrine` to your Symfony project :
+
+- `composer require ramsey/uuid`
+- `composer require ramsey/uuid-doctrine`
 
 Don't forget to create and run **Doctrine migrations** to update your database with your new ApiToken entity.
+
+- `php bin/console make:migration`
+- `php bin/console doctrine:migrations:migrate`
 
 ## Usage
 
@@ -22,7 +29,7 @@ First, edit the constants in the derivated SDK class (here Service\Sdk\Emonsite 
 Example controller using Emonsite SDK (derivated class from `ApiPlatformSdk`, which can also be used as standalone SDK) :
 
 ```php
-use App\Service\Sdk\Emonsite;
+use App\Service\ApiPlatformSdk\Emonsite;
 
 class MyController
 {
@@ -49,12 +56,12 @@ class MyController
 
 **As standalone ApiPlatformSdk :**
 
-The SDK can also be used as standalone, without specific SDK loaded. You will have to explicitly declare API URL, format, and credentials (if applicable).
+The SDK can also be used as standalone, without specific SDK loaded. You will have to explicitly declare API URL, format, and credentials / request for authorization token (if applicable).
 
 Example controller using ApiPlatformSdk as standalone :
 
 ```php
-use App\Service\ApiPlatformSdk;
+use App\Service\ApiPlatformSdk\ApiPlatformSdk;
 
 class MyController
 {
@@ -77,10 +84,35 @@ class MyController
 		$this->apiPlatformSdk->setLogin('me@example.com');
 		$this->apiPlatformSdk->setPassword('mypassword');
 
-		// Perform a request (for example : GET /products?page=3&provider=/providers/6)
-		$this->apiPlatformSdk->setPage(3); // Add pagination (if applicable)
-		$this->addParameter('provider' => '/providers/6'); // Add query string parameter ?provider=/providers/6
-		$this->apiPlatformSdk->get('products'); // API Request
+		// If applicable, request for token (authentication)
+		$this->apiPlatformSdk->authenticate();
+
+		// Perform a GET request
+		// for example : GET /products?page=3&provider=/providers/6&site_id=536424be8e905c8c5cbbf781
+		$this->apiPlatformSdk->setPage(3); // Add pagination (if needed) : page 3
+		$this->apiPlatformSdk->addParameter('provider' => '/providers/6'); // Add query string parameter : &provider=/providers/6
+		$this->apiPlatformSdk->addParameter('site_id' => '536424be8e905c8c5cbbf781'); // Add query string parameter : &site_id=536424be8e905c8c5cbbf781
+		 // API Request : /products
+		$products = $this->apiPlatformSdk->get('products');
+
+		dump($products);
 	}
 }
+```
+
+
+Other available verbs include:
+
+```php
+// HTTP POST
+$this->apiPlatformSdk->post('/uri');
+
+// HTTP PATCH
+$this->apiPlatformSdk->patch('/uri');
+
+// HTTP PUT
+$this->apiPlatformSdk->put('/uri');
+
+// HTTP DELETE
+$this->apiPlatformSdk->delete('/uri');
 ```
