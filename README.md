@@ -2,7 +2,7 @@
 
 PHP SDK for Symfony API Platform, and derivated SDKs based on API Platform.
 
-### Installation
+## Installation
 
 Copy files and folders in corresponding folders of your Symfony project.
 
@@ -11,7 +11,7 @@ Copy files and folders in corresponding folders of your Symfony project.
 - /Service/ApiPlatformSdk.php
 - /Service/Sdk/ (and files)
 
-### Usage : derivated SDK (for example Emonsite)
+## Usage : derivated SDK (for example Emonsite)
 
 First, edit the constants in the derivated SDK class (here Service\Sdk\Emonsite : DEFAULT_API_URL, DEFAULT_API_FORMAT...).
 Example controller using Emonsite SDK (derivated class from `ApiPlatformSdk`, which can also be used as standalone SDK) :
@@ -43,7 +43,7 @@ class MyController
 ```
 
 
-### Usage : standalone ApiPlatformSdk
+ ## Usage : standalone ApiPlatformSdk
 
 The SDK can also be used as standalone, without specific SDK loaded.
 Example controller using ApiPlatformSdk as standalone :
