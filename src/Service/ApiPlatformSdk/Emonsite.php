@@ -38,8 +38,8 @@ class Emonsite extends ApiPlatformSdk
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
-    const DEFAULT_LOGIN     = 'clement@awelty.com';
-    const DEFAULT_PASSWORD  = 'Py8^%8G3';
+    const DEFAULT_LOGIN     = 'me@example.com';
+    const DEFAULT_PASSWORD  = 'mypassword';
 
 
     /**
