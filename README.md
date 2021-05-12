@@ -11,6 +11,8 @@ Copy files and folders in corresponding folders of your Symfony project.
 - /Service/ApiPlatformSdk.php
 - /Service/Sdk/ (and files)
 
+Don't forget to create and run **Doctrine migrations** to update your database with your new ApiToken entity.
+
 ## Usage
 
 **As derivated SDK (for example Emonsite) :**
