@@ -80,11 +80,11 @@ class MyController
 		// Set API Format
 		$this->apiPlatformSdk->setFormat('jsonld');
 		
-		// If applicable, set Login and Password for API Authorization
+		// If your target API requires an authentication :
+		// Set Login and Password for API Authorization, then request token
+		$this->apiPlatformSdk->setHasAuthentication(true);
 		$this->apiPlatformSdk->setLogin('me@example.com');
 		$this->apiPlatformSdk->setPassword('mypassword');
-
-		// If applicable, request for token (authentication)
 		$this->apiPlatformSdk->authenticate();
 
 		// Perform a GET request

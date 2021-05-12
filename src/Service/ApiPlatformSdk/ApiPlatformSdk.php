@@ -48,6 +48,7 @@ class ApiPlatformSdk
     protected $content;
     protected $em;
     protected $apiTokenRepository;
+    protected $hasAuthentication;
     
     
     /**
@@ -55,7 +56,7 @@ class ApiPlatformSdk
      *
      * @return void
      */
-    public function __construct(EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository)
+    public function __construct($hasAuthentication = false, EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository)
     {
         // Create HTTPClient object
         $this->httpClient = HttpClient::create();
@@ -63,6 +64,9 @@ class ApiPlatformSdk
         // Entity manager & repositories
         $this->em = $em;
         $this->apiTokenRepository = $apiTokenRepository;
+
+        // If Current API has authentication
+        $this->setHasAuthentication($hasAuthentication);
 
         // API login with default credentials
         if ($this->getApiUrl()) {
@@ -80,6 +84,29 @@ class ApiPlatformSdk
     {
         // Delete token older than 'RENEW_TOKEN_DAYS' days
         $this->apiTokenRepository->deleteAfterDays(self::RENEW_TOKEN_DAYS);
+    }
+
+    
+    /**
+     * setHasAuthentication
+     *
+     * @param  mixed $hasAuthentication
+     * @return void
+     */
+    public function setHasAuthentication($hasAuthentication)
+    {
+        $this->hasAuthentication = $hasAuthentication;
+    }
+
+    
+    /**
+     * getHasAuthentication
+     *
+     * @return void
+     */
+    protected function getHasAuthentication()
+    {
+        return $this->hasAuthentication;
     }
 
     
@@ -239,6 +266,11 @@ class ApiPlatformSdk
      */
     public function authenticate($login = '', $password = '')
     {
+        // If current API does not have authentication
+        if (!$this->getHasAuthentication()) {
+            return true;
+        }
+
         // If override the DEFAULT_LOGIN and DEFAULT_PASSWORD constants
         if ($login || $password) {
             $this->setLogin($login);

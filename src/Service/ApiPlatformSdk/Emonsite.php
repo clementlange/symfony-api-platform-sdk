@@ -26,20 +26,21 @@ class Emonsite extends ApiPlatformSdk
      * "api.awelty.com" for sites on the Awelty whitelabel / "api.e-monsite.com" for sites on the E-monsite whitelabel
      * API URL can still be overridden with method setApiUrl()
      */
-    const DEFAULT_API_URL   = 'https://api.e-monsite.com/';
+    const DEFAULT_API_URL       = 'https://api.e-monsite.com/';
 
     /**
      * Default format (API extension)
      */
-    const DEFAULT_FORMAT    = 'jsonld';
+    const DEFAULT_FORMAT        = 'jsonld';
 
     /**
      * Default credentials (authentication)
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
-    const DEFAULT_LOGIN     = 'me@example.com';
-    const DEFAULT_PASSWORD  = 'mypassword';
+    const HAS_AUTHENTICATION    = true;
+    const DEFAULT_LOGIN         = 'email@example.com';
+    const DEFAULT_PASSWORD      = 'mypassword';
 
 
     /**
@@ -51,11 +52,14 @@ class Emonsite extends ApiPlatformSdk
     {
         // Initialize with default credentials and configuration
         $this->setApiUrl(self::DEFAULT_API_URL);
-        $this->setLogin(self::DEFAULT_LOGIN);
-        $this->setPassword(self::DEFAULT_PASSWORD);
         $this->setFormat(self::DEFAULT_FORMAT);
 
-        parent::__construct($em, $apiTokenRepository);
+        if (self::HAS_AUTHENTICATION) {
+            $this->setLogin(self::DEFAULT_LOGIN);
+            $this->setPassword(self::DEFAULT_PASSWORD);
+        }
+
+        parent::__construct(self::HAS_AUTHENTICATION, $em, $apiTokenRepository);
     }
 
 
