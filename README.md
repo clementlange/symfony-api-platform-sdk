@@ -2,7 +2,7 @@
 
 PHP SDK for Symfony API Platform, and derivated SDKs based on API Platform.
 
-## Installation
+### Installation
 
 Copy files and folders in corresponding folders of your Symfony project.
 
@@ -41,6 +41,7 @@ class MyController
 	}
 }
 ```
+
 
 ### Usage : standalone ApiPlatformSdk
 
