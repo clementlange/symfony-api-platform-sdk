@@ -10,7 +10,7 @@ Copy files and folders in corresponding folders of your Symfony project.
 - /Repository/ApiTokenRepository.php
 - /Service/ApiPlatformSdk/ (and subclasses)
 
-Imporant : API token entity uses UUID as unique identifier. You need to add `ramsey/uuid` and `ramsey/uuid-doctrine` to your Symfony project :
+**Important** : The ApiToken entities use UUID as unique ID. You need to add `ramsey/uuid` and `ramsey/uuid-doctrine` to your Symfony project :
 
 - `composer require ramsey/uuid`
 - `composer require ramsey/uuid-doctrine`
