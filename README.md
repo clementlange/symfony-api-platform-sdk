@@ -33,7 +33,7 @@ class MyController
 		$this->emonsite->setSiteId('536424be8e905c8c5cbbf781');
 		
 		// Load store orders
-        $orders = $this->emonsite->getEcoOrders();
+		$orders = $this->emonsite->getEcoOrders();
 		
 		// Dumping var
 		dump($orders);
