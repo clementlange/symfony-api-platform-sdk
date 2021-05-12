@@ -458,17 +458,22 @@ class ApiPlatformSdk
             $this->postData = $postData;
         }
 
+        $headers = [
+            'accept' => 'application/ld+json',
+            'Content-Type' => 'application/ld+json'
+        ];
+
+        // Authorization token if not /auth requested
+        if ($uri != 'auth') {
+            $headers['Authorization'] = 'Bearer '.$this->getToken();
+        }
+
         $response = $this->httpClient->request('POST', $this->getApiUrl().$uri, [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
             /* Set specific headers */
-            'headers' => [
-                'accept' => 'application/ld+json',
-                'Content-Type' => 'application/ld+json',
-                /* Authorization token */
-                'Authorization' => 'Bearer '.$this->getToken()
-            ],
+            'headers' => $headers,
             'json' => $this->postData
         ]);
         
