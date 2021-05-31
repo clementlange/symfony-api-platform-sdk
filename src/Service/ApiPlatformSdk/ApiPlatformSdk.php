@@ -710,7 +710,7 @@ class ApiPlatformSdk
     */
     public function getMaxPage()
     {
-        return $this->maxPage;
+        return intval(($this->maxPage ? $this->maxPage : '1'));
     }
 
 
