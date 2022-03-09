@@ -6,9 +6,10 @@ PHP SDK for Symfony API Platform, and derivated SDKs based on API Platform.
 
 Copy files and folders in corresponding folders of your Symfony project.
 
-- /Entity/ApiToken.php
-- /Repository/ApiTokenRepository.php
-- /Service/ApiPlatformSdk/ (and subclasses)
+- /src/Entity/ApiToken.php
+- /src/Repository/ApiTokenRepository.php
+- /src/Service/ApiPlatformSdk/ (and subclasses)
+- /config/packages/ramsey_uuid_doctrine.yaml
 
 **Important** : The ApiToken entities use UUID as unique ID. You need to add `ramsey/uuid` and `ramsey/uuid-doctrine` to your Symfony project :
 
