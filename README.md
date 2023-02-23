@@ -38,8 +38,6 @@ use App\Service\ApiPlatformSdk\Emonsite;
 
 class MyController
 {
-	private     $emonsite;
-	
 	public function index(Emonsite $emonsite)
 	{
 		// Define e-monsite site ID / Not required if ApiPlatformSdk is used as standalone
@@ -65,8 +63,6 @@ use App\Service\ApiPlatformSdk\ApiPlatformSdk;
 
 class MyController
 {
-	private     $apiPlatformSdk;
-	
 	public function index(ApiPlatformSdk $apiPlatformSdk)
 	{
 		// Set API URL
