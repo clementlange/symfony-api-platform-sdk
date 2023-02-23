@@ -3,53 +3,41 @@
 namespace App\Entity;
 
 use App\Repository\ApiTokenRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass=ApiTokenRepository::class)
- */
+#[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
 class ApiToken
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "uuid", unique: true)]
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private UuidInterface|string $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $user;
+    #[ORM\Column(length: 255)]
+    private ?string $user = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $token;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $token = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $createdAt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $domain;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $domain = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
     }
-
-    public function getId()
+    
+    public function getId(): ?int
     {
         return $this->id;
     }

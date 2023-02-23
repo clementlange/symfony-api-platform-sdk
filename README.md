@@ -21,6 +21,10 @@ Don't forget to create and run **Doctrine migrations** to update your database w
 - `php bin/console make:migration`
 - `php bin/console doctrine:migrations:migrate`
 
+Or, alternatively, you can simply update database schema :
+
+- `php bin/console d:s:u -f`
+
 ## Usage
 
 **As derivated SDK (for example Emonsite) :**
@@ -36,18 +40,13 @@ class MyController
 {
 	private     $emonsite;
 	
-	public function __construct(Emonsite $emonsite)
-	{
-		$this->emonsite = $emonsite;
-	}
-	
-	public function index()
+	public function index(Emonsite $emonsite)
 	{
 		// Define e-monsite site ID / Not required if ApiPlatformSdk is used as standalone
-		$this->emonsite->setSiteId('536424be8e905c8c5cbbf781');
+		$emonsite->setSiteId('536424be8e905c8c5cbbf781');
 		
 		// Load store orders
-		$orders = $this->emonsite->getEcoOrders();
+		$orders = $emonsite->getEcoOrders();
 		
 		// Dumping var
 		dump($orders);
@@ -68,34 +67,29 @@ class MyController
 {
 	private     $apiPlatformSdk;
 	
-	public function __construct(ApiPlatformSdk $apiPlatformSdk)
-	{
-		$this->apiPlatformSdk = $apiPlatformSdk;
-	}
-	
-	public function index()
+	public function index(ApiPlatformSdk $apiPlatformSdk)
 	{
 		// Set API URL
-		$this->apiPlatformSdk->setApiUrl('https://api.example.com/');
+		$apiPlatformSdk->setApiUrl('https://api.example.com/');
 
 		// Set API Format
-		$this->apiPlatformSdk->setFormat('jsonld');
+		$apiPlatformSdk->setFormat('jsonld');
 		
 		// If your target API requires an authentication :
 		// Set Login and Password for API Authorization, then request token
-		$this->apiPlatformSdk->setHasAuthentication(true);
-		$this->apiPlatformSdk->setLogin('me@example.com');
-		$this->apiPlatformSdk->setPassword('mypassword');
-		$this->apiPlatformSdk->authenticate();
+		$apiPlatformSdk->setHasAuthentication(true);
+		$apiPlatformSdk->setLogin('me@example.com');
+		$apiPlatformSdk->setPassword('mypassword');
+		$apiPlatformSdk->authenticate();
 
 		// Perform a GET request
 		// for example : GET /products?page=3&provider=/providers/6&site_id=536424be8e905c8c5cbbf781
-		$this->apiPlatformSdk->setPage(3); // Add pagination (if needed) : page 3
-		$this->apiPlatformSdk->addParameter('provider' => '/providers/6'); // Add query string parameter : &provider=/providers/6
-		$this->apiPlatformSdk->addParameter('site_id' => '536424be8e905c8c5cbbf781'); // Add query string parameter : &site_id=536424be8e905c8c5cbbf781
+		$apiPlatformSdk->setPage(3); // Add pagination (if needed) : page 3
+		$apiPlatformSdk->addParameter('provider' => '/providers/6'); // Add query string parameter : &provider=/providers/6
+		$apiPlatformSdk->addParameter('site_id' => '536424be8e905c8c5cbbf781'); // Add query string parameter : &site_id=536424be8e905c8c5cbbf781
 		
 		// API Request : /products
-		$products = $this->apiPlatformSdk->get('products');
+		$products = $apiPlatformSdk->get('products');
 
 		dump($products);
 	}

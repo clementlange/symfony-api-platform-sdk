@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<ApiToken>
+ *
  * @method ApiToken|null find($id, $lockMode = null, $lockVersion = null)
  * @method ApiToken|null findOneBy(array $criteria, array $orderBy = null)
  * @method ApiToken[]    findAll()
@@ -19,7 +21,24 @@ class ApiTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiToken::class);
     }
 
-    
+    public function save(ApiToken $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(ApiToken $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     /**
      * deleteAfterDays
      *
