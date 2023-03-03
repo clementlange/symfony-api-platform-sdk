@@ -506,10 +506,14 @@ class ApiPlatformSdk
             $this->postData = $postData;
         }
 
-        $response = $this->httpClient->request('PUT', $this->getApiUrl().$uri, [
+        $response = $this->httpClient->request('PUT', $this->getApiUrl().$uri
+            /* Adds additional query string vars (if applicable) */
+            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''), [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
+            /* Main query string vars */
+            'query' => $this->getQueryString(),
             /* Set specific headers */
             'headers' => [
                 'accept' => 'application/ld+json',
@@ -549,10 +553,14 @@ class ApiPlatformSdk
             $this->postData = $postData;
         }
 
-        $response = $this->httpClient->request('PATCH', $this->getApiUrl().$uri, [
+        $response = $this->httpClient->request('PATCH', $this->getApiUrl().$uri
+            /* Adds additional query string vars (if applicable) */
+            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''), [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
+            /* Main query string vars */
+            'query' => $this->getQueryString(),
             /* Set specific headers */
             'headers' => [
                 'accept' => 'application/ld+json',
