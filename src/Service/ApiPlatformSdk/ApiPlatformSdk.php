@@ -56,7 +56,7 @@ class ApiPlatformSdk
      *
      * @return void
      */
-    public function __construct($hasAuthentication = false, EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository)
+    public function __construct(EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository, $hasAuthentication = false)
     {
         // Create HTTPClient object
         $this->httpClient = HttpClient::create();
