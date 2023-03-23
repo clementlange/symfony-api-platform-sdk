@@ -12,6 +12,8 @@ namespace App\Service\ApiPlatformSdk;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ApiTokenRepository;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 
 class Emonsite extends ApiPlatformSdk
 {
@@ -133,6 +135,60 @@ class Emonsite extends ApiPlatformSdk
 
         // API request & return
         return $this->get('blog_posts');
+    }
+
+
+    /**
+     * getEcoProducts
+     *
+     * @return mixed
+     *
+     * Return the eco products from the EMS site
+     */
+    public function getEcoProducts($page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        // By default, set descending order on creation date
+        $this->setOrder('createdAt', 'desc');
+
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->get('eco_products');
+    }
+
+
+    /**
+     * createStorageImage
+     *
+     * @param string $path : image file path
+     * @return mixed
+     *
+     * Upload an image POST /storage_images and returns response
+     */
+    public function createStorageImage($path = '')
+    {
+        // make payload
+        $formFields = [
+            'image[siteId]' => $this->getSiteId(),
+            'image[file]' => DataPart::fromPath($path)
+        ];
+       
+        $formData = new FormDataPart($formFields);
+
+        // Create specific headers (Content-Type = multipart/form-data)
+        $headers = $formData->getPreparedHeaders()->toArray();
+        $headers['accept'] = 'application/ld+json';
+       
+        return $this->post('storage_images',
+            $formData->bodyToIterable(),
+            $headers
+        );
     }
 
 }

@@ -448,9 +448,11 @@ class ApiPlatformSdk
     * @method post()
     * Runs an HTTP POST request to the API
     * @param string $uri : Request URI (without parameters)
+    * @param array $postData : payload
+    * @param array $headers : request HTTP headers overriding defaults
     * @return mixed Associative array representing response
     */
-    public function post($uri = '', $postData = [])
+    public function post($uri = '', $postData = [], $headers = [])
     {
         if (!$uri) return false;
 
@@ -458,25 +460,53 @@ class ApiPlatformSdk
             $this->postData = $postData;
         }
 
-        $headers = [
-            'accept' => 'application/ld+json',
-            'Content-Type' => 'application/ld+json'
-        ];
+        // default headers
+        if (empty($headers)) {
+            $headers = [
+                'accept' => 'application/ld+json',
+                'Content-Type' => 'application/ld+json'
+            ];
+        }
 
         // Authorization token if not /auth requested
         if ($uri != 'auth') {
             $headers['Authorization'] = 'Bearer '.$this->getToken();
         }
 
-        $response = $this->httpClient->request('POST', $this->getApiUrl().$uri, [
+        // Actual Payload
+        $payload = [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
+            'query' => $this->getQueryString(),
             /* Set specific headers */
-            'headers' => $headers,
-            'json' => $this->postData
-        ]);
-        
+            'headers' => $headers
+        ];
+
+        // if payload's body content-type is not Json (example : upload image)
+        $isMultipart = false;
+        foreach ($headers as $h) {
+            if (preg_match('/multipart\/form\-data/i', $h)) {
+                $isMultipart = true;
+            }
+        }
+
+        // POST data is multipart/form-data : body has "body" index, not "json"
+        if ($isMultipart) {
+            $payload['body'] = $this->postData;
+        }
+        // payload's body content-type is JSON
+        else {
+            $payload['json'] = $this->postData;
+        }
+
+        // Make HTTP request
+        $response = $this->httpClient->request('POST', $this->getApiUrl().$uri
+            /* Adds additional query string vars (if applicable) */
+            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
+            $payload
+        );
+
         // Delete existing token if request is forbidden (token may be expired)
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
@@ -485,7 +515,7 @@ class ApiPlatformSdk
         // Create Json body
         $this->content = array(
             'code' => $response->getStatusCode(),
-            'body' => ($response->getStatusCode() == 200 ? $response->toArray() : null)
+            'body' => (preg_match('/^20[01]$/', $response->getStatusCode()) ? $response->toArray() : null)
         );
 
         return json_encode($this->content);
