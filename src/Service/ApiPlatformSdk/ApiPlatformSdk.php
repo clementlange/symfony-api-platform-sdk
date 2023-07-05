@@ -541,7 +541,7 @@ class ApiPlatformSdk
             .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
             $payload
         );
-dump($response);
+
         // Delete existing token if request is forbidden (token may be expired)
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
