@@ -504,7 +504,7 @@ class ApiPlatformSdk
         }
 
         // Authorization token if not /auth requested
-        if ($uri != 'auth') {
+        if ($uri != $this->getAuthenticationUri()) {
             $headers['Authorization'] = 'Bearer '.$this->getToken();
         }
 
