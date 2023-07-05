@@ -61,7 +61,7 @@ class Emonsite extends ApiPlatformSdk
             $this->setPassword(self::DEFAULT_PASSWORD);
         }
 
-        parent::__construct(self::HAS_AUTHENTICATION, $em, $apiTokenRepository);
+        parent::__construct($em, $apiTokenRepository, self::HAS_AUTHENTICATION);
     }
 
 
