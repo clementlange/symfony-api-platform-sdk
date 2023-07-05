@@ -2,7 +2,7 @@
 /**
  * @since   May 07 2021
  * @author  clement@awelty.com
- * @version 1.0
+ * @version 1.1
  * 
  * E-monsite PHP SDK for Symfony
  * Specific to e-monsite and herits from ApiPlatformSdk
@@ -40,9 +40,10 @@ class Emonsite extends ApiPlatformSdk
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
-    const HAS_AUTHENTICATION    = true;
-    const DEFAULT_LOGIN         = 'email@example.com';
-    const DEFAULT_PASSWORD      = 'mypassword';
+    const HAS_AUTHENTICATION    = true;                     // true or false if this API required authentication
+    const AUTHENTICATION_URI    = 'auth';                   // Authentication URI on the API ("login_check" if URI is "/login_check")
+    const DEFAULT_LOGIN         = 'email@example.com';      // API login
+    const DEFAULT_PASSWORD      = 'myPassword';             // API password
 
 
     /**
@@ -56,9 +57,11 @@ class Emonsite extends ApiPlatformSdk
         $this->setApiUrl(self::DEFAULT_API_URL);
         $this->setFormat(self::DEFAULT_FORMAT);
 
-        if (self::HAS_AUTHENTICATION) {
+        if (self::HAS_AUTHENTICATION)
+        {
             $this->setLogin(self::DEFAULT_LOGIN);
             $this->setPassword(self::DEFAULT_PASSWORD);
+            $this->setAuthenticationUri(self::AUTHENTICATION_URI);
         }
 
         parent::__construct($em, $apiTokenRepository, self::HAS_AUTHENTICATION);

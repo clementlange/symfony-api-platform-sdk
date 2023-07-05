@@ -2,7 +2,7 @@
 /**
  * @since   May 07 2021
  * @author  clement@awelty.com
- * @version 1.0
+ * @version 1.1
  * 
  * API Platform PHP SDK for Symfony
  * 
@@ -49,6 +49,7 @@ class ApiPlatformSdk
     protected $em;
     protected $apiTokenRepository;
     protected $hasAuthentication;
+    protected $authenticationUri;
     
     
     /**
@@ -56,7 +57,11 @@ class ApiPlatformSdk
      *
      * @return void
      */
-    public function __construct(EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository, $hasAuthentication = false)
+    public function __construct(
+        EntityManagerInterface $em,
+        ApiTokenRepository $apiTokenRepository,
+        bool $hasAuthentication = false,
+    )
     {
         // Create HTTPClient object
         $this->httpClient = HttpClient::create();
@@ -67,6 +72,11 @@ class ApiPlatformSdk
 
         // If Current API has authentication
         $this->setHasAuthentication($hasAuthentication);
+
+        // Authentication URI
+        if (!$this->getAuthenticationUri()) {
+            $this->setAuthenticationUri('auth'); // defaut authentication URI = "/auth"
+        }
 
         // API login with default credentials
         if ($this->getApiUrl()) {
@@ -102,11 +112,34 @@ class ApiPlatformSdk
     /**
      * getHasAuthentication
      *
-     * @return void
+     * @return bool
      */
     protected function getHasAuthentication()
     {
         return $this->hasAuthentication;
+    }
+
+
+    /**
+     * setAuthenticationUri
+     *
+     * @param  mixed $authenticationUri
+     * @return void
+     */
+    public function setAuthenticationUri($authenticationUri)
+    {
+        $this->authenticationUri = $authenticationUri;
+    }
+
+
+    /**
+     * getAuthenticationUri
+     *
+     * @return string
+     */
+    protected function getAuthenticationUri()
+    {
+        return $this->authenticationUri;
     }
 
     
@@ -151,10 +184,12 @@ class ApiPlatformSdk
      * getApiUrl
      *
      * @return string
+     * 
+     * Adds a trailing slash at the end of URL if not specified
      */
     protected function getApiUrl()
     {
-        return $this->apiUrl;
+        return $this->apiUrl.(!preg_match('/\/$/', $this->apiUrl) ? '/' : '');
     }
 
     
@@ -334,7 +369,7 @@ class ApiPlatformSdk
      */
     protected function requestAuthentication()
     {
-        $this->post('auth', [
+        $this->post($this->getAuthenticationUri(), [
             'email' => $this->getLogin(),
             'password' => $this->getPassword()
         ]);
@@ -506,7 +541,7 @@ class ApiPlatformSdk
             .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
             $payload
         );
-
+dump($response);
         // Delete existing token if request is forbidden (token may be expired)
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
