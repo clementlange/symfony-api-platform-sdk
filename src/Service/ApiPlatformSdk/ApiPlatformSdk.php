@@ -1,7 +1,7 @@
 <?php
 /**
  * @since   May 07 2021
- * @author  clement@awelty.com
+ * @author  Clément Lange <clement@awelty.com>
  * @version 1.1
  * 
  * API Platform PHP SDK for Symfony
@@ -26,6 +26,16 @@ class ApiPlatformSdk
      */
     const RENEW_TOKEN_DAYS  = 20;
 
+    /**
+     * Default format (API extension)
+     */
+    const DEFAULT_FORMAT        = 'jsonld';
+
+    /**
+     * Default Accept and Content-Type headers
+     */
+    const DEFAULT_ACCEPT        = 'application/ld+json';
+    const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
 
     /**
      * Attributes
@@ -39,6 +49,8 @@ class ApiPlatformSdk
     protected $queryString = array();
     protected $queryStringAdditional = '';
     protected $format;
+    protected $accept;
+    protected $contentType;
     protected $postData = array();
     protected $maxPage;
     protected $totalItems;
@@ -63,6 +75,17 @@ class ApiPlatformSdk
         bool $hasAuthentication = false,
     )
     {
+        // If used as standalone client, define defaults request parameters
+        if (!$this->getFormat()) {
+            $this->setFormat(self::DEFAULT_FORMAT);
+        }
+        if (!$this->getContentType()) {
+            $this->setContentType(self::DEFAULT_CONTENT_TYPE);
+        }
+        if (!$this->getAccept()) {
+            $this->setAccept(self::DEFAULT_ACCEPT);
+        }
+
         // Create HTTPClient object
         $this->httpClient = HttpClient::create();
 
@@ -259,6 +282,58 @@ class ApiPlatformSdk
     protected function getToken()
     {
         return $this->token;
+    }
+
+        
+    /**
+     * getAccept
+     *
+     * @return string
+     */
+    protected function getAccept()
+    {
+        return $this->accept;
+    }
+
+
+    /**
+     * setAccept
+     *
+     * @param  string $accept
+     * @return void
+     * 
+     * If specific "accept" header is used (overridden), call it in controller before request :
+     * $emonsite->setAccept(new_accept);
+     */
+    public function setAccept($accept = '')
+    {
+        $this->accept = $accept;
+    }
+
+
+    /**
+     * getContentType
+     *
+     * @return string
+     */
+    protected function getContentType()
+    {
+        return $this->contentType;
+    }
+
+
+    /**
+     * setContentType
+     *
+     * @param  string $contentType
+     * @return void
+     * 
+     * If specific "Content-Type" header is used (overridden), call it in controller before request :
+     * $emonsite->setContentType(new_content_type);
+     */
+    public function setContentType($contentType = '')
+    {
+        $this->contentType = $contentType;
     }
 
 
@@ -498,8 +573,8 @@ class ApiPlatformSdk
         // default headers
         if (empty($headers)) {
             $headers = [
-                'accept' => 'application/ld+json',
-                'Content-Type' => 'application/ld+json'
+                'accept' => $this->getAccept(),
+                'Content-Type' => $this->getContentType()
             ];
         }
 
@@ -581,8 +656,8 @@ class ApiPlatformSdk
             'query' => $this->getQueryString(),
             /* Set specific headers */
             'headers' => [
-                'accept' => 'application/ld+json',
-                'Content-Type' => 'application/ld+json',
+                'accept' => $this->getAccept(),
+                'Content-Type' => $this->getContentType(),
                 /* Authorization token */
                 'Authorization' => 'Bearer '.$this->getToken()
             ],
@@ -628,7 +703,7 @@ class ApiPlatformSdk
             'query' => $this->getQueryString(),
             /* Set specific headers */
             'headers' => [
-                'accept' => 'application/ld+json',
+                'accept' => $this->getAccept(),
                 'Content-Type' => 'application/merge-patch+json',
                 /* Authorization token */
                 'Authorization' => 'Bearer '.$this->getToken()
@@ -668,7 +743,7 @@ class ApiPlatformSdk
             'verify_host' => false,
             /* Set specific headers */
             'headers' => [
-                'accept' => 'application/ld+json',
+                'accept' => $this->getAccept(),
                 /* Authorization token */
                 'Authorization' => 'Bearer '.$this->getToken()
             ]
@@ -748,7 +823,7 @@ class ApiPlatformSdk
     /**
     * @method getQueryString()
     * Returns the query string (main part)
-    * @return string
+    * @return array
     */
     protected function getQueryString()
     {

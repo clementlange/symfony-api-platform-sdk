@@ -36,6 +36,12 @@ class Emonsite extends ApiPlatformSdk
     const DEFAULT_FORMAT        = 'jsonld';
 
     /**
+     * Default Accept and Content-Type headers
+     */
+    const DEFAULT_ACCEPT        = 'application/ld+json';
+    const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
+
+    /**
      * Default credentials (authentication)
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
@@ -56,6 +62,8 @@ class Emonsite extends ApiPlatformSdk
         // Initialize with default credentials and configuration
         $this->setApiUrl(self::DEFAULT_API_URL);
         $this->setFormat(self::DEFAULT_FORMAT);
+        $this->setAccept(self::DEFAULT_ACCEPT);
+        $this->setContentType(self::DEFAULT_CONTENT_TYPE);
 
         if (self::HAS_AUTHENTICATION)
         {
