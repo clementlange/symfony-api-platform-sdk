@@ -30,6 +30,7 @@ class ApiPlatformSdk
      * Default format (API extension)
      */
     const DEFAULT_FORMAT        = 'jsonld';
+    const CONCAT_FORMAT         = true;
 
     /**
      * Default Accept and Content-Type headers
@@ -48,6 +49,7 @@ class ApiPlatformSdk
     protected $httpClient;
     protected $queryString = array();
     protected $queryStringAdditional = '';
+    protected $concatFormat;
     protected $format;
     protected $accept;
     protected $contentType;
@@ -84,6 +86,9 @@ class ApiPlatformSdk
         }
         if (!$this->getAccept()) {
             $this->setAccept(self::DEFAULT_ACCEPT);
+        }
+        if (is_null($this->getConcatFormat())) {
+            $this->setConcatFormat(self::CONCAT_FORMAT);
         }
 
         // Create HTTPClient object
@@ -284,6 +289,7 @@ class ApiPlatformSdk
         return $this->token;
     }
 
+
         
     /**
      * getAccept
@@ -360,6 +366,32 @@ class ApiPlatformSdk
     protected function getFormat()
     {
         return $this->format;
+    }
+
+
+    /**
+     * getConcatFormat
+     *
+     * @return boolean
+     */
+    protected function getConcatFormat()
+    {
+        return $this->concatFormat;
+    }
+
+
+    /**
+     * setConcatFormat
+     *
+     * @param  string $concatFormat
+     * @return void
+     * 
+     * If true, adds the format to each GET request
+     * example : "GET /api/product_reviews.json" (true), "GET /api/product_reviews" (false)
+     */
+    public function setConcatFormat($concatFormat)
+    {
+        $this->concatFormat = $concatFormat;
     }
 
     
@@ -485,14 +517,14 @@ class ApiPlatformSdk
     /**
     * @method get()
     * Runs an HTTP GET request to the API
-    * @param string $uri : Request URI (without parameters)
+    * @param string $uri Request URI (without parameters)
     * @return mixed Associative array representing response
     */
     public function get($uri = '')
     {
         if (!$uri) return false;
 
-        $response = $this->httpClient->request('GET', $this->getApiUrl().$uri.'.'.$this->getFormat()
+        $response = $this->httpClient->request('GET', $this->getApiUrl().$uri.($this->getConcatFormat() ? '.'.$this->getFormat() : '')
             /* Adds additional query string vars (if applicable) */
             .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''), [
             /* Removes SSL certificate verification */
@@ -525,8 +557,8 @@ class ApiPlatformSdk
     /**
     * @method getSingle()
     * Runs an HTTP GET request to the API for a single item (/uri/id)
-    * @param string $uri : Request URI (without parameters)
-    * @param string $id : ID of the item
+    * @param string $uri Request URI (without parameters)
+    * @param string $id ID of the item
     * @return mixed Associative array representing response
     */
     public function getSingle($uri = '', $id = '')
@@ -557,9 +589,9 @@ class ApiPlatformSdk
     /**
     * @method post()
     * Runs an HTTP POST request to the API
-    * @param string $uri : Request URI (without parameters)
-    * @param array $postData : payload
-    * @param array $headers : request HTTP headers overriding defaults
+    * @param string $uri Request URI (without parameters)
+    * @param array $postData payload
+    * @param array $headers request HTTP headers overriding defaults
     * @return mixed Associative array representing response
     */
     public function post($uri = '', $postData = [], $headers = [])
@@ -635,7 +667,7 @@ class ApiPlatformSdk
     /**
     * @method put()
     * Runs an HTTP PUT request to the API
-    * @param string $uri : Request URI (without parameters)
+    * @param string $uri Request URI (without parameters)
     * @return mixed Associative array representing response
     */
     public function put($uri = '', $postData = [])
@@ -682,7 +714,7 @@ class ApiPlatformSdk
     /**
     * @method patch()
     * Runs an HTTP PATCH request to the API
-    * @param string $uri : Request URI (without parameters)
+    * @param string $uri Request URI (without parameters)
     * @return mixed Associative array representing response
     */
     public function patch($uri = '', $postData = [])
@@ -729,8 +761,8 @@ class ApiPlatformSdk
     /**
     * @method delete()
     * Runs an HTTP DELETE request to the API
-    * @param string $uri : Request URI (without parameters)
-    * @param string $id : Object ID
+    * @param string $uri Request URI (without parameters)
+    * @param string $id Object ID
     * @return mixed Associative array representing response
     */
     public function delete($uri = '', $id = '')
@@ -767,8 +799,8 @@ class ApiPlatformSdk
     /**
     * @method addParameter()
     * Sets a query string parameter (&name=value)
-    * @param string $name : Request parameter's name
-    * @param string $value : Request paramter's value
+    * @param string $name Request parameter's name
+    * @param string $value Request paramter's value
     * @return boolean
     */
     public function addParameter($name = '', $value = '')
@@ -790,7 +822,7 @@ class ApiPlatformSdk
     /**
     * @method removeParameter()
     * Removes a query string parameter (&name=value)
-    * @param string $name : Request parameter's name
+    * @param string $name Request parameter's name
     * @return boolean
     */
     public function removeParameter($name = '')
@@ -834,7 +866,7 @@ class ApiPlatformSdk
     /**
     * @method setPage()
     * Defines the page (Pagination)
-    * @param int $p : Page number
+    * @param int $p Page number
     * @return bool
     */
     public function setPage($p = 1)
@@ -865,7 +897,7 @@ class ApiPlatformSdk
     /**
     * @method setMaxPage()
     * Sets the maximum page for the result list
-    * @param array $content : Associative array of API result
+    * @param array $content Associative array of API result
     */
     protected function setMaxPage($content)
     {
@@ -885,7 +917,7 @@ class ApiPlatformSdk
     /**
     * @method setTotalItems()
     * Sets the number of items total for the result list
-    * @param array $content : Associative array of API result
+    * @param array $content Associative array of API result
     */
     protected function setTotalItems($content)
     {
@@ -913,8 +945,8 @@ class ApiPlatformSdk
     /**
     * @method setOrder()
     * Sets the query order
-    * @param string property : field to sort
-    * @param string sort : order sort (asc|desc)
+    * @param string property field to sort
+    * @param string sort order sort (asc|desc)
     * @return array Associative array of items
     */
     public function setOrder($property, $sort)

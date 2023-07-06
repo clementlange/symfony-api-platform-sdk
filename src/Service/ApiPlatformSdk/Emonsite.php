@@ -65,6 +65,7 @@ class Emonsite extends ApiPlatformSdk
         $this->setAccept(self::DEFAULT_ACCEPT);
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
 
+        // Authenticate if necessary
         if (self::HAS_AUTHENTICATION)
         {
             $this->setLogin(self::DEFAULT_LOGIN);
@@ -72,6 +73,7 @@ class Emonsite extends ApiPlatformSdk
             $this->setAuthenticationUri(self::AUTHENTICATION_URI);
         }
 
+        // Construct parent object
         parent::__construct($em, $apiTokenRepository, self::HAS_AUTHENTICATION);
     }
 
