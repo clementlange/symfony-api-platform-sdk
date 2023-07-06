@@ -46,7 +46,7 @@ class Emonsite extends ApiPlatformSdk
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
-    const HAS_AUTHENTICATION    = true;                     // true or false if this API required authentication
+    const HAS_AUTHENTICATION    = true;                     // true or false if this API requires authentication
     const AUTHENTICATION_URI    = 'auth';                   // Authentication URI on the API ("login_check" if URI is "/login_check")
     const DEFAULT_LOGIN         = 'email@example.com';      // API login
     const DEFAULT_PASSWORD      = 'myPassword';             // API password
