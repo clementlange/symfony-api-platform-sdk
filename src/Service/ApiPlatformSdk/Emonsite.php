@@ -34,6 +34,7 @@ class Emonsite extends ApiPlatformSdk
      * Default format (API extension)
      */
     const DEFAULT_FORMAT        = 'jsonld';
+    const CONCAT_FORMAT         = true;
 
     /**
      * Default Accept and Content-Type headers
@@ -62,6 +63,7 @@ class Emonsite extends ApiPlatformSdk
         // Initialize with default credentials and configuration
         $this->setApiUrl(self::DEFAULT_API_URL);
         $this->setFormat(self::DEFAULT_FORMAT);
+        $this->setConcatFormat(self::CONCAT_FORMAT);
         $this->setAccept(self::DEFAULT_ACCEPT);
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
 
@@ -179,7 +181,7 @@ class Emonsite extends ApiPlatformSdk
     /**
      * createStorageImage
      *
-     * @param string $path : image file path
+     * @param string $path Image file path
      * @return mixed
      *
      * Upload an image POST /storage_images and returns response
