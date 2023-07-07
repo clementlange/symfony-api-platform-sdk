@@ -660,7 +660,7 @@ class ApiPlatformSdk
             'body' => (preg_match('/^20[01]$/', $response->getStatusCode()) ? $response->toArray() : null)
         );
 
-        return json_encode($this->content);
+        return $this->content;
     }
 
 
@@ -707,7 +707,7 @@ class ApiPlatformSdk
             'body' => ($response->getStatusCode() == 200 ? $response->toArray() : null)
         );
 
-        return json_encode($this->content);
+        return $this->content;
     }
 
 
@@ -754,7 +754,7 @@ class ApiPlatformSdk
             'body' => ($response->getStatusCode() == 200 ? $response->toArray() : null)
         );
 
-        return json_encode($this->content);
+        return $this->content;
     }
 
 
@@ -792,7 +792,7 @@ class ApiPlatformSdk
             'body' => null
         );
         
-        return json_encode($this->content);
+        return $this->content;
     }
 
 
