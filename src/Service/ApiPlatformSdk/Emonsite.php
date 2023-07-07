@@ -54,7 +54,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Default e-monsite site ID
-     * Can be overridden at any time with setSideId(id)
+     * Can be overridden at any time in controller with $emonsite->setSideId(id)
      */
     const DEFAULT_SITE_ID       = '3e8269167b866fde4dbc2c2a';
 
