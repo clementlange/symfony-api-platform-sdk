@@ -2,6 +2,12 @@
 
 PHP SDK for Symfony API Platform, and derivated SDKs based on API Platform.
 
+Currently supported derivated SDKs are :
+
+- E-monsite ([www.e-monsite.com](https://www.e-monsite.com))
+- E-confiance ([www.e-monsite.com](https://www.e-confiance.fr))
+- EMS-Stock ([www.e-monsite.com](https://www.ems-stock.com))
+
 ## Installation
 
 Copy files and folders in corresponding folders of your Symfony project.
@@ -27,7 +33,7 @@ Or, alternatively, you can simply update database schema :
 
 ## Usage
 
-**As derivated SDK (for example Emonsite) :**
+### Option 1 : As derivated SDK (for example Emonsite) :
 
 First, edit the constants in the derivated SDK class (here Service\Sdk\Emonsite : DEFAULT_API_URL, DEFAULT_API_FORMAT...).
 
@@ -40,9 +46,6 @@ class MyController
 {
 	public function index(Emonsite $emonsite)
 	{
-		// Define e-monsite site ID / Not required if ApiPlatformSdk is used as standalone
-		$emonsite->setSiteId('536424be8e905c8c5cbbf781');
-		
 		// Load store orders
 		$orders = $emonsite->getEcoOrders();
 		
@@ -52,11 +55,17 @@ class MyController
 }
 ```
 
-**As standalone ApiPlatformSdk :**
+You can find many other methods in `Emonsite`, for instance getBlogPosts(), createStorageImage(), etc. Look up the class to see all available methods.
 
-The SDK can also be used as standalone, without specific SDK loaded. You will have to explicitly declare API URL, format, and credentials / request for authorization token (if applicable).
+Each derivated SDK (E-confiance, Agenda Culturel...) has its own specific methods.
 
-Example controller using ApiPlatformSdk as standalone :
+### Option 2 : As standalone ApiPlatformSdk :
+
+The SDK can also be used as standalone, to work with any API using API Platform, but without using any specific derivated SDK.
+
+You will have to explicitly declare API URL, format, and credentials / request for authorization token (if applicable).
+
+Example controller using `ApiPlatformSdk` as standalone :
 
 ```php
 use App\Service\ApiPlatformSdk\ApiPlatformSdk;
@@ -93,18 +102,18 @@ class MyController
 ```
 
 
-Other available verbs include:
+Other available verbs include POST, PATCH, PUT and DELETE :
 
 ```php
 // HTTP POST
-$apiPlatformSdk->post('/uri');
+$apiPlatformSdk->post('/uri', array $postdata, ?array $headers);
 
 // HTTP PATCH
-$apiPlatformSdk->patch('/uri');
+$apiPlatformSdk->patch('/uri', array $postdata);
 
 // HTTP PUT
-$apiPlatformSdk->put('/uri');
+$apiPlatformSdk->put('/uri', array $postdata);
 
 // HTTP DELETE
-$apiPlatformSdk->delete('/uri');
+$apiPlatformSdk->delete('/uri', string $id);
 ```

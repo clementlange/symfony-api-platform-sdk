@@ -2,7 +2,7 @@
 /**
  * @since   May 07 2021
  * @author  clement@awelty.com
- * @version 1.1
+ * @version 1.2
  * 
  * E-monsite PHP SDK for Symfony
  * Specific to e-monsite and herits from ApiPlatformSdk
@@ -52,6 +52,12 @@ class Emonsite extends ApiPlatformSdk
     const DEFAULT_LOGIN         = 'email@example.com';      // API login
     const DEFAULT_PASSWORD      = 'myPassword';             // API password
 
+    /**
+     * Default e-monsite site ID
+     * Can be overridden at any time with setSideId(id)
+     */
+    const DEFAULT_SITE_ID       = '3e8269167b866fde4dbc2c2a';
+
 
     /**
      * __construct
@@ -66,6 +72,9 @@ class Emonsite extends ApiPlatformSdk
         $this->setConcatFormat(self::CONCAT_FORMAT);
         $this->setAccept(self::DEFAULT_ACCEPT);
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
+
+        // Sets default e-monsite site ID
+        $this->setSiteId(self::DEFAULT_SITE_ID);
 
         // Authenticate if necessary
         if (self::HAS_AUTHENTICATION)
