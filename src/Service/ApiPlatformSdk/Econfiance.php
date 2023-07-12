@@ -200,7 +200,7 @@ class Econfiance extends ApiPlatformSdk
         }
 
         // API request & return ; Must concat Company slug and Product reference
-        return $this->getSingle('product_reviews', self::DEFAULT_LOGIN.'/'.$reference);
+        return $this->getSingle('product_reviews/average', self::DEFAULT_LOGIN.'/'.$reference);
     }
 
     
