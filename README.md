@@ -117,3 +117,45 @@ $apiPlatformSdk->put('/uri', array $postdata);
 // HTTP DELETE
 $apiPlatformSdk->delete('/uri', string $id);
 ```
+
+## Specific integrations : E-confiance.fr
+
+To create a review using the derivated class for E-Confiance, you need to do it in two steps : create the `Order`, then create the `Review` with the resulting Order ID.
+
+```php
+use App\Service\ApiPlatformSdk\Econfiance;
+
+class MyController
+{
+	public function index(Econfiance $econfiance)
+	{
+		// 1. Create Order
+        $r = $econfiance->createOrder(
+            'TESTORDER_01', /* Your Order number */
+            'customer@example.com', /* Customer e-mail */
+            'John',  /* Customer firstname */
+            'Doe',  /* Customer lastname */
+            true,  /* (Optional) if false, an email will be sent to customer */
+            '+33611667788'  /* (Optional) Customer phone */
+		);
+
+        // 2. Create Product review
+        if (isset($r['body']['id']) && !empty($r['body']['id']))
+        {
+            $p = $econfiance->createProductReview(
+                $r['body']['id'], /* Order ID from previous request */
+                'Blue Lightsaber', /* Product name */
+                'LS-0001', /* Product reference */
+                'https://example.com/image.jpg', /* Customer uploaded image, null if none */
+                'https://example.com/lightabers/blue-jedi.html', /* Product URL */,
+                'This lightsaber allows me to slice the Siths with more efficency. I recommend.', /* Review text */
+                '5', /* Note : 1 to 5 */
+                'pending', /* "pending" if in moderation. "published" if directly published */
+                '212.10.11.12', /* (Optional) Customer IP address */
+                'Internet Explorer 6.0' /* (Optional) Customer browser's User-Agent */,
+				'' /* (Optional) Free text field */
+            );
+        }
+	}
+}
+```
