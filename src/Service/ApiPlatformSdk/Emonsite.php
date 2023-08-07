@@ -29,6 +29,7 @@ class Emonsite extends ApiPlatformSdk
      * API URL can still be overridden with method setApiUrl()
      */
     const DEFAULT_API_URL       = 'https://api.e-monsite.com/';
+    // const DEFAULT_API_URL       = 'https://api.awelty.com/';
 
     /**
      * Default format (API extension)
@@ -60,8 +61,7 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * __construct
-     *
+     * @method __construct
      * @return void
      */
     public function __construct(EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository)
@@ -90,8 +90,9 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * setSiteId
-     *
+     * Sets the EMS site ID in the current instance
+     * 
+     * @method setSiteId
      * @param  string $siteId
      * @return void
      */
@@ -102,8 +103,9 @@ class Emonsite extends ApiPlatformSdk
     
 
     /**
-     * getSiteId
-     *
+     * Returns the EMS site ID
+     * 
+     * @method getSiteId
      * @return string
      */
     protected function getSiteId()
@@ -113,11 +115,10 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * getEcoOrders
-     *
-     * @return mixed
+     * Return the list of orders from the EMS Store
      * 
-     * Return the orders from the EMS Store
+     * @method getEcoOrders
+     * @return mixed
      */
     public function getEcoOrders($page = 1)
     {
@@ -138,11 +139,49 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * getBlogPosts
-     *
-     * @return mixed
+     * Return a single EcoOrder
      * 
-     * Return the blog posts from the EMS site
+     * @method getEcoOrder
+     * @param  string $id Order id
+     * @return mixed
+     */
+    public function getEcoOrder($id)
+    {
+        // By default, set descending order on date
+        $this->setOrder('addDt', 'desc');
+
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->getSingle('eco_orders', $id);
+    }
+
+
+    /**
+     * Updates some fields of an EcoOrder
+     * 
+     * @method patchEcoOrder
+     * @param  string $id Order id
+     * @param  array $data Order data
+     * @return mixed
+     */
+    public function patchEcoOrder($id, $data)
+    {
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->patch('eco_orders/' . $id, $data);
+    }
+
+
+    /**
+     * Return the list of blog posts from the EMS site
+     * 
+     * @method getBlogPosts
+     * @param  string $id Blog post id
+     * @return mixed
      */
     public function getBlogPosts($page = 1)
     {
@@ -163,11 +202,30 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * getEcoProducts
-     *
+     * Return a single blog post from the EMS site
+     * 
+     * @method getBlogPost
      * @return mixed
-     *
-     * Return the eco products from the EMS site
+     */
+    public function getBlogPost($id)
+    {
+        // By default, set descending order on publish date
+        $this->setOrder('publishFrom', 'desc');
+
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->getSingle('blog_posts', $id);
+    }
+
+
+    /**
+     * Return a list of ecoProducts
+     * 
+     * @method getEcoProducts
+     * @param int $page Page number
+     * @return mixed
      */
     public function getEcoProducts($page = 1)
     {
@@ -188,12 +246,284 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * createStorageImage
-     *
-     * @param string $path Image file path
+     * Return a single eco product
+     * 
+     * @method getEcoProduct
+     * @param  string $id Eco product id
      * @return mixed
-     *
+     */
+    public function getEcoProduct($id, $page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        // By default, set descending order on creation date
+        $this->setOrder('createdAt', 'desc');
+
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->getSingle('eco_products', $id);
+    }
+
+
+    /**
+     * Create a new eco product
+     * 
+     * @method postEcoProduct
+     * @param  array $data Eco product data
+     * @return mixed
+     */
+    public function postEcoProduct($data)
+    {
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->post('eco_products', $data);
+    }
+
+
+    /**
+     * Update some fields of the eco product
+     * 
+     * @method patchEcoProduct
+     * @param  string $id Eco product id
+     * @param  array $data Eco product data
+     * @return mixed
+     */
+    public function patchEcoProduct($id, $data)
+    {
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->patch('eco_products/' . $id, $data);
+    }
+
+
+    /**
+     * Delete the eco product from the EMS site
+     * 
+     * @method deleteEcoProduct
+     * @param  string $id Eco product id
+     * @return mixed
+     */
+    public function deleteEcoProduct($id)
+    {
+        // Set query parameter "site_id"
+        $this->addParameter('site_id', $this->getSiteId());
+
+        // API request & return
+        return $this->delete('eco_products/' . $id);
+    }
+
+
+    /**
+     * Return the categories from EMS Store
+     * 
+     * @method getCategories
+     * @param int $page Page number
+     * @return mixed
+     */
+    public function getCategories($page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        // By default, set descending order on creation date
+        $this->setOrder('createdAt', 'desc');
+
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->get('categories');
+    }
+    
+
+    /**
+     * Get all product attributes on a store
+     * 
+     * @method getProductAttributes
+     * @param int $page Page number
+     * @return mixed
+     */
+    public function getProductAttributes($page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->get('eco_product_attributes');
+    }
+
+
+    /**
+     * Return the product attribute from EMS Store
+     * 
+     * @method getProductAttribute
+     * @param  string $id : eco product attribute id
+     * @param int $page Page number
+     * @return mixed
+     */
+    public function getProductAttribute($id, $page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->getSingle('eco_product_attributes', $id);
+    }
+
+
+    /**
+     * Post the product attribute to EMS Store
+     * 
+     * @method postProductAttribute
+     * @param  array $data : eco product attribute data
+     * @return mixed
+     */
+    public function postProductAttribute($data)
+    {
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->post('eco_product_attributes', $data);
+    }
+
+
+    /**
+     * Patch the product attribute to EMS Store
+     * 
+     * @method patchProductAttribute
+     * @param  string $id : eco product attribute id
+     * @param  array $data : eco product attribute data
+     * @return mixed
+     */
+    public function patchProductAttribute($id, $data) 
+    {
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->patch('eco_product_attributes/' . $id, $data);
+    }
+
+
+    /**
+     * Delete the product attribute from EMS Store
+     * 
+     * @method deleteProductAttribute
+     * @param  string $id Eco product attribute id
+     * @return mixed
+     */
+    public function deleteProductAttribute($id)
+    {
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->delete('eco_product_attributes/' . $id);
+    }
+
+
+    /**
+     * Return the product attribute values from EMS Store
+     * 
+     * @method  getProductAttributeValues
+     * @param   int $page Page number
+     * @return  mixed
+     */
+    public function getProductAttributeValues($page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->get('eco_product_attribute_values');
+    }
+
+
+    /**
+     * Return the eco product variations from EMS Store
+     * 
+     * @method  getEcoProductVariations
+     * @param   int $page Page number
+     * @return  mixed
+     */
+    public function getEcoProductVariations($page = 1)
+    {
+        // Load specific page
+        if (is_numeric($page)) {
+            $this->setPage($page);
+        }
+
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->get('eco_product_variations');
+    }
+
+
+    /**
+     * Post the eco product variation to EMS Store
+     * 
+     * @method  postEcoProductVariation
+     * @param   array $data : eco product variation data
+     * @return  mixed
+     */
+    public function postEcoProductVariation($data)
+    {
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->post('eco_product_variations', $data);
+    }
+
+
+    /**
+     * Patch the eco product variation to EMS Store
+     * 
+     * @method  patchEcoProductVariation
+     * @param   string $id : eco product variation id
+     * @param   array $data : eco product variation data
+     * @return  mixed
+     */
+    public function patchEcoProductVariation($id, $data)
+    {
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->patch('eco_product_variations/' . $id, $data);
+    }
+
+
+    /**
+     * Delete the eco product variation from EMS Store
+     * 
+     * @method  deleteEcoProductVariation
+     * @param   string $id Eco product variation id
+     * @return  mixed
+     */
+    public function deleteEcoProductVariation($id)
+    {
+        $this->addParameter('site_id', $this->getSiteId());
+
+        return $this->delete('eco_product_variations/' . $id);
+    }
+
+
+    /**
      * Upload an image POST /storage_images and returns response
+     * 
+     * @method  createStorageImage
+     * @param   string $path Image file path
+     * @return  mixed
      */
     public function createStorageImage($path = '')
     {
@@ -214,5 +544,6 @@ class Emonsite extends ApiPlatformSdk
             $headers
         );
     }
+
 
 }
