@@ -768,6 +768,7 @@ class ApiPlatformSdk
     public function delete($uri = '', $id = '')
     {
         if (!$uri) return false;
+        $uri = trim($uri, '/');
 
         $response = $this->httpClient->request('DELETE', $this->getApiUrl().$uri.'/'.$id, [
             /* Removes SSL certificate verification */
