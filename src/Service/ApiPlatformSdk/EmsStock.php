@@ -65,6 +65,27 @@ class EmsStock extends ApiPlatformSdk
         parent::__construct(self::HAS_AUTHENTICATION, $em, $apiTokenRepository);
     }
 
+
+    /**
+     * Reset query string parameters
+     * and other instance params
+     * 
+     * @method resetParameters
+     * @return void
+     */
+    private function resetParameters()
+    {
+        $this->queryString = [];
+        $this->postData = [];
+        $this->queryStringAdditional = '';
+        $this->orderProperty = null;
+        $this->orderSort = null;
+        $this->page = null;
+        $this->maxPage = null;
+        $this->totalItems = null;
+    }
+
+
     /**
      * getBrands
      *
@@ -74,6 +95,8 @@ class EmsStock extends ApiPlatformSdk
      */
     public function getBrands($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -96,6 +119,8 @@ class EmsStock extends ApiPlatformSdk
      */
     public function getProducts($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);

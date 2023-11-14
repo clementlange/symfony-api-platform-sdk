@@ -74,6 +74,26 @@ class Econfiance extends ApiPlatformSdk
         // Construct parent object
         parent::__construct($em, $apiTokenRepository, self::HAS_AUTHENTICATION);
     }
+
+    
+    /**
+     * Reset query string parameters
+     * and other instance params
+     * 
+     * @method resetParameters
+     * @return void
+     */
+    private function resetParameters()
+    {
+        $this->queryString = [];
+        $this->postData = [];
+        $this->queryStringAdditional = '';
+        $this->orderProperty = null;
+        $this->orderSort = null;
+        $this->page = null;
+        $this->maxPage = null;
+        $this->totalItems = null;
+    }
     
     
     /**
@@ -85,6 +105,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getCompanies($page = 1)
     {
+        $this->resetParameters();
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -104,6 +126,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getCompany($id = '')
     {
+        $this->resetParameters();
+
         if (empty($id)) {
             return false;
         }
@@ -122,6 +146,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getCompanyGlobalRating($id = '')
     {
+        $this->resetParameters();
+        
         if (empty($id)) {
             return false;
         }
@@ -140,6 +166,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getProductOrder($id = '')
     {
+        $this->resetParameters();
+        
         if (empty($id)) {
             return false;
         }
@@ -158,6 +186,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getProductReviews($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -177,6 +207,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getProductReview($id = '')
     {
+        $this->resetParameters();
+        
         if (empty($id)) {
             return false;
         }
@@ -195,6 +227,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getProductReviewAverage($reference = '')
     {
+        $this->resetParameters();
+        
         if (empty($reference)) {
             return false;
         }
@@ -213,6 +247,8 @@ class Econfiance extends ApiPlatformSdk
      */
     public function getOrder($id = '')
     {
+        $this->resetParameters();
+        
         if (empty($id)) {
             return false;
         }
@@ -243,6 +279,8 @@ class Econfiance extends ApiPlatformSdk
         $customerPhone = null
     )
     {
+        $this->resetParameters();
+        
         if (empty($orderNumber) || empty($customerEmail))
         {
             return false;
@@ -286,6 +324,8 @@ class Econfiance extends ApiPlatformSdk
         $followUp = 0
     )
     {
+        $this->resetParameters();
+        
         // API request
         return $this->post('product_orders', [
             'orderParent' => '/api/orders/'.$orderId,
@@ -332,6 +372,8 @@ class Econfiance extends ApiPlatformSdk
         $freeField = null
     )
     {
+        $this->resetParameters();
+        
         // Review status can be "pending" (awaiting moderation) or "published"
         if ($reviewStatus == 'published') {
             $statusIri = '/api/review_statuses/1';

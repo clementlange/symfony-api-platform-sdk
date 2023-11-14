@@ -90,6 +90,26 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
+     * Reset query string parameters
+     * and other instance params
+     * 
+     * @method resetParameters
+     * @return void
+     */
+    private function resetParameters()
+    {
+        $this->queryString = [];
+        $this->postData = [];
+        $this->queryStringAdditional = '';
+        $this->orderProperty = null;
+        $this->orderSort = null;
+        $this->page = null;
+        $this->maxPage = null;
+        $this->totalItems = null;
+    }
+
+    
+    /**
      * Sets the EMS site ID in the current instance
      * 
      * @method setSiteId
@@ -122,6 +142,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getEcoOrders($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -147,6 +169,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getEcoOrder($id)
     {
+        $this->resetParameters();
+        
         // By default, set descending order on date
         $this->setOrder('addDt', 'desc');
 
@@ -168,6 +192,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function patchEcoOrder($id, $data)
     {
+        $this->resetParameters();
+        
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -185,6 +211,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getBlogPosts($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -209,6 +237,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getBlogPost($id)
     {
+        $this->resetParameters();
+        
         // By default, set descending order on publish date
         $this->setOrder('publishFrom', 'desc');
 
@@ -229,6 +259,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getEcoProducts($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -254,6 +286,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getEcoProduct($id, $page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -279,6 +313,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function postEcoProduct($data)
     {
+        $this->resetParameters();
+        
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -297,6 +333,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function patchEcoProduct($id, $data)
     {
+        $this->resetParameters();
+        
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -314,6 +352,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function deleteEcoProduct($id)
     {
+        $this->resetParameters();
+        
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -331,6 +371,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getCategories($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -354,6 +396,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getProductAttributes($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -375,6 +419,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getProductAttribute($id, $page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -395,6 +441,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function postProductAttribute($data)
     {
+        $this->resetParameters();
+        
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->post('eco_product_attributes', $data);
@@ -411,6 +459,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function patchProductAttribute($id, $data) 
     {
+        $this->resetParameters();
+        
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->patch('eco_product_attributes/' . $id, $data);
@@ -426,6 +476,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function deleteProductAttribute($id)
     {
+        $this->resetParameters();
+        
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->delete('eco_product_attributes/' . $id);
@@ -441,6 +493,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getProductAttributeValues($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -461,6 +515,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function getEcoProductVariations($page = 1)
     {
+        $this->resetParameters();
+        
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -481,6 +537,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function postEcoProductVariation($data)
     {
+        $this->resetParameters();
+        
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->post('eco_product_variations', $data);
@@ -512,6 +570,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function deleteEcoProductVariation($id)
     {
+        $this->resetParameters();
+        
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->delete('eco_product_variations/' . $id);
@@ -527,6 +587,8 @@ class Emonsite extends ApiPlatformSdk
      */
     public function createStorageImage($path = '')
     {
+        $this->resetParameters();
+        
         // make payload
         $formFields = [
             'image[siteId]' => $this->getSiteId(),
