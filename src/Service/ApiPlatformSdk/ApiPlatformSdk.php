@@ -802,11 +802,12 @@ class ApiPlatformSdk
     * Sets a query string parameter (&name=value)
     * @param string $name Request parameter's name
     * @param string $value Request paramter's value
+    * @param boolean $force_empty Force value if empty will make "&name=" as an explicitly empty value
     * @return boolean
     */
-    public function addParameter($name = '', $value = '')
+    public function addParameter($name = '', $value = '', $force_empty = false)
     {
-        if (!$name || !$value) {
+        if ((!$name || !$value) && !$force_empty) {
             return false;
         }
         else {
