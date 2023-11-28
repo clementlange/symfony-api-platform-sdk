@@ -129,7 +129,7 @@ class Econfiance extends ApiPlatformSdk
         $this->resetParameters();
 
         if (empty($id)) {
-            return false;
+            $id = self::COMPANY_ID;
         }
 
         // API request & return
