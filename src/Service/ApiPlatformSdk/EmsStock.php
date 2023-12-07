@@ -62,7 +62,11 @@ class EmsStock extends ApiPlatformSdk
         }
 
         // Construct parent object
-        parent::__construct(self::HAS_AUTHENTICATION, $em, $apiTokenRepository);
+        parent::__construct(
+            $em, 
+            $apiTokenRepository,
+            self::HAS_AUTHENTICATION
+        );
     }
 
 

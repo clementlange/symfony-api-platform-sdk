@@ -38,6 +38,7 @@ class Econfiance extends ApiPlatformSdk
      * or use $econfiance->authenticate('login', 'password') to override credientials on the fly
      */
     const HAS_AUTHENTICATION    = true;                 // true or false if this API requires authentication
+    const AUTHENTICATION_METHOD = 'jwt';                // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
     const AUTHENTICATION_URI    = 'login_check';        // Authentication URI on the API ("login_check" if URI is "/login_check")
     const DEFAULT_LOGIN         = 'companyslug';        // API Login
     const DEFAULT_PASSWORD      = 'myapipassword';      // API password
@@ -72,7 +73,12 @@ class Econfiance extends ApiPlatformSdk
         }
 
         // Construct parent object
-        parent::__construct($em, $apiTokenRepository, self::HAS_AUTHENTICATION);
+        parent::__construct(
+            $em,
+            $apiTokenRepository,
+            self::HAS_AUTHENTICATION,
+            self::AUTHENTICATION_METHOD
+        );
     }
 
     

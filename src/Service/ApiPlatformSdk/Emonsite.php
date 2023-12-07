@@ -49,6 +49,7 @@ class Emonsite extends ApiPlatformSdk
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
     const HAS_AUTHENTICATION    = true;                     // true or false if this API requires authentication
+    const AUTHENTICATION_METHOD = 'jwt';                    // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
     const AUTHENTICATION_URI    = 'auth';                   // Authentication URI on the API ("login_check" if URI is "/login_check")
     const DEFAULT_LOGIN         = 'email@example.com';      // API login
     const DEFAULT_PASSWORD      = 'myPassword';             // API password
@@ -85,7 +86,12 @@ class Emonsite extends ApiPlatformSdk
         }
 
         // Construct parent object
-        parent::__construct($em, $apiTokenRepository, self::HAS_AUTHENTICATION);
+        parent::__construct(
+            $em,
+            $apiTokenRepository,
+            self::HAS_AUTHENTICATION,
+            self::AUTHENTICATION_METHOD
+        );
     }
 
 

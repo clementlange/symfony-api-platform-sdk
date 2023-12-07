@@ -1,17 +1,4 @@
 <?php
-/**
- * @since   May 07 2021
- * @author  Clément Lange <clement@awelty.com>
- * @version 1.2
- * 
- * API Platform PHP SDK for Symfony
- * 
- * Works with "ApiToken" objects in the following directories, to save tokens in database :
- * Entity - App\Entity\ApiToken
- * Repository - App\Repository\ApiTokenRepository
- * 
- * Supposts JWT tokens, or OAuth 2.0 authentication.
- */
 
 namespace App\Service\ApiPlatformSdk;
 
@@ -21,6 +8,20 @@ use App\Repository\ApiTokenRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @since   May 07 2021
+ * @author  Clément Lange <clement@awelty.com>
+ * @package App\Service\ApiPlatformSdk
+ * @version 1.2
+ * 
+ * API Platform PHP SDK for Symfony
+ * 
+ * Works with "ApiToken" objects in the following directories, to save tokens in database :
+ * Entity - App\Entity\ApiToken
+ * Repository - App\Repository\ApiTokenRepository
+ * 
+ * Supposts authentication methods : JWT | OAuth 2.0.
+ */
 class ApiPlatformSdk
 {
     /**
@@ -67,6 +68,9 @@ class ApiPlatformSdk
     protected $apiTokenRepository;
     protected $hasAuthentication;
     protected $authenticationUri;
+    protected $oAuth2ClientId;
+    protected $oAuth2ClientSecret;
+    protected $oAuth2RequestScope;
     
     
     /**
@@ -403,6 +407,69 @@ class ApiPlatformSdk
         $this->concatFormat = $concatFormat;
     }
 
+
+    /**
+     * @method setOAuth2ClientId
+     * @param  string $oAuth2ClientId
+     * @return void
+     */
+    public function setOAuth2ClientId($oAuth2ClientId = '')
+    {
+        $this->oAuth2ClientId = $oAuth2ClientId;
+    }
+
+    
+    /**
+     * @method getOAuth2ClientId
+     * @return string
+     */
+    protected function getOAuth2ClientId()
+    {
+        return $this->oAuth2ClientId;
+    }
+
+
+    /**
+     * @method setOAuth2ClientSecret
+     * @param  string $oAuth2ClientSecret
+     * @return void
+     */
+    public function setOAuth2ClientSecret($oAuth2ClientSecret = '')
+    {
+        $this->oAuth2ClientSecret = $oAuth2ClientSecret;
+    }
+
+    
+    /**
+     * @method getOAuth2ClientSecret
+     * @return string
+     */
+    protected function getOAuth2ClientSecret()
+    {
+        return $this->oAuth2ClientSecret;
+    }
+
+    
+    /**
+     * @method setOAuth2RequestScope
+     * @param  string $oAuth2RequestScope
+     * @return void
+     */
+    public function setOAuth2RequestScope($oAuth2RequestScope = '')
+    {
+        $this->oAuth2RequestScope = $oAuth2RequestScope;
+    }
+
+    
+    /**
+     * @method getOAuth2RequestScope
+     * @return string
+     */
+    protected function getOAuth2RequestScope()
+    {
+        return $this->oAuth2RequestScope;
+    }
+
     
     /**
      * Usage : no need to be explicitly called if default credentials are used.
@@ -456,35 +523,6 @@ class ApiPlatformSdk
         }
     }
 
-
-    /**
-     * Authenticate through OAuth 2.0 protocol
-     * 
-     * @method authenticateOAuth2
-     * @return mixed
-     */
-    protected function authenticateOAuth2()
-    {
-        // TODO:
-    }
-
-    
-    /**
-     * Load Token from database
-     * 
-     * @method loadTokenFromDb
-     * @return App\Entity\ApiToken
-     */
-    protected function loadTokenFromDb()
-    {
-        $this->emsToken = $this->apiTokenRepository->findOneBy([
-            'user' => $this->getLogin(),
-            'domain' => $this->getApiUrl()
-        ]);
-
-        return $this->emsToken;
-    }
-
     
     /**
      * Performs an authentication request on the API
@@ -516,6 +554,101 @@ class ApiPlatformSdk
             // Error on authentication, invalid credentials
             return false;
         }
+    }
+
+    
+    /**
+     * Authenticate through OAuth 2.0 protocol
+     * 
+     * @method authenticateOAuth2
+     * @return mixed
+     */
+    protected function authenticateOAuth2()
+    {
+        // If current API does not have authentication
+        if (!$this->getHasAuthentication()) {
+            return true;
+        }
+
+        // Load token from DB
+        if ($this->loadTokenFromDb())
+        {
+            $token = $this->emsToken->getToken();
+
+            // Updates dates in DB
+            $this->emsToken->setUpdatedAt(new DateTime());
+            $this->em->persist($this->emsToken);
+            $this->em->flush();
+        }
+        else {
+            // If token is not set yet or not found in DB, post to authentication URL
+            $token = $this->requestAuthenticationOAuth2();
+        }
+
+        if ($token) {
+            // save token in current object
+            $this->setToken($token);
+             // all ok
+            return true;
+        }
+        else {
+            return false; // error
+        }
+    }
+
+
+    /**
+     * requestAuthenticationOAuth2
+     * 
+     * @return string $token
+     * 
+     * Performs an authentication request on the API using OAuth 2.0 protocol
+     */
+    protected function requestAuthenticationOAuth2()
+    {
+        // TODO: POST request auth
+        
+        // TODO: Save Token
+
+        /* $this->post($this->getAuthenticationUri(), [
+            'email' => $this->getLogin(),
+            'password' => $this->getPassword()
+        ]); */
+
+        /* if (isset($this->content['body']['token']))
+        {
+            // Saves token in DB
+            $this->emsToken = new ApiToken();
+            $this->emsToken->setToken($this->content['body']['token']);
+            $this->emsToken->setUser($this->getLogin());
+            $this->emsToken->setDomain($this->getApiUrl());
+            $this->em->persist($this->emsToken);
+            $this->em->flush();
+
+            // Return token
+            return $this->content['body']['token'];
+        }
+        else {
+            // Error on authentication, invalid credentials
+            return false;
+        } */
+    }
+
+
+    /**
+     * Load Token from database
+     * 
+     * @method loadTokenFromDb
+     * @return App\Entity\ApiToken
+     */
+    protected function loadTokenFromDb()
+    {
+        $this->emsToken = $this->apiTokenRepository->findOneBy([
+            'user' => $this->getLogin(),
+            'domain' => $this->getApiUrl()
+        ]);
+
+        return $this->emsToken;
     }
 
     
