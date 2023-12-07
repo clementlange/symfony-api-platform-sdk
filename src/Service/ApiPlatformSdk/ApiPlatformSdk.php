@@ -67,8 +67,7 @@ class ApiPlatformSdk
     
     
     /**
-     * __construct
-     *
+     * @method __construct
      * @return void
      */
     public function __construct(
@@ -114,8 +113,7 @@ class ApiPlatformSdk
 
     
     /**
-     * __destruct
-     *
+     * @method __destruct
      * @return void
      */
     public function __destruct()
@@ -126,8 +124,7 @@ class ApiPlatformSdk
 
     
     /**
-     * setHasAuthentication
-     *
+     * @method setHasAuthentication
      * @param  mixed $hasAuthentication
      * @return void
      */
@@ -138,8 +135,7 @@ class ApiPlatformSdk
 
     
     /**
-     * getHasAuthentication
-     *
+     * @method getHasAuthentication
      * @return bool
      */
     protected function getHasAuthentication()
@@ -149,20 +145,18 @@ class ApiPlatformSdk
 
 
     /**
-     * setAuthenticationUri
-     *
+     * @method setAuthenticationUri
      * @param  mixed $authenticationUri
      * @return void
      */
     public function setAuthenticationUri($authenticationUri)
     {
-        $this->authenticationUri = $authenticationUri;
+        $this->authenticationUri = trim($authenticationUri,'/');
     }
 
 
     /**
-     * getAuthenticationUri
-     *
+     * @method getAuthenticationUri
      * @return string
      */
     protected function getAuthenticationUri()
@@ -172,8 +166,7 @@ class ApiPlatformSdk
 
     
     /**
-     * getApiTokenRepository
-     *
+     * @method getApiTokenRepository
      * @return App\Repository\ApiTokenRepository
      */
     protected function getApiTokenRepository()
@@ -183,8 +176,7 @@ class ApiPlatformSdk
 
     
     /**
-     * getEntityManager
-     *
+     * @method getEntityManager
      * @return Doctrine\ORM\EntityManagerInterface
      */
     protected function getEntityManager()
@@ -194,13 +186,12 @@ class ApiPlatformSdk
     
     
     /**
-     * setApiUrl
-     *
-     * @param  string $apiUrl
-     * @return void
-     * 
      * If different API URL is used (overridden), call it in controller before request :
      * $emonsite->setApiUrl(new_url);
+     * 
+     * @method setApiUrl
+     * @param  string $apiUrl
+     * @return void
      */
     public function setApiUrl($apiUrl = '')
     {
@@ -209,11 +200,10 @@ class ApiPlatformSdk
     
 
     /**
-     * getApiUrl
-     *
-     * @return string
-     * 
      * Adds a trailing slash at the end of URL if not specified
+     * 
+     * @method getApiUrl
+     * @return string
      */
     protected function getApiUrl()
     {
@@ -222,8 +212,7 @@ class ApiPlatformSdk
 
     
     /**
-     * setLogin
-     *
+     * @method setLogin
      * @param  string $login
      * @return void
      */
@@ -234,8 +223,7 @@ class ApiPlatformSdk
 
         
     /**
-     * getLogin
-     *
+     * @method getLogin
      * @return string
      */
     protected function getLogin()
@@ -245,8 +233,7 @@ class ApiPlatformSdk
 
         
     /**
-     * setPassword
-     *
+     * @method setPassword
      * @param  string $password
      * @return void
      */
@@ -257,8 +244,7 @@ class ApiPlatformSdk
 
         
     /**
-     * getPassword
-     *
+     * @method getPassword
      * @return void
      */
     protected function getPassword()
@@ -268,8 +254,7 @@ class ApiPlatformSdk
 
 
     /**
-     * setToken
-     *
+     * @method setToken
      * @param  string $token
      * @return void
      */
@@ -280,8 +265,7 @@ class ApiPlatformSdk
 
         
     /**
-     * getToken
-     *
+     * @method getToken
      * @return string
      */
     protected function getToken()
@@ -292,8 +276,7 @@ class ApiPlatformSdk
 
         
     /**
-     * getAccept
-     *
+     * @method getAccept
      * @return string
      */
     protected function getAccept()
@@ -303,13 +286,12 @@ class ApiPlatformSdk
 
 
     /**
-     * setAccept
-     *
-     * @param  string $accept
-     * @return void
-     * 
      * If specific "accept" header is used (overridden), call it in controller before request :
      * $emonsite->setAccept(new_accept);
+     * 
+     * @method setAccept
+     * @param  string $accept
+     * @return void
      */
     public function setAccept($accept = '')
     {
@@ -318,8 +300,7 @@ class ApiPlatformSdk
 
 
     /**
-     * getContentType
-     *
+     * @method getContentType
      * @return string
      */
     protected function getContentType()
@@ -329,13 +310,12 @@ class ApiPlatformSdk
 
 
     /**
-     * setContentType
-     *
-     * @param  string $contentType
-     * @return void
-     * 
      * If specific "Content-Type" header is used (overridden), call it in controller before request :
      * $emonsite->setContentType(new_content_type);
+     * 
+     * @method setContentType
+     * @param  string $contentType
+     * @return void
      */
     public function setContentType($contentType = '')
     {
@@ -344,13 +324,12 @@ class ApiPlatformSdk
 
 
     /**
-     * setFormat
-     *
-     * @param  string $format
-     * @return void
-     * 
      * If specific format is used (overridden), call it in controller before request :
      * $emonsite->setFormat(new_format);
+     * 
+     * @method setFormat
+     * @param  string $format
+     * @return void
      */
     public function setFormat($format = '')
     {
@@ -359,8 +338,7 @@ class ApiPlatformSdk
 
         
     /**
-     * getFormat
-     *
+     * @method getFormat
      * @return string
      */
     protected function getFormat()
@@ -370,8 +348,7 @@ class ApiPlatformSdk
 
 
     /**
-     * getConcatFormat
-     *
+     * @method getConcatFormat
      * @return boolean
      */
     protected function getConcatFormat()
@@ -381,13 +358,12 @@ class ApiPlatformSdk
 
 
     /**
-     * setConcatFormat
-     *
-     * @param  string $concatFormat
-     * @return void
-     * 
      * If true, adds the format to each GET request
      * example : "GET /api/product_reviews.json" (true), "GET /api/product_reviews" (false)
+     * 
+     * @method setConcatFormat
+     * @param  string $concatFormat
+     * @return void
      */
     public function setConcatFormat($concatFormat)
     {
@@ -396,15 +372,14 @@ class ApiPlatformSdk
 
     
     /**
-     * authenticate
-     *
-     * @param  string $login
-     * @param  string $password
-     * @return mixed
-     * 
      * Usage : no need to be explicitly called if default credentials are used.
      * If specific credentials are used (overridden), call it in controller :
      * $auth = $emonsite->authenticate(new_login, new_password);
+     * 
+     * @method authenticate
+     * @param  string $login
+     * @param  string $password
+     * @return mixed
      */
     public function authenticate($login = '', $password = '')
     {
@@ -450,11 +425,10 @@ class ApiPlatformSdk
 
     
     /**
-     * loadTokenFromDb
+     * Load Token from database
      * 
+     * @method loadTokenFromDb
      * @return App\Entity\ApiToken
-     * 
-     * Load JWT token from database
      */
     protected function loadTokenFromDb()
     {
@@ -468,11 +442,10 @@ class ApiPlatformSdk
 
     
     /**
-     * requestAuthentication
-     * 
-     * @return string $token
-     * 
      * Performs an authentication request on the API
+     * 
+     * @method requestAuthentication
+     * @return string $token
      */
     protected function requestAuthentication()
     {
@@ -502,11 +475,10 @@ class ApiPlatformSdk
 
     
     /**
-     * deleteUserToken
-     *
-     * @return void
-     * 
      * Deletes token for specific user
+     * 
+     * @method deleteUserToken
+     * @return void
      */
     protected function deleteUserToken()
     {
@@ -515,11 +487,12 @@ class ApiPlatformSdk
 
 
     /**
-    * @method get()
-    * Runs an HTTP GET request to the API
-    * @param string $uri Request URI (without parameters)
-    * @return mixed Associative array representing response
-    */
+     * Runs an HTTP GET request to the API
+     * 
+     * @method get
+     * @param string $uri Request URI (without parameters)
+     * @return mixed Associative array representing response
+     */
     public function get($uri = '')
     {
         if (!$uri) return false;
@@ -555,8 +528,9 @@ class ApiPlatformSdk
 
 
     /**
-    * @method getSingle()
-    * Runs an HTTP GET request to the API for a single item (/uri/id)
+     * Runs an HTTP GET request to the API for a single item (/uri/id)
+     * 
+    * @method getSingle
     * @param string $uri Request URI (without parameters)
     * @param string $id ID of the item
     * @return mixed Associative array representing response
@@ -587,13 +561,14 @@ class ApiPlatformSdk
 
 
     /**
-    * @method post()
-    * Runs an HTTP POST request to the API
-    * @param string $uri Request URI (without parameters)
-    * @param array $postData payload
-    * @param array $headers request HTTP headers overriding defaults
-    * @return mixed Associative array representing response
-    */
+     * Runs an HTTP POST request to the API
+     * 
+     * @method post
+     * @param string $uri Request URI (without parameters)
+     * @param array $postData payload
+     * @param array $headers request HTTP headers overriding defaults
+     * @return mixed Associative array representing response
+     */
     public function post($uri = '', $postData = [], $headers = [])
     {
         if (!$uri) return false;
@@ -665,11 +640,12 @@ class ApiPlatformSdk
 
 
     /**
-    * @method put()
-    * Runs an HTTP PUT request to the API
-    * @param string $uri Request URI (without parameters)
-    * @return mixed Associative array representing response
-    */
+     * Runs an HTTP PUT request to the API
+     * 
+     * @method put
+     * @param string $uri Request URI (without parameters)
+     * @return mixed Associative array representing response
+     */
     public function put($uri = '', $postData = [])
     {
         if (!$uri) return false;
@@ -712,11 +688,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method patch()
-    * Runs an HTTP PATCH request to the API
-    * @param string $uri Request URI (without parameters)
-    * @return mixed Associative array representing response
-    */
+     * Runs an HTTP PATCH request to the API
+     * @method patch
+     * @param string $uri Request URI (without parameters)
+     * @return mixed Associative array representing response
+     */
     public function patch($uri = '', $postData = [])
     {
         if (!$uri) return false;
@@ -759,12 +735,13 @@ class ApiPlatformSdk
 
 
     /**
-    * @method delete()
-    * Runs an HTTP DELETE request to the API
-    * @param string $uri Request URI (without parameters)
-    * @param string $id Object ID
-    * @return mixed Associative array representing response
-    */
+     * Runs an HTTP DELETE request to the API
+     * 
+     * @method delete
+     * @param string $uri Request URI (without parameters)
+     * @param string $id Object ID
+     * @return mixed Associative array representing response
+     */
     public function delete($uri = '', $id = '')
     {
         if (!$uri) return false;
@@ -798,13 +775,14 @@ class ApiPlatformSdk
 
 
     /**
-    * @method addParameter()
-    * Sets a query string parameter (&name=value)
-    * @param string $name Request parameter's name
-    * @param string $value Request paramter's value
-    * @param boolean $force_empty Force value if empty will make "&name=" as an explicitly empty value
-    * @return boolean
-    */
+     * Sets a query string parameter (&name=value)
+     * 
+     * @method addParameter
+     * @param string $name Request parameter's name
+     * @param string $value Request paramter's value
+     * @param boolean $force_empty Force value if empty will make "&name=" as an explicitly empty value
+     * @return boolean
+     */
     public function addParameter($name = '', $value = '', $force_empty = false)
     {
         if ((!$name || !$value) && !$force_empty) {
@@ -822,11 +800,12 @@ class ApiPlatformSdk
 
 
     /**
-    * @method removeParameter()
-    * Removes a query string parameter (&name=value)
-    * @param string $name Request parameter's name
-    * @return boolean
-    */
+     * Removes a query string parameter (&name=value)
+     * 
+     * @method removeParameter
+     * @param string $name Request parameter's name
+     * @return boolean
+     */
     public function removeParameter($name = '')
     {
         if (!$name) {
@@ -844,10 +823,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method getQueryStringAdditional()
-    * Returns the query string (additional part)
-    * @return string
-    */
+     * Returns the query string (additional part)
+     * 
+     * @method getQueryStringAdditional
+     * @return string
+     */
     protected function getQueryStringAdditional()
     {
         return $this->queryStringAdditional;
@@ -855,10 +835,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method getQueryString()
-    * Returns the query string (main part)
-    * @return array
-    */
+     * Returns the query string (main part)
+     * 
+     * @method getQueryString
+     * @return array
+     */
     protected function getQueryString()
     {
         return $this->queryString;
@@ -866,11 +847,13 @@ class ApiPlatformSdk
 
 
     /**
-    * @method setPage()
-    * Defines the page (Pagination)
-    * @param int $p Page number
-    * @return bool
-    */
+     * Defines the page (Pagination)
+     * 
+     * @method setPage
+     * 
+     * @param int $p Page number
+     * @return bool
+     */
     public function setPage($p = 1)
     {
         if (is_numeric($p)) {
@@ -885,11 +868,11 @@ class ApiPlatformSdk
 
     
     /**
-    * @method getMaxPage()
-    * Returns the maximum page for the result list
-    * @param void
-    * @return int number of last page
-    */
+     * Returns the maximum page for the result list
+     * 
+     * @method getMaxPage
+     * @return int number of last page
+     */
     public function getMaxPage()
     {
         return intval(($this->maxPage ? $this->maxPage : '1'));
@@ -897,10 +880,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method setMaxPage()
-    * Sets the maximum page for the result list
-    * @param array $content Associative array of API result
-    */
+     * Sets the maximum page for the result list
+     * 
+     * @method setMaxPage
+     * @param array $content Associative array of API result
+     */
     protected function setMaxPage($content)
     {
         if (!isset($content['hydra:view']['hydra:last'])) {
@@ -917,10 +901,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method setTotalItems()
-    * Sets the number of items total for the result list
-    * @param array $content Associative array of API result
-    */
+     * Sets the number of items total for the result list
+     * 
+     * @method setTotalItems
+     * @param array $content Associative array of API result
+     */
     protected function setTotalItems($content)
     {
         if (!isset($content['hydra:totalItems'])) {
@@ -933,11 +918,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method getTotalItems()
-    * Returns the total number of items for the result list
-    * @param void
-    * @return int number of items total
-    */
+     * Returns the total number of items for the result list
+     * 
+     * @method getTotalItems
+     * @return int number of items total
+     */
     public function getTotalItems()
     {
         return $this->totalItems;
@@ -945,12 +930,13 @@ class ApiPlatformSdk
 
 
     /**
-    * @method setOrder()
-    * Sets the query order
-    * @param string property field to sort
-    * @param string sort order sort (asc|desc)
-    * @return array Associative array of items
-    */
+     * Sets the query order
+     * 
+     * @method setOrder
+     * @param string property field to sort
+     * @param string sort order sort (asc|desc)
+     * @return array Associative array of items
+     */
     public function setOrder($property, $sort)
     {
         $this->orderProperty = $property;
@@ -964,10 +950,11 @@ class ApiPlatformSdk
 
 
     /**
-    * @method getOrder()
-    * Gets the query order
-    * @return array Associative array
-    */
+     * Gets the query order
+     * 
+     * @method getOrder
+     * @return array Associative array
+     */
     public function getOrder()
     {
         return array($this->orderProperty, $this->orderSort);
