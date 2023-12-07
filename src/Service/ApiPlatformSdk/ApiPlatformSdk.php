@@ -2,13 +2,15 @@
 /**
  * @since   May 07 2021
  * @author  Clément Lange <clement@awelty.com>
- * @version 1.1
+ * @version 1.2
  * 
  * API Platform PHP SDK for Symfony
  * 
  * Works with "ApiToken" objects in the following directories, to save tokens in database :
  * Entity - App\Entity\ApiToken
  * Repository - App\Repository\ApiTokenRepository
+ * 
+ * Supposts JWT tokens, or OAuth 2.0 authentication.
  */
 
 namespace App\Service\ApiPlatformSdk;
@@ -44,6 +46,7 @@ class ApiPlatformSdk
     protected $apiUrl;
     protected $login;
     protected $password;
+    protected $authenticationMethod;
     protected $token;
     protected $emsToken;
     protected $httpClient;
@@ -74,6 +77,7 @@ class ApiPlatformSdk
         EntityManagerInterface $em,
         ApiTokenRepository $apiTokenRepository,
         bool $hasAuthentication = false,
+        string $authenticationMethod = 'jwt'
     )
     {
         // If used as standalone client, define defaults request parameters
@@ -100,6 +104,9 @@ class ApiPlatformSdk
         // If Current API has authentication
         $this->setHasAuthentication($hasAuthentication);
 
+        // Authentication method (JWT, OAuth 2.0 ...)
+        $this->setAuthenticationMethod($authenticationMethod);
+
         // Authentication URI
         if (!$this->getAuthenticationUri()) {
             $this->setAuthenticationUri('auth'); // defaut authentication URI = "/auth"
@@ -107,7 +114,12 @@ class ApiPlatformSdk
 
         // API login with default credentials
         if ($this->getApiUrl()) {
-            $this->authenticate();
+            if ($this->getAuthenticationMethod() == 'jwt') {
+                $this->authenticate();
+            }
+            else {
+                $this->authenticateOAuth2();
+            }
         }
     }
 
@@ -229,6 +241,27 @@ class ApiPlatformSdk
     protected function getLogin()
     {
         return $this->login;
+    }
+
+
+    /**
+     * @method setAuthenticationMethod
+     * @param  string $authenticationMethod
+     * @return void
+     */
+    public function setAuthenticationMethod($authenticationMethod = '')
+    {
+        $this->authenticationMethod = $authenticationMethod;
+    }
+
+        
+    /**
+     * @method getAuthenticationMethod
+     * @return string
+     */
+    protected function getAuthenticationMethod()
+    {
+        return $this->authenticationMethod;
     }
 
         
@@ -421,6 +454,18 @@ class ApiPlatformSdk
         else {
             return false; // error
         }
+    }
+
+
+    /**
+     * Authenticate through OAuth 2.0 protocol
+     * 
+     * @method authenticateOAuth2
+     * @return mixed
+     */
+    protected function authenticateOAuth2()
+    {
+        // TODO:
     }
 
     
