@@ -878,15 +878,16 @@ class ApiPlatformSdk
         ];
 
         // if payload's body content-type is not Json (example : upload image)
-        $isMultipart = true;
+        $isJsonPayload = false;
         foreach ($headers as $i => $h) {
             if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
-                $isMultipart = false;
+                $isJsonPayload = true;
+                break;
             }
         }
 
         // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
-        if ($isMultipart) {
+        if (!$isJsonPayload) {
             $payload['body'] = $this->postData;
         }
         // payload's body content-type is JSON
@@ -939,23 +940,46 @@ class ApiPlatformSdk
             $this->postData = $postData;
         }
 
-        $response = $this->httpClient->request('PUT', $this->getApiUrl().$uri
-            /* Adds additional query string vars (if applicable) */
-            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''), [
+        $headers = [
+            'accept' => $this->getAccept(),
+            'Content-Type' => $this->getContentType(),
+            /* Authorization token */
+            'Authorization' => 'Bearer '.$this->getToken()
+        ];
+
+        $payload = [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
             /* Main query string vars */
             'query' => $this->getQueryString(),
             /* Set specific headers */
-            'headers' => [
-                'accept' => $this->getAccept(),
-                'Content-Type' => $this->getContentType(),
-                /* Authorization token */
-                'Authorization' => 'Bearer '.$this->getToken()
-            ],
-            'json' => $this->postData
-        ]);
+            'headers' => $headers
+        ];
+
+        // if payload's body content-type is not Json (example : upload image)
+        $isJsonPayload = false;
+        foreach ($headers as $i => $h) {
+            if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
+                $isJsonPayload = true;
+                break;
+            }
+        }
+
+        // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
+        if (!$isJsonPayload) {
+            $payload['body'] = $this->postData;
+        }
+        // payload's body content-type is JSON
+        else {
+            $payload['json'] = $this->postData;
+        }
+
+        $response = $this->httpClient->request('PUT', $this->getApiUrl().$uri
+            /* Adds additional query string vars (if applicable) */
+            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
+            $payload
+        );
 
         // Delete existing token if request is forbidden (token may be expired)
         if ($response->getStatusCode() == 401) {
@@ -986,23 +1010,46 @@ class ApiPlatformSdk
             $this->postData = $postData;
         }
 
-        $response = $this->httpClient->request('PATCH', $this->getApiUrl().$uri
-            /* Adds additional query string vars (if applicable) */
-            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''), [
+        $headers = [
+            'accept' => $this->getAccept(),
+            'Content-Type' => 'application/merge-patch+json',
+            /* Authorization token */
+            'Authorization' => 'Bearer '.$this->getToken()
+        ];
+
+        $payload = [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
             /* Main query string vars */
             'query' => $this->getQueryString(),
             /* Set specific headers */
-            'headers' => [
-                'accept' => $this->getAccept(),
-                'Content-Type' => 'application/merge-patch+json',
-                /* Authorization token */
-                'Authorization' => 'Bearer '.$this->getToken()
-            ],
-            'json' => $this->postData
-        ]);
+            'headers' => $headers
+        ];
+
+        // if payload's body content-type is not Json (example : upload image)
+        $isJsonPayload = false;
+        foreach ($headers as $i => $h) {
+            if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
+                $isJsonPayload = true;
+                break;
+            }
+        }
+
+        // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
+        if (!$isJsonPayload) {
+            $payload['body'] = $this->postData;
+        }
+        // payload's body content-type is JSON
+        else {
+            $payload['json'] = $this->postData;
+        }
+
+        $response = $this->httpClient->request('PATCH', $this->getApiUrl().$uri
+            /* Adds additional query string vars (if applicable) */
+            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
+            $payload
+        );
 
         // Delete existing token if request is forbidden (token may be expired)
         if ($response->getStatusCode() == 401) {

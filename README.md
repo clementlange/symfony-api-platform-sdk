@@ -7,7 +7,7 @@ Currently supported derivated SDKs are :
 - E-monsite ([www.e-monsite.com](https://www.e-monsite.com))
 - E-confiance ([www.e-monsite.com](https://www.e-confiance.fr))
 - EMS-Stock ([www.e-monsite.com](https://www.ems-stock.com))
-- CEGID / Acumatica REST API ([help.acumatica.com](https://help.acumatica.com/(W(6))/Wiki/ShowWiki.aspx?pageid=bbb8b84b-07d7-4a69-adf8-33dc5d430b60))
+- CEGID / Acumatica ([help.acumatica.com](https://help.acumatica.com/(W(6))/Wiki/ShowWiki.aspx?pageid=bbb8b84b-07d7-4a69-adf8-33dc5d430b60))
 
 ## Installation
 
@@ -164,7 +164,8 @@ class MyController
 ## Specific integrations : CEGID / Acumatica
 
 The Acumatica / CEGID REST API integration uses OAuth 2.0 as the authentication method.
-You must define authentication parameters and credentials in `src/Service/ApiPlatformSdk/Cegid.php`.
+
+You must define authentication parameters and API/ERP credentials in `src/Service/ApiPlatformSdk/Cegid.php`.
 
 Pagination is set to 50 items per page as default. To change the default pagination value, modify the constant `Cegid::PAGING_ITEMS_PER_PAGE`.
 
