@@ -25,9 +25,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class ApiPlatformSdk
 {
     /**
-     * Renew tokens after (days)
+     * Renew tokens after (minutes)
      */
-    const RENEW_TOKEN_DAYS  = 20;
+    const RENEW_TOKEN_MINUTES   = 1440;
 
     /**
      * Default format (API extension)
@@ -68,9 +68,12 @@ class ApiPlatformSdk
     protected $apiTokenRepository;
     protected $hasAuthentication;
     protected $authenticationUri;
+    protected $overriddenAuthUrl = '';
     protected $oAuth2ClientId;
     protected $oAuth2ClientSecret;
     protected $oAuth2RequestScope;
+    protected $oAuth2GrantType;
+    protected $tokenLifetime = 0;
     
     
     /**
@@ -105,6 +108,17 @@ class ApiPlatformSdk
         $this->em = $em;
         $this->apiTokenRepository = $apiTokenRepository;
 
+        // Delete token older than the set time
+        if (empty($this->tokenLifetime)) {
+            // Use default token lifetime value
+            $tokenLifetime = self::RENEW_TOKEN_MINUTES;
+        }
+        else {
+            // Use class-specific token lifetime value set in extented class
+            $tokenLifetime = $this->getTokenLifetime();
+        }
+        $this->apiTokenRepository->deleteAfter($tokenLifetime);
+
         // If Current API has authentication
         $this->setHasAuthentication($hasAuthentication);
 
@@ -134,8 +148,6 @@ class ApiPlatformSdk
      */
     public function __destruct()
     {
-        // Delete token older than 'RENEW_TOKEN_DAYS' days
-        $this->apiTokenRepository->deleteAfterDays(self::RENEW_TOKEN_DAYS);
     }
 
     
@@ -470,6 +482,69 @@ class ApiPlatformSdk
         return $this->oAuth2RequestScope;
     }
 
+
+    /**
+     * @method setOAuth2GrantType
+     * @param  string $oAuth2GrantType
+     * @return void
+     */
+    public function setOAuth2GrantType($oAuth2GrantType = '')
+    {
+        $this->oAuth2GrantType = $oAuth2GrantType;
+    }
+
+    
+    /**
+     * @method getOAuth2GrantType
+     * @return string
+     */
+    protected function getOAuth2GrantType()
+    {
+        return $this->oAuth2GrantType;
+    }
+
+
+    /**
+     * @method setOverriddenAuthUrl
+     * @param  string $overrideAuthUrl
+     * @return void
+     */
+    public function setOverriddenAuthUrl($overriddenAuthUrl = '')
+    {
+        $this->overriddenAuthUrl = $overriddenAuthUrl;
+    }
+
+    
+    /**
+     * @method getOverriddenAuthUrl
+     * @return string
+     */
+    protected function getOverriddenAuthUrl()
+    {
+        return $this->overriddenAuthUrl;
+    }
+
+
+    /**
+     * @method setTokenLifetime
+     * @param  int $tokenLifetime
+     * @return void
+     */
+    public function setTokenLifetime($tokenLifetime = 0)
+    {
+        $this->tokenLifetime = $tokenLifetime;
+    }
+
+    
+    /**
+     * @method getTokenLifetime
+     * @return int
+     */
+    protected function getTokenLifetime()
+    {
+        return $this->tokenLifetime;
+    }
+
     
     /**
      * Usage : no need to be explicitly called if default credentials are used.
@@ -598,40 +673,52 @@ class ApiPlatformSdk
 
 
     /**
-     * requestAuthenticationOAuth2
-     * 
-     * @return string $token
-     * 
      * Performs an authentication request on the API using OAuth 2.0 protocol
+     * 
+     * @method requestAuthenticationOAuth2
+     * @return string $token
      */
     protected function requestAuthenticationOAuth2()
     {
-        // TODO: POST request auth
-        
-        // TODO: Save Token
+        // If the Auth URL has been overridden
+        if (!empty($this->getOverriddenAuthUrl())) {
+            $authUrl = $this->getOverriddenAuthUrl();
+        }
+        // Else, use the authentication URI (default)
+        else {
+            $authUrl = $this->getAuthenticationUri();
+        }
 
-        /* $this->post($this->getAuthenticationUri(), [
-            'email' => $this->getLogin(),
+        // Specific Content-type for auth
+        $this->setContentType('application/x-www-form-urlencoded');
+
+        // POST request auth
+        $this->post($authUrl, [
+            'grant_type' => $this->getOAuth2GrantType(),
+            'client_id' => $this->getOAuth2ClientId(),
+            'client_secret' => $this->getOAuth2ClientSecret(),
+            'username' => $this->getLogin(),
             'password' => $this->getPassword()
-        ]); */
+        ]);
 
-        /* if (isset($this->content['body']['token']))
+        // Save Token
+        if (isset($this->content['body']['access_token']))
         {
             // Saves token in DB
             $this->emsToken = new ApiToken();
-            $this->emsToken->setToken($this->content['body']['token']);
+            $this->emsToken->setToken($this->content['body']['access_token']);
             $this->emsToken->setUser($this->getLogin());
             $this->emsToken->setDomain($this->getApiUrl());
             $this->em->persist($this->emsToken);
             $this->em->flush();
 
             // Return token
-            return $this->content['body']['token'];
+            return $this->content['body']['access_token'];
         }
         else {
             // Error on authentication, invalid credentials
             return false;
-        } */
+        }
     }
 
 
@@ -661,6 +748,18 @@ class ApiPlatformSdk
     protected function deleteUserToken()
     {
         return $this->apiTokenRepository->deleteUserToken($this->getLogin(), $this->getApiUrl());
+    }
+
+
+    /**
+     * Returns request content
+     * 
+     * @method getContent
+     * @return mixed
+     */
+    private function getContent()
+    {
+        return $this->content;
     }
 
 
@@ -779,14 +878,14 @@ class ApiPlatformSdk
         ];
 
         // if payload's body content-type is not Json (example : upload image)
-        $isMultipart = false;
-        foreach ($headers as $h) {
-            if (preg_match('/multipart\/form\-data/i', $h)) {
-                $isMultipart = true;
+        $isMultipart = true;
+        foreach ($headers as $i => $h) {
+            if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
+                $isMultipart = false;
             }
         }
 
-        // POST data is multipart/form-data : body has "body" index, not "json"
+        // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
         if ($isMultipart) {
             $payload['body'] = $this->postData;
         }
@@ -795,8 +894,16 @@ class ApiPlatformSdk
             $payload['json'] = $this->postData;
         }
 
+        // If the full URL has been specified in the request, instead of just the URI
+        if (preg_match('/^http/', $uri)) {
+            $fullUrl = $uri;
+        }
+        else {
+            $fullUrl = $this->getApiUrl().$uri;
+        }
+
         // Make HTTP request
-        $response = $this->httpClient->request('POST', $this->getApiUrl().$uri
+        $response = $this->httpClient->request('POST', $fullUrl
             /* Adds additional query string vars (if applicable) */
             .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
             $payload

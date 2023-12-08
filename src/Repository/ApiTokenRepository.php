@@ -39,17 +39,18 @@ class ApiTokenRepository extends ServiceEntityRepository
         }
     }
 
+    
     /**
-     * deleteAfterDays
+     * deleteAfter
      *
-     * @param  int $days
+     * @param  int $minutes
      * @return void
      * 
-     * Removes obsolete tokens, older than $days
+     * Removes obsolete tokens, older than $minutes
      */
-    public function deleteAfterDays($days = 14)
+    public function deleteAfter($minutes = 60)
     {
-        $mindate = date('Y-m-d', mktime(0,0,0, date('n'), date('j') - $days, date('Y')));
+        $mindate = date('Y-m-d H:i:s', mktime(date('H'),date('i') - $minutes,date('s'), date('n'), date('j'), date('Y')));
 
         return $this->createQueryBuilder('a')
             ->delete()
