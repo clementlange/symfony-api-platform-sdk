@@ -164,5 +164,29 @@ class MyController
 ## Specific integrations : CEGID / Acumatica
 
 The Acumatica / CEGID REST API integration uses OAuth 2.0 as the authentication method.
-
 You must define authentication parameters and credentials in `src/Service/ApiPlatformSdk/Cegid.php`.
+
+Pagination is set to 50 items per page as default. To change the default pagination value, modify the constant `Cegid::PAGING_ITEMS_PER_PAGE`.
+
+```php
+use App\Service\ApiPlatformSdk\Cegid;
+
+class MyController
+{
+	public function index(Cegid $cegid)
+	{
+		// Example : get page 2 of Customers
+		$customers = $cegid->getCustomers(2);
+		dump($customers);
+	}
+}
+```
+
+Other available methods include :
+
+```php
+// GET Customers
+$cegid->getCustomers(?int $page);
+
+// Get
+```
