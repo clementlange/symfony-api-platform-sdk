@@ -13,13 +13,13 @@ use Doctrine\ORM\EntityManagerInterface;
  * @author  Clément Lange <clement@awelty.com>
  * @package App\Service\ApiPlatformSdk
  * @version 1.2
- * 
+ *
  * API Platform PHP SDK for Symfony
- * 
+ *
  * Works with "ApiToken" objects in the following directories, to save tokens in database :
  * Entity - App\Entity\ApiToken
  * Repository - App\Repository\ApiTokenRepository
- * 
+ *
  * Supposts authentication methods : JWT | OAuth 2.0.
  */
 class ApiPlatformSdk
@@ -74,8 +74,8 @@ class ApiPlatformSdk
     protected $oAuth2RequestScope;
     protected $oAuth2GrantType;
     protected $tokenLifetime = 0;
-    
-    
+
+
     /**
      * @method __construct
      * @return void
@@ -141,7 +141,7 @@ class ApiPlatformSdk
         }
     }
 
-    
+
     /**
      * @method __destruct
      * @return void
@@ -150,7 +150,7 @@ class ApiPlatformSdk
     {
     }
 
-    
+
     /**
      * @method setHasAuthentication
      * @param  mixed $hasAuthentication
@@ -161,7 +161,7 @@ class ApiPlatformSdk
         $this->hasAuthentication = $hasAuthentication;
     }
 
-    
+
     /**
      * @method getHasAuthentication
      * @return bool
@@ -192,7 +192,7 @@ class ApiPlatformSdk
         return $this->authenticationUri;
     }
 
-    
+
     /**
      * @method getApiTokenRepository
      * @return App\Repository\ApiTokenRepository
@@ -202,7 +202,7 @@ class ApiPlatformSdk
         return $this->apiTokenRepository;
     }
 
-    
+
     /**
      * @method getEntityManager
      * @return Doctrine\ORM\EntityManagerInterface
@@ -211,12 +211,12 @@ class ApiPlatformSdk
     {
         return $this->em;
     }
-    
-    
+
+
     /**
      * If different API URL is used (overridden), call it in controller before request :
      * $emonsite->setApiUrl(new_url);
-     * 
+     *
      * @method setApiUrl
      * @param  string $apiUrl
      * @return void
@@ -225,11 +225,11 @@ class ApiPlatformSdk
     {
         $this->apiUrl = $apiUrl;
     }
-    
+
 
     /**
      * Adds a trailing slash at the end of URL if not specified
-     * 
+     *
      * @method getApiUrl
      * @return string
      */
@@ -238,7 +238,7 @@ class ApiPlatformSdk
         return $this->apiUrl.(!preg_match('/\/$/', $this->apiUrl) ? '/' : '');
     }
 
-    
+
     /**
      * @method setLogin
      * @param  string $login
@@ -249,7 +249,7 @@ class ApiPlatformSdk
         $this->login = $login;
     }
 
-        
+
     /**
      * @method getLogin
      * @return string
@@ -270,7 +270,7 @@ class ApiPlatformSdk
         $this->authenticationMethod = $authenticationMethod;
     }
 
-        
+
     /**
      * @method getAuthenticationMethod
      * @return string
@@ -280,7 +280,7 @@ class ApiPlatformSdk
         return $this->authenticationMethod;
     }
 
-        
+
     /**
      * @method setPassword
      * @param  string $password
@@ -291,7 +291,7 @@ class ApiPlatformSdk
         $this->password = $password;
     }
 
-        
+
     /**
      * @method getPassword
      * @return void
@@ -312,7 +312,7 @@ class ApiPlatformSdk
         $this->token = $token;
     }
 
-        
+
     /**
      * @method getToken
      * @return string
@@ -323,7 +323,7 @@ class ApiPlatformSdk
     }
 
 
-        
+
     /**
      * @method getAccept
      * @return string
@@ -337,7 +337,7 @@ class ApiPlatformSdk
     /**
      * If specific "accept" header is used (overridden), call it in controller before request :
      * $emonsite->setAccept(new_accept);
-     * 
+     *
      * @method setAccept
      * @param  string $accept
      * @return void
@@ -361,7 +361,7 @@ class ApiPlatformSdk
     /**
      * If specific "Content-Type" header is used (overridden), call it in controller before request :
      * $emonsite->setContentType(new_content_type);
-     * 
+     *
      * @method setContentType
      * @param  string $contentType
      * @return void
@@ -375,7 +375,7 @@ class ApiPlatformSdk
     /**
      * If specific format is used (overridden), call it in controller before request :
      * $emonsite->setFormat(new_format);
-     * 
+     *
      * @method setFormat
      * @param  string $format
      * @return void
@@ -385,7 +385,7 @@ class ApiPlatformSdk
         $this->format = $format;
     }
 
-        
+
     /**
      * @method getFormat
      * @return string
@@ -409,7 +409,7 @@ class ApiPlatformSdk
     /**
      * If true, adds the format to each GET request
      * example : "GET /api/product_reviews.json" (true), "GET /api/product_reviews" (false)
-     * 
+     *
      * @method setConcatFormat
      * @param  string $concatFormat
      * @return void
@@ -430,7 +430,7 @@ class ApiPlatformSdk
         $this->oAuth2ClientId = $oAuth2ClientId;
     }
 
-    
+
     /**
      * @method getOAuth2ClientId
      * @return string
@@ -451,7 +451,7 @@ class ApiPlatformSdk
         $this->oAuth2ClientSecret = $oAuth2ClientSecret;
     }
 
-    
+
     /**
      * @method getOAuth2ClientSecret
      * @return string
@@ -461,7 +461,7 @@ class ApiPlatformSdk
         return $this->oAuth2ClientSecret;
     }
 
-    
+
     /**
      * @method setOAuth2RequestScope
      * @param  string $oAuth2RequestScope
@@ -472,7 +472,7 @@ class ApiPlatformSdk
         $this->oAuth2RequestScope = $oAuth2RequestScope;
     }
 
-    
+
     /**
      * @method getOAuth2RequestScope
      * @return string
@@ -493,7 +493,7 @@ class ApiPlatformSdk
         $this->oAuth2GrantType = $oAuth2GrantType;
     }
 
-    
+
     /**
      * @method getOAuth2GrantType
      * @return string
@@ -514,7 +514,7 @@ class ApiPlatformSdk
         $this->overriddenAuthUrl = $overriddenAuthUrl;
     }
 
-    
+
     /**
      * @method getOverriddenAuthUrl
      * @return string
@@ -535,7 +535,7 @@ class ApiPlatformSdk
         $this->tokenLifetime = $tokenLifetime;
     }
 
-    
+
     /**
      * @method getTokenLifetime
      * @return int
@@ -545,12 +545,12 @@ class ApiPlatformSdk
         return $this->tokenLifetime;
     }
 
-    
+
     /**
      * Usage : no need to be explicitly called if default credentials are used.
      * If specific credentials are used (overridden), call it in controller :
      * $auth = $emonsite->authenticate(new_login, new_password);
-     * 
+     *
      * @method authenticate
      * @param  string $login
      * @param  string $password
@@ -598,10 +598,10 @@ class ApiPlatformSdk
         }
     }
 
-    
+
     /**
      * Performs an authentication request on the API
-     * 
+     *
      * @method requestAuthentication
      * @return string $token
      */
@@ -631,10 +631,10 @@ class ApiPlatformSdk
         }
     }
 
-    
+
     /**
      * Authenticate through OAuth 2.0 protocol
-     * 
+     *
      * @method authenticateOAuth2
      * @return mixed
      */
@@ -674,7 +674,7 @@ class ApiPlatformSdk
 
     /**
      * Performs an authentication request on the API using OAuth 2.0 protocol
-     * 
+     *
      * @method requestAuthenticationOAuth2
      * @return string $token
      */
@@ -724,7 +724,7 @@ class ApiPlatformSdk
 
     /**
      * Load Token from database
-     * 
+     *
      * @method loadTokenFromDb
      * @return App\Entity\ApiToken
      */
@@ -738,10 +738,10 @@ class ApiPlatformSdk
         return $this->emsToken;
     }
 
-    
+
     /**
      * Deletes token for specific user
-     * 
+     *
      * @method deleteUserToken
      * @return void
      */
@@ -753,7 +753,7 @@ class ApiPlatformSdk
 
     /**
      * Returns request content
-     * 
+     *
      * @method getContent
      * @return mixed
      */
@@ -765,7 +765,7 @@ class ApiPlatformSdk
 
     /**
      * Runs an HTTP GET request to the API
-     * 
+     *
      * @method get
      * @param string $uri Request URI (without parameters)
      * @return mixed Associative array representing response
@@ -792,7 +792,7 @@ class ApiPlatformSdk
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
         }
-        
+
         // Create Json body
         $this->content = json_decode($response->getContent(), true);
 
@@ -806,7 +806,7 @@ class ApiPlatformSdk
 
     /**
      * Runs an HTTP GET request to the API for a single item (/uri/id)
-     * 
+     *
     * @method getSingle
     * @param string $uri Request URI (without parameters)
     * @param string $id ID of the item
@@ -829,7 +829,7 @@ class ApiPlatformSdk
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
         }
-        
+
         // Create Json body
         $this->content = json_decode($response->getContent(), true);
 
@@ -839,7 +839,7 @@ class ApiPlatformSdk
 
     /**
      * Runs an HTTP POST request to the API
-     * 
+     *
      * @method post
      * @param string $uri Request URI (without parameters)
      * @param array $postData payload
@@ -914,7 +914,7 @@ class ApiPlatformSdk
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
         }
-        
+
         // Create Json body
         $this->content = array(
             'code' => $response->getStatusCode(),
@@ -927,7 +927,7 @@ class ApiPlatformSdk
 
     /**
      * Runs an HTTP PUT request to the API
-     * 
+     *
      * @method put
      * @param string $uri Request URI (without parameters)
      * @return mixed Associative array representing response
@@ -985,7 +985,7 @@ class ApiPlatformSdk
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
         }
-        
+
         // Create Json body
         $this->content = array(
             'code' => $response->getStatusCode(),
@@ -1055,7 +1055,7 @@ class ApiPlatformSdk
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
         }
-        
+
         // Create Json body
         $this->content = array(
             'code' => $response->getStatusCode(),
@@ -1068,7 +1068,7 @@ class ApiPlatformSdk
 
     /**
      * Runs an HTTP DELETE request to the API
-     * 
+     *
      * @method delete
      * @param string $uri Request URI (without parameters)
      * @param string $id Object ID
@@ -1095,20 +1095,20 @@ class ApiPlatformSdk
         if ($response->getStatusCode() == 401) {
             $this->deleteUserToken();
         }
-        
+
         // Create Json body
         $this->content = array(
             'code' => $response->getStatusCode(),
             'body' => null
         );
-        
+
         return $this->content;
     }
 
 
     /**
      * Sets a query string parameter (&name=value)
-     * 
+     *
      * @method addParameter
      * @param string $name Request parameter's name
      * @param string $value Request paramter's value
@@ -1133,7 +1133,7 @@ class ApiPlatformSdk
 
     /**
      * Removes a query string parameter (&name=value)
-     * 
+     *
      * @method removeParameter
      * @param string $name Request parameter's name
      * @return boolean
@@ -1156,7 +1156,7 @@ class ApiPlatformSdk
 
     /**
      * Returns the query string (additional part)
-     * 
+     *
      * @method getQueryStringAdditional
      * @return string
      */
@@ -1168,7 +1168,7 @@ class ApiPlatformSdk
 
     /**
      * Returns the query string (main part)
-     * 
+     *
      * @method getQueryString
      * @return array
      */
@@ -1180,9 +1180,9 @@ class ApiPlatformSdk
 
     /**
      * Defines the page (Pagination)
-     * 
+     *
      * @method setPage
-     * 
+     *
      * @param int $p Page number
      * @return bool
      */
@@ -1198,10 +1198,10 @@ class ApiPlatformSdk
         }
     }
 
-    
+
     /**
      * Returns the maximum page for the result list
-     * 
+     *
      * @method getMaxPage
      * @return int number of last page
      */
@@ -1213,7 +1213,7 @@ class ApiPlatformSdk
 
     /**
      * Sets the maximum page for the result list
-     * 
+     *
      * @method setMaxPage
      * @param array $content Associative array of API result
      */
@@ -1234,7 +1234,7 @@ class ApiPlatformSdk
 
     /**
      * Sets the number of items total for the result list
-     * 
+     *
      * @method setTotalItems
      * @param array $content Associative array of API result
      */
@@ -1251,7 +1251,7 @@ class ApiPlatformSdk
 
     /**
      * Returns the total number of items for the result list
-     * 
+     *
      * @method getTotalItems
      * @return int number of items total
      */
@@ -1263,7 +1263,7 @@ class ApiPlatformSdk
 
     /**
      * Sets the query order
-     * 
+     *
      * @method setOrder
      * @param string property field to sort
      * @param string sort order sort (asc|desc)
@@ -1283,7 +1283,7 @@ class ApiPlatformSdk
 
     /**
      * Gets the query order
-     * 
+     *
      * @method getOrder
      * @return array Associative array
      */
@@ -1291,6 +1291,5 @@ class ApiPlatformSdk
     {
         return array($this->orderProperty, $this->orderSort);
     }
-
 
 }

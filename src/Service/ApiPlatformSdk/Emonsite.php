@@ -3,7 +3,7 @@
  * @since   May 07 2021
  * @author  clement@awelty.com
  * @version 1.2
- * 
+ *
  * E-monsite PHP SDK for Symfony
  * Specific to e-monsite and herits from ApiPlatformSdk
  */
@@ -98,7 +98,7 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Reset query string parameters
      * and other instance params
-     * 
+     *
      * @method resetParameters
      * @return void
      */
@@ -114,10 +114,10 @@ class Emonsite extends ApiPlatformSdk
         $this->totalItems = null;
     }
 
-    
+
     /**
      * Sets the EMS site ID in the current instance
-     * 
+     *
      * @method setSiteId
      * @param  string $siteId
      * @return void
@@ -126,11 +126,11 @@ class Emonsite extends ApiPlatformSdk
     {
         $this->siteId = $siteId;
     }
-    
+
 
     /**
      * Returns the EMS site ID
-     * 
+     *
      * @method getSiteId
      * @return string
      */
@@ -142,14 +142,14 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return the list of orders from the EMS Store
-     * 
+     *
      * @method getEcoOrders
      * @return mixed
      */
     public function getEcoOrders($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -168,7 +168,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return a single EcoOrder
-     * 
+     *
      * @method getEcoOrder
      * @param  string $id Order id
      * @return mixed
@@ -176,7 +176,7 @@ class Emonsite extends ApiPlatformSdk
     public function getEcoOrder($id)
     {
         $this->resetParameters();
-        
+
         // By default, set descending order on date
         $this->setOrder('addDt', 'desc');
 
@@ -190,7 +190,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Updates some fields of an EcoOrder
-     * 
+     *
      * @method patchEcoOrder
      * @param  string $id Order id
      * @param  array $data Order data
@@ -199,7 +199,7 @@ class Emonsite extends ApiPlatformSdk
     public function patchEcoOrder($id, $data)
     {
         $this->resetParameters();
-        
+
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -210,7 +210,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return the list of blog posts from the EMS site
-     * 
+     *
      * @method getBlogPosts
      * @param  string $id Blog post id
      * @return mixed
@@ -218,7 +218,7 @@ class Emonsite extends ApiPlatformSdk
     public function getBlogPosts($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -237,14 +237,14 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return a single blog post from the EMS site
-     * 
+     *
      * @method getBlogPost
      * @return mixed
      */
     public function getBlogPost($id)
     {
         $this->resetParameters();
-        
+
         // By default, set descending order on publish date
         $this->setOrder('publishFrom', 'desc');
 
@@ -258,7 +258,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return a list of ecoProducts
-     * 
+     *
      * @method getEcoProducts
      * @param int $page Page number
      * @return mixed
@@ -266,7 +266,7 @@ class Emonsite extends ApiPlatformSdk
     public function getEcoProducts($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -285,7 +285,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return a single eco product
-     * 
+     *
      * @method getEcoProduct
      * @param  string $id Eco product id
      * @return mixed
@@ -293,7 +293,7 @@ class Emonsite extends ApiPlatformSdk
     public function getEcoProduct($id, $page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -312,7 +312,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Create a new eco product
-     * 
+     *
      * @method postEcoProduct
      * @param  array $data Eco product data
      * @return mixed
@@ -320,7 +320,7 @@ class Emonsite extends ApiPlatformSdk
     public function postEcoProduct($data)
     {
         $this->resetParameters();
-        
+
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -331,7 +331,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Update some fields of the eco product
-     * 
+     *
      * @method patchEcoProduct
      * @param  string $id Eco product id
      * @param  array $data Eco product data
@@ -340,7 +340,7 @@ class Emonsite extends ApiPlatformSdk
     public function patchEcoProduct($id, $data)
     {
         $this->resetParameters();
-        
+
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -351,7 +351,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Delete the eco product from the EMS site
-     * 
+     *
      * @method deleteEcoProduct
      * @param  string $id Eco product id
      * @return mixed
@@ -359,7 +359,7 @@ class Emonsite extends ApiPlatformSdk
     public function deleteEcoProduct($id)
     {
         $this->resetParameters();
-        
+
         // Set query parameter "site_id"
         $this->addParameter('site_id', $this->getSiteId());
 
@@ -370,7 +370,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return the categories from EMS Store
-     * 
+     *
      * @method getCategories
      * @param int $page Page number
      * @return mixed
@@ -378,7 +378,7 @@ class Emonsite extends ApiPlatformSdk
     public function getCategories($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -391,11 +391,11 @@ class Emonsite extends ApiPlatformSdk
 
         return $this->get('categories');
     }
-    
+
 
     /**
      * Get all product attributes on a store
-     * 
+     *
      * @method getProductAttributes
      * @param int $page Page number
      * @return mixed
@@ -403,7 +403,7 @@ class Emonsite extends ApiPlatformSdk
     public function getProductAttributes($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -417,7 +417,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return the product attribute from EMS Store
-     * 
+     *
      * @method getProductAttribute
      * @param  string $id : eco product attribute id
      * @param int $page Page number
@@ -426,7 +426,7 @@ class Emonsite extends ApiPlatformSdk
     public function getProductAttribute($id, $page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -440,7 +440,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Post the product attribute to EMS Store
-     * 
+     *
      * @method postProductAttribute
      * @param  array $data : eco product attribute data
      * @return mixed
@@ -448,7 +448,7 @@ class Emonsite extends ApiPlatformSdk
     public function postProductAttribute($data)
     {
         $this->resetParameters();
-        
+
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->post('eco_product_attributes', $data);
@@ -457,16 +457,16 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Patch the product attribute to EMS Store
-     * 
+     *
      * @method patchProductAttribute
      * @param  string $id : eco product attribute id
      * @param  array $data : eco product attribute data
      * @return mixed
      */
-    public function patchProductAttribute($id, $data) 
+    public function patchProductAttribute($id, $data)
     {
         $this->resetParameters();
-        
+
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->patch('eco_product_attributes/' . $id, $data);
@@ -475,7 +475,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Delete the product attribute from EMS Store
-     * 
+     *
      * @method deleteProductAttribute
      * @param  string $id Eco product attribute id
      * @return mixed
@@ -483,7 +483,7 @@ class Emonsite extends ApiPlatformSdk
     public function deleteProductAttribute($id)
     {
         $this->resetParameters();
-        
+
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->delete('eco_product_attributes/' . $id);
@@ -492,7 +492,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return the product attribute values from EMS Store
-     * 
+     *
      * @method  getProductAttributeValues
      * @param   int $page Page number
      * @return  mixed
@@ -500,7 +500,7 @@ class Emonsite extends ApiPlatformSdk
     public function getProductAttributeValues($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -514,7 +514,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Return the eco product variations from EMS Store
-     * 
+     *
      * @method  getEcoProductVariations
      * @param   int $page Page number
      * @return  mixed
@@ -522,7 +522,7 @@ class Emonsite extends ApiPlatformSdk
     public function getEcoProductVariations($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -536,7 +536,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Post the eco product variation to EMS Store
-     * 
+     *
      * @method  postEcoProductVariation
      * @param   array $data : eco product variation data
      * @return  mixed
@@ -544,7 +544,7 @@ class Emonsite extends ApiPlatformSdk
     public function postEcoProductVariation($data)
     {
         $this->resetParameters();
-        
+
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->post('eco_product_variations', $data);
@@ -553,7 +553,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Patch the eco product variation to EMS Store
-     * 
+     *
      * @method  patchEcoProductVariation
      * @param   string $id : eco product variation id
      * @param   array $data : eco product variation data
@@ -569,7 +569,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Delete the eco product variation from EMS Store
-     * 
+     *
      * @method  deleteEcoProductVariation
      * @param   string $id Eco product variation id
      * @return  mixed
@@ -577,7 +577,7 @@ class Emonsite extends ApiPlatformSdk
     public function deleteEcoProductVariation($id)
     {
         $this->resetParameters();
-        
+
         $this->addParameter('site_id', $this->getSiteId());
 
         return $this->delete('eco_product_variations/' . $id);
@@ -586,7 +586,7 @@ class Emonsite extends ApiPlatformSdk
 
     /**
      * Upload an image POST /storage_images and returns response
-     * 
+     *
      * @method  createStorageImage
      * @param   string $path Image file path
      * @return  mixed
@@ -594,24 +594,23 @@ class Emonsite extends ApiPlatformSdk
     public function createStorageImage($path = '')
     {
         $this->resetParameters();
-        
+
         // make payload
         $formFields = [
             'image[siteId]' => $this->getSiteId(),
             'image[file]' => DataPart::fromPath($path)
         ];
-       
+
         $formData = new FormDataPart($formFields);
 
         // Create specific headers (Content-Type = multipart/form-data)
         $headers = $formData->getPreparedHeaders()->toArray();
         $headers['accept'] = 'application/ld+json';
-       
+
         return $this->post('storage_images',
             $formData->bodyToIterable(),
             $headers
         );
     }
-
 
 }

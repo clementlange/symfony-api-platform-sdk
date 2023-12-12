@@ -3,7 +3,7 @@
  * @since   May 07 2021
  * @author  clement@awelty.com
  * @version 1.0
- * 
+ *
  * Ems-Stock PHP SDK for Symfony
  * Specific to e-monsite and herits from ApiPlatformSdk
  */
@@ -63,7 +63,7 @@ class EmsStock extends ApiPlatformSdk
 
         // Construct parent object
         parent::__construct(
-            $em, 
+            $em,
             $apiTokenRepository,
             self::HAS_AUTHENTICATION
         );
@@ -73,7 +73,7 @@ class EmsStock extends ApiPlatformSdk
     /**
      * Reset query string parameters
      * and other instance params
-     * 
+     *
      * @method resetParameters
      * @return void
      */
@@ -94,13 +94,13 @@ class EmsStock extends ApiPlatformSdk
      * getBrands
      *
      * @return mixed
-     * 
+     *
      * Return the brands
      */
     public function getBrands($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -118,13 +118,13 @@ class EmsStock extends ApiPlatformSdk
      * getProducts
      *
      * @return mixed
-     * 
+     *
      * Return the products
      */
     public function getProducts($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);

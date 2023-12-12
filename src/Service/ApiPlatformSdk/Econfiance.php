@@ -3,7 +3,7 @@
  * @since   July 05 2023
  * @author  Clément Lange <clement@awelty.com>
  * @version 1.0
- * 
+ *
  * E-confiance.fr PHP SDK for Symfony
  * Specific to e-confiance.fr and herits from ApiPlatformSdk
  */
@@ -49,7 +49,7 @@ class Econfiance extends ApiPlatformSdk
      */
     const COMPANY_ID            = 56;
 
-    
+
     /**
      * __construct
      *
@@ -81,11 +81,11 @@ class Econfiance extends ApiPlatformSdk
         );
     }
 
-    
+
     /**
      * Reset query string parameters
      * and other instance params
-     * 
+     *
      * @method resetParameters
      * @return void
      */
@@ -100,11 +100,11 @@ class Econfiance extends ApiPlatformSdk
         $this->maxPage = null;
         $this->totalItems = null;
     }
-    
-    
+
+
     /**
      * Returns a list of Company items
-     * 
+     *
      * @method getCompanies
      * @param  int $page Page number
      * @return mixed
@@ -125,7 +125,7 @@ class Econfiance extends ApiPlatformSdk
 
     /**
      * Returns a single Company item
-     * 
+     *
      * @method getCompany
      * @param  string $id Company ID
      * @return mixed
@@ -145,7 +145,7 @@ class Econfiance extends ApiPlatformSdk
 
     /**
      * Returns a single Company global-rating item
-     * 
+     *
      * @method getCompanyGlobalRating
      * @param  string $id Company ID
      * @return mixed
@@ -153,7 +153,7 @@ class Econfiance extends ApiPlatformSdk
     public function getCompanyGlobalRating($id = '')
     {
         $this->resetParameters();
-        
+
         if (empty($id)) {
             return false;
         }
@@ -165,7 +165,7 @@ class Econfiance extends ApiPlatformSdk
 
     /**
      * Returns a single ProductOrder item
-     * 
+     *
      * @method getProductOrder
      * @param  string $id ProductOrder ID
      * @return mixed
@@ -173,7 +173,7 @@ class Econfiance extends ApiPlatformSdk
     public function getProductOrder($id = '')
     {
         $this->resetParameters();
-        
+
         if (empty($id)) {
             return false;
         }
@@ -185,7 +185,7 @@ class Econfiance extends ApiPlatformSdk
 
     /**
      * Returns a list of Product Reviews
-     * 
+     *
      * @method getProductReviews
      * @param  int $page Page number
      * @return mixed
@@ -193,7 +193,7 @@ class Econfiance extends ApiPlatformSdk
     public function getProductReviews($page = 1)
     {
         $this->resetParameters();
-        
+
         // Load specific page
         if (is_numeric($page)) {
             $this->setPage($page);
@@ -206,7 +206,7 @@ class Econfiance extends ApiPlatformSdk
 
     /**
      * Returns a single Product Review item
-     * 
+     *
      * @method getProductReview
      * @param  string $id ProductReview ID
      * @return mixed
@@ -214,7 +214,7 @@ class Econfiance extends ApiPlatformSdk
     public function getProductReview($id = '')
     {
         $this->resetParameters();
-        
+
         if (empty($id)) {
             return false;
         }
@@ -226,7 +226,7 @@ class Econfiance extends ApiPlatformSdk
 
     /**
      * Returns the average rating of a Product
-     * 
+     *
      * @method getProductReviewAverage
      * @param  string $reference Product reference
      * @return mixed
@@ -234,7 +234,7 @@ class Econfiance extends ApiPlatformSdk
     public function getProductReviewAverage($reference = '')
     {
         $this->resetParameters();
-        
+
         if (empty($reference)) {
             return false;
         }
@@ -243,10 +243,10 @@ class Econfiance extends ApiPlatformSdk
         return $this->getSingle('product_reviews/average', self::DEFAULT_LOGIN.'/'.$reference);
     }
 
-    
+
     /**
      * Returns a single Order item
-     * 
+     *
      * @method getOrder
      * @param  string $id Order ID
      * @return mixed
@@ -254,7 +254,7 @@ class Econfiance extends ApiPlatformSdk
     public function getOrder($id = '')
     {
         $this->resetParameters();
-        
+
         if (empty($id)) {
             return false;
         }
@@ -263,10 +263,10 @@ class Econfiance extends ApiPlatformSdk
         return $this->getSingle('orders', $id);
     }
 
-    
+
     /**
      * Create a Order item
-     * 
+     *
      * @method createOrder
      * @param string $orderNumber Order Number
      * @param string $customerEmail Customer email address
@@ -286,7 +286,7 @@ class Econfiance extends ApiPlatformSdk
     )
     {
         $this->resetParameters();
-        
+
         if (empty($orderNumber) || empty($customerEmail))
         {
             return false;
@@ -305,10 +305,10 @@ class Econfiance extends ApiPlatformSdk
         }
     }
 
-    
+
     /**
      * Creates both an Order and a Product
-     * This function requires the Order ID, so createOrder() must have been called before to get Order ID 
+     * This function requires the Order ID, so createOrder() must have been called before to get Order ID
      *
      * @method createProductOrder
      * @param $orderId ID order returned by createOrder
@@ -331,7 +331,7 @@ class Econfiance extends ApiPlatformSdk
     )
     {
         $this->resetParameters();
-        
+
         // API request
         return $this->post('product_orders', [
             'orderParent' => '/api/orders/'.$orderId,
@@ -349,7 +349,7 @@ class Econfiance extends ApiPlatformSdk
      * Creates a Product Review.
      * You must know the Order ID (Order have to be already created) to pass it as IRI.
      * So createOrder() must have been called prior.
-     * 
+     *
      * @method createProductReviewWithOrderId
      * @param $orderId ID order returned by createOrder
      * @param $productName Product name
@@ -379,7 +379,7 @@ class Econfiance extends ApiPlatformSdk
     )
     {
         $this->resetParameters();
-        
+
         // Review status can be "pending" (awaiting moderation) or "published"
         if ($reviewStatus == 'published') {
             $statusIri = '/api/review_statuses/1';
