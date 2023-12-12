@@ -7,12 +7,13 @@ use App\Entity\ApiToken;
 use App\Repository\ApiTokenRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @since   May 07 2021
  * @author  Clément Lange <clement@awelty.com>
  * @package App\Service\ApiPlatformSdk
- * @version 1.2
+ * @version 1.3
  *
  * API Platform PHP SDK for Symfony
  *
@@ -44,36 +45,36 @@ class ApiPlatformSdk
     /**
      * Attributes
      */
-    protected $apiUrl;
-    protected $login;
-    protected $password;
-    protected $authenticationMethod;
-    protected $token;
-    protected $emsToken;
-    protected $httpClient;
-    protected $queryString = array();
-    protected $queryStringAdditional = '';
-    protected $concatFormat;
-    protected $format;
-    protected $accept;
-    protected $contentType;
-    protected $postData = array();
-    protected $maxPage;
-    protected $totalItems;
-    protected $page;
-    protected $orderProperty;
-    protected $orderSort;
-    protected $content;
-    protected $em;
-    protected $apiTokenRepository;
-    protected $hasAuthentication;
-    protected $authenticationUri;
-    protected $overriddenAuthUrl = '';
-    protected $oAuth2ClientId;
-    protected $oAuth2ClientSecret;
-    protected $oAuth2RequestScope;
-    protected $oAuth2GrantType;
-    protected $tokenLifetime = 0;
+    protected string $apiUrl;
+    protected string $login;
+    protected string $password;
+    protected string $authenticationMethod;
+    protected string $token;
+    protected ApiToken $emsToken;
+    protected HttpClientInterface $httpClient;
+    protected array $queryString = [];
+    protected string $queryStringAdditional = '';
+    protected string $concatFormat;
+    protected string $format;
+    protected string $accept;
+    protected string $contentType;
+    protected array $postData = [];
+    protected int $maxPage;
+    protected int $totalItems;
+    protected int $page;
+    protected string $orderProperty;
+    protected string $orderSort;
+    protected string|array $content;
+    protected EntityManagerInterface $em;
+    protected ApiTokenRepository $apiTokenRepository;
+    protected bool $hasAuthentication;
+    protected string $authenticationUri;
+    protected string $overriddenAuthUrl = '';
+    protected string $oAuth2ClientId;
+    protected string $oAuth2ClientSecret;
+    protected string $oAuth2RequestScope;
+    protected string $oAuth2GrantType;
+    protected int $tokenLifetime = 0;
 
 
     /**
@@ -138,14 +139,6 @@ class ApiPlatformSdk
                 $this->authenticateOAuth2();
             }
         }
-    }
-
-
-    /**
-     * @return void
-     */
-    public function __destruct()
-    {
     }
 
 
@@ -388,7 +381,7 @@ class ApiPlatformSdk
      * @param  string $concatFormat
      * @return void
      */
-    public function setConcatFormat($concatFormat)
+    public function setConcatFormat($concatFormat = '')
     {
         $this->concatFormat = $concatFormat;
     }
@@ -712,7 +705,7 @@ class ApiPlatformSdk
      *
      * @return mixed
      */
-    private function getContent()
+    protected function getContent()
     {
         return $this->content;
     }
@@ -868,10 +861,10 @@ class ApiPlatformSdk
         }
 
         // Create Json body
-        $this->content = array(
+        $this->content = [
             'code' => $response->getStatusCode(),
             'body' => (preg_match('/^20[01]$/', $response->getStatusCode()) ? $response->toArray() : null)
-        );
+        ];
 
         return $this->content;
     }
@@ -938,10 +931,10 @@ class ApiPlatformSdk
         }
 
         // Create Json body
-        $this->content = array(
+        $this->content = [
             'code' => $response->getStatusCode(),
             'body' => ($response->getStatusCode() == 200 ? $response->toArray() : null)
-        );
+        ];
 
         return $this->content;
     }
@@ -1007,10 +1000,10 @@ class ApiPlatformSdk
         }
 
         // Create Json body
-        $this->content = array(
+        $this->content = [
             'code' => $response->getStatusCode(),
             'body' => ($response->getStatusCode() == 200 ? $response->toArray() : null)
-        );
+        ];
 
         return $this->content;
     }
@@ -1046,10 +1039,10 @@ class ApiPlatformSdk
         }
 
         // Create Json body
-        $this->content = array(
+        $this->content = [
             'code' => $response->getStatusCode(),
             'body' => null
-        );
+        ];
 
         return $this->content;
     }
@@ -1150,7 +1143,7 @@ class ApiPlatformSdk
      */
     public function getMaxPage()
     {
-        return intval(($this->maxPage ? $this->maxPage : '1'));
+        return intval(($this->maxPage ? $this->maxPage : 1));
     }
 
 
@@ -1162,11 +1155,11 @@ class ApiPlatformSdk
     protected function setMaxPage($content)
     {
         if (!isset($content['hydra:view']['hydra:last'])) {
-            $this->maxPage = false;
+            $this->maxPage = 0;
         }
         if (isset($content['hydra:view']['hydra:last'])) {
             preg_match('/page=([0-9]+)$/i', $content['hydra:view']['hydra:last'], $m);
-            $this->maxPage = (isset($m[1]) ? $m[1] : 0);
+            $this->maxPage = (isset($m[1]) ? intval($m[1]) : 0);
         }
         else {
             $this->maxPage = 0;
@@ -1182,10 +1175,10 @@ class ApiPlatformSdk
     protected function setTotalItems($content)
     {
         if (!isset($content['hydra:totalItems'])) {
-            $this->totalItems = false;
+            $this->totalItems = 0;
         }
         else {
-            $this->totalItems = $content['hydra:totalItems'];
+            $this->totalItems = intval($content['hydra:totalItems']);
         }
     }
 
