@@ -74,7 +74,6 @@ class EmsStock extends ApiPlatformSdk
      * Reset query string parameters
      * and other instance params
      *
-     * @method resetParameters
      * @return void
      */
     private function resetParameters()
@@ -92,10 +91,9 @@ class EmsStock extends ApiPlatformSdk
 
     /**
      * getBrands
+     * Return the brands
      *
      * @return mixed
-     *
-     * Return the brands
      */
     public function getBrands($page = 1)
     {
@@ -116,10 +114,9 @@ class EmsStock extends ApiPlatformSdk
 
     /**
      * getProducts
+     * Return the products
      *
      * @return mixed
-     *
-     * Return the products
      */
     public function getProducts($page = 1)
     {

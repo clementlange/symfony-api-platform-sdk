@@ -62,7 +62,7 @@ class Emonsite extends ApiPlatformSdk
 
 
     /**
-     * @method __construct
+     * __construct
      * @return void
      */
     public function __construct(EntityManagerInterface $em, ApiTokenRepository $apiTokenRepository)
@@ -99,7 +99,6 @@ class Emonsite extends ApiPlatformSdk
      * Reset query string parameters
      * and other instance params
      *
-     * @method resetParameters
      * @return void
      */
     private function resetParameters()
@@ -118,7 +117,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Sets the EMS site ID in the current instance
      *
-     * @method setSiteId
      * @param  string $siteId
      * @return void
      */
@@ -131,7 +129,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Returns the EMS site ID
      *
-     * @method getSiteId
      * @return string
      */
     protected function getSiteId()
@@ -143,7 +140,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return the list of orders from the EMS Store
      *
-     * @method getEcoOrders
      * @return mixed
      */
     public function getEcoOrders($page = 1)
@@ -169,7 +165,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return a single EcoOrder
      *
-     * @method getEcoOrder
      * @param  string $id Order id
      * @return mixed
      */
@@ -191,7 +186,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Updates some fields of an EcoOrder
      *
-     * @method patchEcoOrder
      * @param  string $id Order id
      * @param  array $data Order data
      * @return mixed
@@ -211,7 +205,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return the list of blog posts from the EMS site
      *
-     * @method getBlogPosts
      * @param  string $id Blog post id
      * @return mixed
      */
@@ -238,7 +231,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return a single blog post from the EMS site
      *
-     * @method getBlogPost
      * @return mixed
      */
     public function getBlogPost($id)
@@ -259,7 +251,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return a list of ecoProducts
      *
-     * @method getEcoProducts
      * @param int $page Page number
      * @return mixed
      */
@@ -286,7 +277,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return a single eco product
      *
-     * @method getEcoProduct
      * @param  string $id Eco product id
      * @return mixed
      */
@@ -313,7 +303,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Create a new eco product
      *
-     * @method postEcoProduct
      * @param  array $data Eco product data
      * @return mixed
      */
@@ -332,7 +321,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Update some fields of the eco product
      *
-     * @method patchEcoProduct
      * @param  string $id Eco product id
      * @param  array $data Eco product data
      * @return mixed
@@ -352,7 +340,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Delete the eco product from the EMS site
      *
-     * @method deleteEcoProduct
      * @param  string $id Eco product id
      * @return mixed
      */
@@ -371,7 +358,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return the categories from EMS Store
      *
-     * @method getCategories
      * @param int $page Page number
      * @return mixed
      */
@@ -396,7 +382,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Get all product attributes on a store
      *
-     * @method getProductAttributes
      * @param int $page Page number
      * @return mixed
      */
@@ -418,7 +403,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return the product attribute from EMS Store
      *
-     * @method getProductAttribute
      * @param  string $id : eco product attribute id
      * @param int $page Page number
      * @return mixed
@@ -441,7 +425,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Post the product attribute to EMS Store
      *
-     * @method postProductAttribute
      * @param  array $data : eco product attribute data
      * @return mixed
      */
@@ -458,7 +441,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Patch the product attribute to EMS Store
      *
-     * @method patchProductAttribute
      * @param  string $id : eco product attribute id
      * @param  array $data : eco product attribute data
      * @return mixed
@@ -476,7 +458,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Delete the product attribute from EMS Store
      *
-     * @method deleteProductAttribute
      * @param  string $id Eco product attribute id
      * @return mixed
      */
@@ -493,7 +474,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return the product attribute values from EMS Store
      *
-     * @method  getProductAttributeValues
      * @param   int $page Page number
      * @return  mixed
      */
@@ -515,7 +495,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Return the eco product variations from EMS Store
      *
-     * @method  getEcoProductVariations
      * @param   int $page Page number
      * @return  mixed
      */
@@ -537,7 +516,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Post the eco product variation to EMS Store
      *
-     * @method  postEcoProductVariation
      * @param   array $data : eco product variation data
      * @return  mixed
      */
@@ -554,7 +532,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Patch the eco product variation to EMS Store
      *
-     * @method  patchEcoProductVariation
      * @param   string $id : eco product variation id
      * @param   array $data : eco product variation data
      * @return  mixed
@@ -570,7 +547,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Delete the eco product variation from EMS Store
      *
-     * @method  deleteEcoProductVariation
      * @param   string $id Eco product variation id
      * @return  mixed
      */
@@ -587,7 +563,6 @@ class Emonsite extends ApiPlatformSdk
     /**
      * Upload an image POST /storage_images and returns response
      *
-     * @method  createStorageImage
      * @param   string $path Image file path
      * @return  mixed
      */

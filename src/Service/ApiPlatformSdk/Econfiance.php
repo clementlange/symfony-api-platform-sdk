@@ -86,7 +86,6 @@ class Econfiance extends ApiPlatformSdk
      * Reset query string parameters
      * and other instance params
      *
-     * @method resetParameters
      * @return void
      */
     private function resetParameters()
@@ -105,7 +104,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a list of Company items
      *
-     * @method getCompanies
      * @param  int $page Page number
      * @return mixed
      */
@@ -126,7 +124,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a single Company item
      *
-     * @method getCompany
      * @param  string $id Company ID
      * @return mixed
      */
@@ -146,7 +143,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a single Company global-rating item
      *
-     * @method getCompanyGlobalRating
      * @param  string $id Company ID
      * @return mixed
      */
@@ -166,7 +162,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a single ProductOrder item
      *
-     * @method getProductOrder
      * @param  string $id ProductOrder ID
      * @return mixed
      */
@@ -186,7 +181,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a list of Product Reviews
      *
-     * @method getProductReviews
      * @param  int $page Page number
      * @return mixed
      */
@@ -207,7 +201,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a single Product Review item
      *
-     * @method getProductReview
      * @param  string $id ProductReview ID
      * @return mixed
      */
@@ -227,7 +220,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns the average rating of a Product
      *
-     * @method getProductReviewAverage
      * @param  string $reference Product reference
      * @return mixed
      */
@@ -247,7 +239,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Returns a single Order item
      *
-     * @method getOrder
      * @param  string $id Order ID
      * @return mixed
      */
@@ -267,7 +258,6 @@ class Econfiance extends ApiPlatformSdk
     /**
      * Create a Order item
      *
-     * @method createOrder
      * @param string $orderNumber Order Number
      * @param string $customerEmail Customer email address
      * @param string|null $firstname Customer firstname
@@ -310,7 +300,6 @@ class Econfiance extends ApiPlatformSdk
      * Creates both an Order and a Product
      * This function requires the Order ID, so createOrder() must have been called before to get Order ID
      *
-     * @method createProductOrder
      * @param $orderId ID order returned by createOrder
      * @param $productName Product name
      * @param $productReference Product reference
@@ -350,7 +339,6 @@ class Econfiance extends ApiPlatformSdk
      * You must know the Order ID (Order have to be already created) to pass it as IRI.
      * So createOrder() must have been called prior.
      *
-     * @method createProductReviewWithOrderId
      * @param $orderId ID order returned by createOrder
      * @param $productName Product name
      * @param $productReference Product reference
