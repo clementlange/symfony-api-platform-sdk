@@ -93,11 +93,11 @@ class Econfiance extends ApiPlatformSdk
         $this->queryString = [];
         $this->postData = [];
         $this->queryStringAdditional = '';
-        $this->orderProperty = null;
-        $this->orderSort = null;
-        $this->page = null;
-        $this->maxPage = null;
-        $this->totalItems = null;
+        $this->orderProperty = '';
+        $this->orderSort = '';
+        $this->page = 0;
+        $this->maxPage = 0;
+        $this->totalItems = 0;
     }
 
 

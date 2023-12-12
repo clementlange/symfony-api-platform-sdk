@@ -45,35 +45,35 @@ class ApiPlatformSdk
     /**
      * Attributes
      */
-    protected string $apiUrl;
-    protected string $login;
-    protected string $password;
-    protected string $authenticationMethod;
-    protected string $token;
-    protected ApiToken $emsToken;
+    protected string $apiUrl = '';
+    protected string $login = '';
+    protected string $password = '';
+    protected string $authenticationMethod = '';
+    protected string $token = '';
+    protected ApiToken|null $emsToken;
     protected HttpClientInterface $httpClient;
     protected array $queryString = [];
     protected string $queryStringAdditional = '';
-    protected string $concatFormat;
-    protected string $format;
-    protected string $accept;
-    protected string $contentType;
+    protected string $concatFormat = '';
+    protected string $format = '';
+    protected string $accept = '';
+    protected string $contentType = '';
     protected array $postData = [];
-    protected int $maxPage;
-    protected int $totalItems;
-    protected int $page;
-    protected string $orderProperty;
-    protected string $orderSort;
+    protected int $maxPage = 0;
+    protected int $totalItems = 0;
+    protected int $page = 0;
+    protected string $orderProperty = '';
+    protected string $orderSort = '';
     protected string|array $content;
     protected EntityManagerInterface $em;
     protected ApiTokenRepository $apiTokenRepository;
-    protected bool $hasAuthentication;
-    protected string $authenticationUri;
+    protected bool $hasAuthentication = false;
+    protected string $authenticationUri = '';
     protected string $overriddenAuthUrl = '';
-    protected string $oAuth2ClientId;
-    protected string $oAuth2ClientSecret;
-    protected string $oAuth2RequestScope;
-    protected string $oAuth2GrantType;
+    protected string $oAuth2ClientId = '';
+    protected string $oAuth2ClientSecret = '';
+    protected string $oAuth2RequestScope = '';
+    protected string $oAuth2GrantType = '';
     protected int $tokenLifetime = 0;
 
 
