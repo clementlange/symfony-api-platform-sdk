@@ -78,8 +78,7 @@ class Emonsite extends ApiPlatformSdk
         $this->setSiteId(self::DEFAULT_SITE_ID);
 
         // Authenticate if necessary
-        if (self::HAS_AUTHENTICATION)
-        {
+        if (self::HAS_AUTHENTICATION) {
             $this->setLogin(self::DEFAULT_LOGIN);
             $this->setPassword(self::DEFAULT_PASSWORD);
             $this->setAuthenticationUri(self::AUTHENTICATION_URI);

@@ -65,8 +65,7 @@ class Econfiance extends ApiPlatformSdk
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
 
         // Authenticate if necessary
-        if (self::HAS_AUTHENTICATION)
-        {
+        if (self::HAS_AUTHENTICATION) {
             $this->setLogin(self::DEFAULT_LOGIN);
             $this->setPassword(self::DEFAULT_PASSWORD);
             $this->setAuthenticationUri(self::AUTHENTICATION_URI);
@@ -277,12 +276,10 @@ class Econfiance extends ApiPlatformSdk
     {
         $this->resetParameters();
 
-        if (empty($orderNumber) || empty($customerEmail))
-        {
+        if (empty($orderNumber) || empty($customerEmail)) {
             return false;
         }
-        else
-        {
+        else {
             // API request
             return $this->post('orders', [
                 'orderNumber' => $orderNumber,

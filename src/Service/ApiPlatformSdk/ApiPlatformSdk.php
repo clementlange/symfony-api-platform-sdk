@@ -527,8 +527,7 @@ class ApiPlatformSdk
         }
 
         // Load token from DB
-        if ($this->loadTokenFromDb())
-        {
+        if ($this->loadTokenFromDb()) {
             $token = $this->emsToken->getToken();
 
             // Updates dates in DB
@@ -565,8 +564,7 @@ class ApiPlatformSdk
             'password' => $this->getPassword()
         ]);
 
-        if (isset($this->content['body']['token']))
-        {
+        if (isset($this->content['body']['token'])) {
             // Saves token in DB
             $this->emsToken = new ApiToken();
             $this->emsToken->setToken($this->content['body']['token']);
@@ -598,8 +596,7 @@ class ApiPlatformSdk
         }
 
         // Load token from DB
-        if ($this->loadTokenFromDb())
-        {
+        if ($this->loadTokenFromDb()) {
             $token = $this->emsToken->getToken();
 
             // Updates dates in DB
@@ -653,8 +650,7 @@ class ApiPlatformSdk
         ]);
 
         // Save Token
-        if (isset($this->content['body']['access_token']))
-        {
+        if (isset($this->content['body']['access_token'])) {
             // Saves token in DB
             $this->emsToken = new ApiToken();
             $this->emsToken->setToken($this->content['body']['access_token']);
@@ -719,7 +715,9 @@ class ApiPlatformSdk
      */
     public function get($uri = '')
     {
-        if (!$uri) return false;
+        if (!$uri) {
+            return false;
+        }
 
         $response = $this->httpClient->request('GET', $this->getApiUrl().$uri.($this->getConcatFormat() ? '.'.$this->getFormat() : '')
             /* Adds additional query string vars (if applicable) */
@@ -793,7 +791,9 @@ class ApiPlatformSdk
      */
     public function post($uri = '', $postData = [], $headers = [])
     {
-        if (!$uri) return false;
+        if (!$uri) {
+            return false;
+        }
 
         if (!empty($postData)) {
             $this->postData = $postData;
@@ -878,7 +878,9 @@ class ApiPlatformSdk
      */
     public function put($uri = '', $postData = [])
     {
-        if (!$uri) return false;
+        if (!$uri) {
+            return false;
+        }
 
         if (!empty($postData)) {
             $this->postData = $postData;
@@ -1018,7 +1020,9 @@ class ApiPlatformSdk
      */
     public function delete($uri = '', $id = '')
     {
-        if (!$uri) return false;
+        if (!$uri) {
+            return false;
+        }
         $uri = trim($uri, '/');
 
         $response = $this->httpClient->request('DELETE', $this->getApiUrl().$uri.'/'.$id, [
@@ -1205,6 +1209,7 @@ class ApiPlatformSdk
     {
         $this->orderProperty = $property;
         $this->orderSort = $sort;
+
         if (preg_match('/^(asc|desc)$/i', $sort)) {
             // remove already set order if needed
             $this->removeParameter('order');

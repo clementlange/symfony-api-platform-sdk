@@ -55,8 +55,7 @@ class EmsStock extends ApiPlatformSdk
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
 
         // Authenticate if necessary
-        if (self::HAS_AUTHENTICATION)
-        {
+        if (self::HAS_AUTHENTICATION) {
             $this->setLogin(self::DEFAULT_LOGIN);
             $this->setPassword(self::DEFAULT_PASSWORD);
         }
