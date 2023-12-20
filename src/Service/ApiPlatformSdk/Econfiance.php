@@ -18,36 +18,36 @@ class Econfiance extends ApiPlatformSdk
     /**
      * API URL can still be overridden with method setApiUrl()
      */
-    const DEFAULT_API_URL       = 'https://certification.e-confiance.fr/api/';
+    private const DEFAULT_API_URL       = 'https://certification.e-confiance.fr/api/';
 
     /**
      * Default format (API extension)
      */
-    const DEFAULT_FORMAT        = 'jsonld';
-    const CONCAT_FORMAT         = false;
+    private const DEFAULT_FORMAT        = 'jsonld';
+    private const CONCAT_FORMAT         = false;
 
     /**
      * Default Accept and Content-Type headers
      */
-    const DEFAULT_ACCEPT        = 'application/ld+json';
-    const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
+    private const DEFAULT_ACCEPT        = 'application/ld+json';
+    private const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
 
     /**
      * Default credentials (authentication)
      * Set credentials here if they are constants,
      * or use $econfiance->authenticate('login', 'password') to override credientials on the fly
      */
-    const HAS_AUTHENTICATION    = true;                 // true or false if this API requires authentication
-    const AUTHENTICATION_METHOD = 'jwt';                // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
-    const AUTHENTICATION_URI    = 'login_check';        // Authentication URI on the API ("login_check" if URI is "/login_check")
-    const DEFAULT_LOGIN         = 'companyslug';        // API Login
-    const DEFAULT_PASSWORD      = 'myapipassword';      // API password
+    private const HAS_AUTHENTICATION    = true;                 // true or false if this API requires authentication
+    private const AUTHENTICATION_METHOD = 'jwt';                // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
+    private const AUTHENTICATION_URI    = 'login_check';        // Authentication URI on the API ("login_check" if URI is "/login_check")
+    private const DEFAULT_LOGIN         = 'companyslug';        // API Login
+    private const DEFAULT_PASSWORD      = 'myapipassword';      // API password
 
     /**
      * Company ID on E-confiance
      * ID can be found in API return for each Authentication request
      */
-    const COMPANY_ID            = 56;
+    private const COMPANY_ID            = 56;
 
 
     /**

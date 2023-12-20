@@ -18,27 +18,27 @@ class EmsStock extends ApiPlatformSdk
     /**
      * API URL can still be overridden with method setApiUrl($url)
      */
-    const DEFAULT_API_URL       = 'https://api.ems-stock.dev/';
+    private const DEFAULT_API_URL       = 'https://api.ems-stock.dev/';
 
     /**
      * Default format (API extension)
      */
-    const DEFAULT_FORMAT        = 'jsonld';
+    private const DEFAULT_FORMAT        = 'jsonld';
 
     /**
      * Default Accept and Content-Type headers
      */
-    const DEFAULT_ACCEPT        = 'application/ld+json';
-    const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
+    private const DEFAULT_ACCEPT        = 'application/ld+json';
+    private const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
 
     /**
      * Default credentials (authentication)
      * Set credentials here if they are constants,
      * or use $emsstock->authenticate('login', 'password') to override credientials on the fly
      */
-    const HAS_AUTHENTICATION    = false;
-    const DEFAULT_LOGIN         = '';
-    const DEFAULT_PASSWORD      = '';
+    private const HAS_AUTHENTICATION    = false;
+    private const DEFAULT_LOGIN         = '';
+    private const DEFAULT_PASSWORD      = '';
 
 
     /**

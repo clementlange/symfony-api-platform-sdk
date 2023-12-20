@@ -28,19 +28,19 @@ class ApiPlatformSdk
     /**
      * Renew tokens after (minutes)
      */
-    const RENEW_TOKEN_MINUTES   = 1440;
+    private const RENEW_TOKEN_MINUTES   = 1440;
 
     /**
      * Default format (API extension)
      */
-    const DEFAULT_FORMAT        = 'jsonld';
-    const CONCAT_FORMAT         = true;
+    private const DEFAULT_FORMAT        = 'jsonld';
+    private const CONCAT_FORMAT         = true;
 
     /**
      * Default Accept and Content-Type headers
      */
-    const DEFAULT_ACCEPT        = 'application/ld+json';
-    const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
+    private const DEFAULT_ACCEPT        = 'application/ld+json';
+    private const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
 
     /**
      * Attributes
@@ -631,9 +631,8 @@ class ApiPlatformSdk
         // If the Auth URL has been overridden
         if (!empty($this->getOverriddenAuthUrl())) {
             $authUrl = $this->getOverriddenAuthUrl();
-        }
-        // Else, use the authentication URI (default)
-        else {
+        } else {
+            // Else, use the authentication URI (default)
             $authUrl = $this->getAuthenticationUri();
         }
 
@@ -834,17 +833,15 @@ class ApiPlatformSdk
         // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
         if (!$isJsonPayload) {
             $payload['body'] = $this->postData;
-        }
-        // payload's body content-type is JSON
-        else {
+        } else {
+            // payload's body content-type is JSON
             $payload['json'] = $this->postData;
         }
 
         // If the full URL has been specified in the request, instead of just the URI
         if (preg_match('/^http/', $uri)) {
             $fullUrl = $uri;
-        }
-        else {
+        } else {
             $fullUrl = $this->getApiUrl().$uri;
         }
 
@@ -915,9 +912,8 @@ class ApiPlatformSdk
         // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
         if (!$isJsonPayload) {
             $payload['body'] = $this->postData;
-        }
-        // payload's body content-type is JSON
-        else {
+        } else {
+            // payload's body content-type is JSON
             $payload['json'] = $this->postData;
         }
 
@@ -984,9 +980,8 @@ class ApiPlatformSdk
         // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
         if (!$isJsonPayload) {
             $payload['body'] = $this->postData;
-        }
-        // payload's body content-type is JSON
-        else {
+        } else {
+            // payload's body content-type is JSON
             $payload['json'] = $this->postData;
         }
 

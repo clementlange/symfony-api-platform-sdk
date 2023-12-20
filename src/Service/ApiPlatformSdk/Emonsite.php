@@ -28,37 +28,37 @@ class Emonsite extends ApiPlatformSdk
      * "api.awelty.com" for sites on the Awelty whitelabel / "api.e-monsite.com" for sites on the E-monsite whitelabel
      * API URL can still be overridden with method setApiUrl()
      */
-    const DEFAULT_API_URL       = 'https://api.e-monsite.com/';
-    // const DEFAULT_API_URL       = 'https://api.awelty.com/';
+    private const DEFAULT_API_URL       = 'https://api.e-monsite.com/';
+    // private const DEFAULT_API_URL       = 'https://api.awelty.com/';
 
     /**
      * Default format (API extension)
      */
-    const DEFAULT_FORMAT        = 'jsonld';
-    const CONCAT_FORMAT         = true;
+    private const DEFAULT_FORMAT        = 'jsonld';
+    private const CONCAT_FORMAT         = true;
 
     /**
      * Default Accept and Content-Type headers
      */
-    const DEFAULT_ACCEPT        = 'application/ld+json';
-    const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
+    private const DEFAULT_ACCEPT        = 'application/ld+json';
+    private const DEFAULT_CONTENT_TYPE  = 'application/ld+json';
 
     /**
      * Default credentials (authentication)
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
-    const HAS_AUTHENTICATION    = true;                     // true or false if this API requires authentication
-    const AUTHENTICATION_METHOD = 'jwt';                    // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
-    const AUTHENTICATION_URI    = 'auth';                   // Authentication URI on the API ("login_check" if URI is "/login_check")
-    const DEFAULT_LOGIN         = 'email@example.com';      // API login
-    const DEFAULT_PASSWORD      = 'myPassword';             // API password
+    private const HAS_AUTHENTICATION    = true;                     // true or false if this API requires authentication
+    private const AUTHENTICATION_METHOD = 'jwt';                    // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
+    private const AUTHENTICATION_URI    = 'auth';                   // Authentication URI on the API ("login_check" if URI is "/login_check")
+    private const DEFAULT_LOGIN         = 'email@example.com';      // API login
+    private const DEFAULT_PASSWORD      = 'myPassword';             // API password
 
     /**
      * Default e-monsite site ID
      * Can be overridden at any time in controller with $emonsite->setSideId(id)
      */
-    const DEFAULT_SITE_ID       = '3e8269167b866fde4dbc2c2a';
+    private const DEFAULT_SITE_ID       = '3e8269167b866fde4dbc2c2a';
 
 
     /**
