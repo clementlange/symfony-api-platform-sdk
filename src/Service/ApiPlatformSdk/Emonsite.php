@@ -1,8 +1,9 @@
 <?php
+
 /**
  * @since   May 07 2021
  * @author  clement@awelty.com
- * @version 1.2
+ * @version 1.1
  *
  * E-monsite PHP SDK for Symfony
  * Specific to e-monsite and herits from ApiPlatformSdk
@@ -29,7 +30,6 @@ class Emonsite extends ApiPlatformSdk
      * API URL can still be overridden with method setApiUrl()
      */
     private const DEFAULT_API_URL       = 'https://api.e-monsite.com/';
-    // private const DEFAULT_API_URL       = 'https://api.awelty.com/';
 
     /**
      * Default format (API extension)
@@ -48,17 +48,16 @@ class Emonsite extends ApiPlatformSdk
      * Set credentials here if they are constants,
      * or use $emonsite->authenticate('login', 'password') to override credientials on the fly
      */
-    private const HAS_AUTHENTICATION    = true;                     // true or false if this API requires authentication
-    private const AUTHENTICATION_METHOD = 'jwt';                    // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
-    private const AUTHENTICATION_URI    = 'auth';                   // Authentication URI on the API ("login_check" if URI is "/login_check")
-    private const DEFAULT_LOGIN         = 'email@example.com';      // API login
-    private const DEFAULT_PASSWORD      = 'myPassword';             // API password
+    private const HAS_AUTHENTICATION    = true;                         // true or false if this API requires authentication
+    private const AUTHENTICATION_METHOD = 'jwt';                        // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
+    private const AUTHENTICATION_URI    = 'auth';                       // Authentication URI on the API ("login_check" if URI is "/login_check")
+    private const DEFAULT_LOGIN         = 'clement@awelty.com';         // API login
+    private const DEFAULT_PASSWORD      = 'Py8^%8G3';                   // API password
 
     /**
-     * Default e-monsite site ID
-     * Can be overridden at any time in controller with $emonsite->setSideId(id)
+     * Default e-monsite site ID (can be overridden at any time with setSideId(id))
      */
-    private const DEFAULT_SITE_ID       = '3e8269167b866fde4dbc2c2a';
+    private const DEFAULT_SITE_ID       = '4e8269167b866fde4dbc2c2b';
 
 
     /**
@@ -581,10 +580,10 @@ class Emonsite extends ApiPlatformSdk
         $headers = $formData->getPreparedHeaders()->toArray();
         $headers['accept'] = 'application/ld+json';
 
-        return $this->post('storage_images',
+        return $this->post(
+            'storage_images',
             $formData->bodyToIterable(),
             $headers
         );
     }
-
 }

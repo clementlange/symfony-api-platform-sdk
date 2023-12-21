@@ -28,7 +28,7 @@ class ApiPlatformSdk
     /**
      * Renew tokens after (minutes)
      */
-    private const RENEW_TOKEN_MINUTES   = 1440;
+    private const RENEW_TOKEN_MINUTES   = 14400;
 
     /**
      * Default format (API extension)
@@ -85,8 +85,7 @@ class ApiPlatformSdk
         ApiTokenRepository $apiTokenRepository,
         bool $hasAuthentication = false,
         string $authenticationMethod = 'jwt'
-    )
-    {
+    ) {
         // If used as standalone client, define defaults request parameters
         if (!$this->getFormat()) {
             $this->setFormat(self::DEFAULT_FORMAT);
@@ -111,13 +110,9 @@ class ApiPlatformSdk
         // Delete token older than the set time
         if (empty($this->tokenLifetime)) {
             // Use default token lifetime value
-            $tokenLifetime = self::RENEW_TOKEN_MINUTES;
+            $this->setTokenLifetime(self::RENEW_TOKEN_MINUTES);
         }
-        else {
-            // Use class-specific token lifetime value set in extented class
-            $tokenLifetime = $this->getTokenLifetime();
-        }
-        $this->apiTokenRepository->deleteAfter($tokenLifetime);
+        $this->apiTokenRepository->deleteAfter($this->getTokenLifetime());
 
         // If Current API has authentication
         $this->setHasAuthentication($hasAuthentication);
@@ -134,8 +129,7 @@ class ApiPlatformSdk
         if ($this->getApiUrl()) {
             if ($this->getAuthenticationMethod() == 'jwt') {
                 $this->authenticate();
-            }
-            else {
+            } else {
                 $this->authenticateOAuth2();
             }
         }
@@ -167,7 +161,7 @@ class ApiPlatformSdk
      */
     public function setAuthenticationUri($authenticationUri)
     {
-        $this->authenticationUri = trim($authenticationUri,'/');
+        $this->authenticationUri = trim($authenticationUri, '/');
     }
 
 
@@ -218,7 +212,7 @@ class ApiPlatformSdk
      */
     protected function getApiUrl()
     {
-        return $this->apiUrl.(!preg_match('/\/$/', $this->apiUrl) ? '/' : '');
+        return $this->apiUrl . (!preg_match('/\/$/', $this->apiUrl) ? '/' : '');
     }
 
 
@@ -534,8 +528,7 @@ class ApiPlatformSdk
             $this->emsToken->setUpdatedAt(new DateTime());
             $this->em->persist($this->emsToken);
             $this->em->flush();
-        }
-        else {
+        } else {
             // If token is not set yet or not found in DB, post to /auth
             $token = $this->requestAuthentication();
         }
@@ -545,8 +538,7 @@ class ApiPlatformSdk
             $this->setToken($token);
              // all ok
             return true;
-        }
-        else {
+        } else {
             return false; // error
         }
     }
@@ -575,8 +567,7 @@ class ApiPlatformSdk
 
             // Return token
             return $this->content['body']['token'];
-        }
-        else {
+        } else {
             // Error on authentication, invalid credentials
             return false;
         }
@@ -603,8 +594,7 @@ class ApiPlatformSdk
             $this->emsToken->setUpdatedAt(new DateTime());
             $this->em->persist($this->emsToken);
             $this->em->flush();
-        }
-        else {
+        } else {
             // If token is not set yet or not found in DB, post to authentication URL
             $token = $this->requestAuthenticationOAuth2();
         }
@@ -614,8 +604,7 @@ class ApiPlatformSdk
             $this->setToken($token);
              // all ok
             return true;
-        }
-        else {
+        } else {
             return false; // error
         }
     }
@@ -660,8 +649,7 @@ class ApiPlatformSdk
 
             // Return token
             return $this->content['body']['access_token'];
-        }
-        else {
+        } else {
             // Error on authentication, invalid credentials
             return false;
         }
@@ -718,9 +706,9 @@ class ApiPlatformSdk
             return false;
         }
 
-        $response = $this->httpClient->request('GET', $this->getApiUrl().$uri.($this->getConcatFormat() ? '.'.$this->getFormat() : '')
+        $response = $this->httpClient->request('GET', $this->getApiUrl() . $uri . ($this->getConcatFormat() ? '.' . $this->getFormat() : '')
             /* Adds additional query string vars (if applicable) */
-            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''), [
+            . (!empty($this->getQueryStringAdditional()) ? '?' . $this->getQueryStringAdditional() : ''), [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
@@ -728,7 +716,7 @@ class ApiPlatformSdk
             'query' => $this->getQueryString(),
             'headers' => [
                 /* Authorization token */
-                'Authorization' => 'Bearer '.$this->getToken()
+                'Authorization' => 'Bearer ' . $this->getToken()
             ]
         ]);
 
@@ -757,14 +745,14 @@ class ApiPlatformSdk
     */
     public function getSingle($uri = '', $id = '')
     {
-        $response = $this->httpClient->request('GET', $this->getApiUrl().$uri.'/'.$id, [
+        $response = $this->httpClient->request('GET', $this->getApiUrl() . $uri . '/' . $id, [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
             'query' => $this->getQueryString(),
             'headers' => [
                 /* Authorization token */
-                'Authorization' => 'Bearer '.$this->getToken()
+                'Authorization' => 'Bearer ' . $this->getToken()
             ]
         ]);
 
@@ -808,7 +796,7 @@ class ApiPlatformSdk
 
         // Authorization token if not /auth requested
         if ($uri != $this->getAuthenticationUri()) {
-            $headers['Authorization'] = 'Bearer '.$this->getToken();
+            $headers['Authorization'] = 'Bearer ' . $this->getToken();
         }
 
         // Actual Payload
@@ -824,7 +812,7 @@ class ApiPlatformSdk
         // if payload's body content-type is not Json (example : upload image)
         $isJsonPayload = false;
         foreach ($headers as $i => $h) {
-            if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
+            if (strtolower($i) == 'content-type' && preg_match('/json/i', $h)) {
                 $isJsonPayload = true;
                 break;
             }
@@ -842,13 +830,15 @@ class ApiPlatformSdk
         if (preg_match('/^http/', $uri)) {
             $fullUrl = $uri;
         } else {
-            $fullUrl = $this->getApiUrl().$uri;
+            $fullUrl = $this->getApiUrl() . $uri;
         }
 
         // Make HTTP request
-        $response = $this->httpClient->request('POST', $fullUrl
+        $response = $this->httpClient->request(
+            'POST',
+            $fullUrl
             /* Adds additional query string vars (if applicable) */
-            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
+            . (!empty($this->getQueryStringAdditional()) ? '?' . $this->getQueryStringAdditional() : ''),
             $payload
         );
 
@@ -887,7 +877,7 @@ class ApiPlatformSdk
             'accept' => $this->getAccept(),
             'Content-Type' => $this->getContentType(),
             /* Authorization token */
-            'Authorization' => 'Bearer '.$this->getToken()
+            'Authorization' => 'Bearer ' . $this->getToken()
         ];
 
         $payload = [
@@ -903,7 +893,7 @@ class ApiPlatformSdk
         // if payload's body content-type is not Json (example : upload image)
         $isJsonPayload = false;
         foreach ($headers as $i => $h) {
-            if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
+            if (strtolower($i) == 'content-type' && preg_match('/json/i', $h)) {
                 $isJsonPayload = true;
                 break;
             }
@@ -917,9 +907,11 @@ class ApiPlatformSdk
             $payload['json'] = $this->postData;
         }
 
-        $response = $this->httpClient->request('PUT', $this->getApiUrl().$uri
+        $response = $this->httpClient->request(
+            'PUT',
+            $this->getApiUrl() . $uri
             /* Adds additional query string vars (if applicable) */
-            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
+            . (!empty($this->getQueryStringAdditional()) ? '?' . $this->getQueryStringAdditional() : ''),
             $payload
         );
 
@@ -945,7 +937,9 @@ class ApiPlatformSdk
      */
     public function patch($uri = '', $postData = [])
     {
-        if (!$uri) return false;
+        if (!$uri) {
+            return false;
+        }
 
         if (!empty($postData)) {
             $this->postData = $postData;
@@ -955,7 +949,7 @@ class ApiPlatformSdk
             'accept' => $this->getAccept(),
             'Content-Type' => 'application/merge-patch+json',
             /* Authorization token */
-            'Authorization' => 'Bearer '.$this->getToken()
+            'Authorization' => 'Bearer ' . $this->getToken()
         ];
 
         $payload = [
@@ -968,26 +962,14 @@ class ApiPlatformSdk
             'headers' => $headers
         ];
 
-        // if payload's body content-type is not Json (example : upload image)
-        $isJsonPayload = false;
-        foreach ($headers as $i => $h) {
-            if (strtolower($i) == 'content-type' && preg_match('/application\/json/i', $h)) {
-                $isJsonPayload = true;
-                break;
-            }
-        }
+        // payload's body content-type is JSON
+        $payload['json'] = $this->postData;
 
-        // POST data is multipart/form-data or form-urlencoded : body has "body" index, not "json"
-        if (!$isJsonPayload) {
-            $payload['body'] = $this->postData;
-        } else {
-            // payload's body content-type is JSON
-            $payload['json'] = $this->postData;
-        }
-
-        $response = $this->httpClient->request('PATCH', $this->getApiUrl().$uri
+        $response = $this->httpClient->request(
+            'PATCH',
+            $this->getApiUrl() . $uri
             /* Adds additional query string vars (if applicable) */
-            .(!empty($this->getQueryStringAdditional()) ? '?'.$this->getQueryStringAdditional() : ''),
+            . (!empty($this->getQueryStringAdditional()) ? '?' . $this->getQueryStringAdditional() : ''),
             $payload
         );
 
@@ -1020,7 +1002,7 @@ class ApiPlatformSdk
         }
         $uri = trim($uri, '/');
 
-        $response = $this->httpClient->request('DELETE', $this->getApiUrl().$uri.'/'.$id, [
+        $response = $this->httpClient->request('DELETE', $this->getApiUrl() . $uri . '/' . $id, [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
             'verify_host' => false,
@@ -1028,7 +1010,7 @@ class ApiPlatformSdk
             'headers' => [
                 'accept' => $this->getAccept(),
                 /* Authorization token */
-                'Authorization' => 'Bearer '.$this->getToken()
+                'Authorization' => 'Bearer ' . $this->getToken()
             ]
         ]);
 
@@ -1059,13 +1041,11 @@ class ApiPlatformSdk
     {
         if ((!$name || !$value) && !$force_empty) {
             return false;
-        }
-        else {
+        } else {
             if (!preg_match('/\[\]$/i', $name)) {
                 $this->queryString[$name] = $value;
-            }
-            else {
-                $this->queryStringAdditional .= '&'.$name.'='.$value;
+            } else {
+                $this->queryStringAdditional .= '&' . $name . '=' . $value;
             }
         }
     }
@@ -1081,13 +1061,11 @@ class ApiPlatformSdk
     {
         if (!$name) {
             return false;
-        }
-        else {
+        } else {
             if (!preg_match('/\[\]$/i', $name)) {
                 unset($this->queryString[$name]);
-            }
-            else {
-                $this->queryStringAdditional = preg_replace('/\&'.$name.'=[a-z0-9\_\.\-\%]+/i','', $this->queryStringAdditional);
+            } else {
+                $this->queryStringAdditional = preg_replace('/\&' . $name . '=[a-z0-9\_\.\-\%]+/i', '', $this->queryStringAdditional);
             }
         }
     }
@@ -1116,9 +1094,6 @@ class ApiPlatformSdk
 
 
     /**
-     *
-     * @method setPage
-     *
      * @param int $p Page number
      * @return bool
      */
@@ -1128,8 +1103,7 @@ class ApiPlatformSdk
             $this->page = $p;
             $this->addParameter('page', $this->page);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -1159,8 +1133,7 @@ class ApiPlatformSdk
         if (isset($content['hydra:view']['hydra:last'])) {
             preg_match('/page=([0-9]+)$/i', $content['hydra:view']['hydra:last'], $m);
             $this->maxPage = (isset($m[1]) ? intval($m[1]) : 0);
-        }
-        else {
+        } else {
             $this->maxPage = 0;
         }
     }
@@ -1175,8 +1148,7 @@ class ApiPlatformSdk
     {
         if (!isset($content['hydra:totalItems'])) {
             $this->totalItems = 0;
-        }
-        else {
+        } else {
             $this->totalItems = intval($content['hydra:totalItems']);
         }
     }
@@ -1208,7 +1180,7 @@ class ApiPlatformSdk
         if (preg_match('/^(asc|desc)$/i', $sort)) {
             // remove already set order if needed
             $this->removeParameter('order');
-            $this->addParameter('order['.$property.']', $sort);
+            $this->addParameter('order[' . $property . ']', $sort);
         }
     }
 
@@ -1220,7 +1192,6 @@ class ApiPlatformSdk
      */
     public function getOrder()
     {
-        return array($this->orderProperty, $this->orderSort);
+        return [$this->orderProperty, $this->orderSort];
     }
-
 }

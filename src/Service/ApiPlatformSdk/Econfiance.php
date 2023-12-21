@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @since   July 05 2023
  * @author  Clément Lange <clement@awelty.com>
@@ -15,6 +16,11 @@ use App\Repository\ApiTokenRepository;
 
 class Econfiance extends ApiPlatformSdk
 {
+    /**
+     * Renew tokens after (minutes)
+     */
+    private const RENEW_TOKEN_MINUTES   = 1440;
+
     /**
      * API URL can still be overridden with method setApiUrl()
      */
@@ -37,11 +43,11 @@ class Econfiance extends ApiPlatformSdk
      * Set credentials here if they are constants,
      * or use $econfiance->authenticate('login', 'password') to override credientials on the fly
      */
-    private const HAS_AUTHENTICATION    = true;                 // true or false if this API requires authentication
-    private const AUTHENTICATION_METHOD = 'jwt';                // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
-    private const AUTHENTICATION_URI    = 'login_check';        // Authentication URI on the API ("login_check" if URI is "/login_check")
-    private const DEFAULT_LOGIN         = 'companyslug';        // API Login
-    private const DEFAULT_PASSWORD      = 'myapipassword';      // API password
+    private const HAS_AUTHENTICATION    = true;             // true or false if this API requires authentication
+    private const AUTHENTICATION_METHOD = 'jwt';            // "jwt" is default for API Platform. Other choice can be : "oauth2" for OAuth 2.0.
+    private const AUTHENTICATION_URI    = 'login_check';    // Authentication URI on the API ("login_check" if URI is "/login_check")
+    private const DEFAULT_LOGIN         = 'companyslug';    // API Login (Company slug)
+    private const DEFAULT_PASSWORD      = 'mypassword';     // API password
 
     /**
      * Company ID on E-confiance
@@ -63,6 +69,7 @@ class Econfiance extends ApiPlatformSdk
         $this->setAccept(self::DEFAULT_ACCEPT);
         $this->setConcatFormat(self::CONCAT_FORMAT);
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
+        $this->setTokenLifetime(self::RENEW_TOKEN_MINUTES);
 
         // Authenticate if necessary
         if (self::HAS_AUTHENTICATION) {
@@ -231,7 +238,7 @@ class Econfiance extends ApiPlatformSdk
         }
 
         // API request & return ; Must concat Company slug and Product reference
-        return $this->getSingle('product_reviews/average', self::DEFAULT_LOGIN.'/'.$reference);
+        return $this->getSingle('product_reviews/average', self::DEFAULT_LOGIN . '/' . $reference);
     }
 
 
@@ -272,14 +279,12 @@ class Econfiance extends ApiPlatformSdk
         $lastname = null,
         $mailSent = true,
         $customerPhone = null
-    )
-    {
+    ) {
         $this->resetParameters();
 
         if (empty($orderNumber) || empty($customerEmail)) {
             return false;
-        }
-        else {
+        } else {
             // API request
             return $this->post('orders', [
                 'orderNumber' => $orderNumber,
@@ -314,13 +319,12 @@ class Econfiance extends ApiPlatformSdk
         $productLink = '',
         $freeField = '',
         $followUp = 0
-    )
-    {
+    ) {
         $this->resetParameters();
 
         // API request
         return $this->post('product_orders', [
-            'orderParent' => '/api/orders/'.$orderId,
+            'orderParent' => '/api/orders/' . $orderId,
             'name' => $productName,
             'reference' => $productReference,
             'freeField' => $freeField,
@@ -361,21 +365,19 @@ class Econfiance extends ApiPlatformSdk
         $customerIp = '',
         $browserUserAgent = null,
         $freeField = null
-    )
-    {
+    ) {
         $this->resetParameters();
 
         // Review status can be "pending" (awaiting moderation) or "published"
         if ($reviewStatus == 'published') {
             $statusIri = '/api/review_statuses/1';
-        }
-        else {
+        } else {
             $statusIri = '/api/review_statuses/2';
         }
 
         // API request
         return $this->post('product_reviews', [
-            'orderParent' => '/api/orders/'.$orderId,
+            'orderParent' => '/api/orders/' . $orderId,
             'productName' => $productName,
             'reference' => $productReference,
             'freeField' => $freeField,
@@ -388,8 +390,7 @@ class Econfiance extends ApiPlatformSdk
                 $browserUserAgent
             ],
             'customerIp' => $customerIp,
-            'company' => '/api/companies/'.self::COMPANY_ID
+            'company' => '/api/companies/' . self::COMPANY_ID
         ]);
     }
-
 }
