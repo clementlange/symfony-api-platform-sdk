@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * @since   May 07 2021
  * @author  Clément Lange <clement@awelty.com>
  * @package App\Service\ApiPlatformSdk
- * @version 1.3
+ * @version 1.3.1
  *
  * API Platform PHP SDK for Symfony
  *
@@ -21,7 +21,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * Entity - App\Entity\ApiToken
  * Repository - App\Repository\ApiTokenRepository
  *
- * Supposts authentication methods : JWT | OAuth 2.0.
+ * Supports authentication methods : JWT | OAuth 2.0.
  */
 class ApiPlatformSdk
 {
@@ -52,18 +52,27 @@ class ApiPlatformSdk
     protected string $token = '';
     protected ApiToken|null $emsToken;
     protected HttpClientInterface $httpClient;
+    /**
+     * @var array<string, string>
+     */
     protected array $queryString = [];
     protected string $queryStringAdditional = '';
-    protected string $concatFormat = '';
+    protected bool $concatFormat = false;
     protected string $format = '';
     protected string $accept = '';
     protected string $contentType = '';
+    /**
+     * @var array<string, mixed>
+     */
     protected array $postData = [];
     protected int $maxPage = 0;
     protected int $totalItems = 0;
     protected int $page = 0;
     protected string $orderProperty = '';
     protected string $orderSort = '';
+    /**
+     * @var string|array<string, mixed>
+     */
     protected string|array $content;
     protected EntityManagerInterface $em;
     protected ApiTokenRepository $apiTokenRepository;
@@ -96,7 +105,7 @@ class ApiPlatformSdk
         if (!$this->getAccept()) {
             $this->setAccept(self::DEFAULT_ACCEPT);
         }
-        if (is_null($this->getConcatFormat())) {
+        if (!$this->getConcatFormat()) {
             $this->setConcatFormat(self::CONCAT_FORMAT);
         }
 
@@ -175,7 +184,7 @@ class ApiPlatformSdk
 
 
     /**
-     * @return App\Repository\ApiTokenRepository
+     * @return ApiTokenRepository
      */
     protected function getApiTokenRepository()
     {
@@ -184,7 +193,7 @@ class ApiPlatformSdk
 
 
     /**
-     * @return Doctrine\ORM\EntityManagerInterface
+     * @return EntityManagerInterface
      */
     protected function getEntityManager()
     {
@@ -265,7 +274,7 @@ class ApiPlatformSdk
 
 
     /**
-     * @return void
+     * @return string
      */
     protected function getPassword()
     {
@@ -372,10 +381,10 @@ class ApiPlatformSdk
      * If true, adds the format to each GET request
      * example : "GET /api/product_reviews.json" (true), "GET /api/product_reviews" (false)
      *
-     * @param  string $concatFormat
+     * @param  bool $concatFormat
      * @return void
      */
-    public function setConcatFormat($concatFormat = '')
+    public function setConcatFormat($concatFormat = false)
     {
         $this->concatFormat = $concatFormat;
     }
@@ -458,7 +467,7 @@ class ApiPlatformSdk
 
 
     /**
-     * @param  string $overrideAuthUrl
+     * @param  string $overriddenAuthUrl
      * @return void
      */
     public function setOverriddenAuthUrl($overriddenAuthUrl = '')
@@ -521,7 +530,7 @@ class ApiPlatformSdk
         }
 
         // Load token from DB
-        if ($this->loadTokenFromDb()) {
+        if ($this->loadTokenFromDb() !== null) {
             $token = $this->emsToken->getToken();
 
             // Updates dates in DB
@@ -547,7 +556,7 @@ class ApiPlatformSdk
     /**
      * Performs an authentication request on the API
      *
-     * @return string $token
+     * @return string|false $token
      */
     protected function requestAuthentication()
     {
@@ -613,7 +622,7 @@ class ApiPlatformSdk
     /**
      * Performs an authentication request on the API using OAuth 2.0 protocol
      *
-     * @return string $token
+     * @return string|false $token
      */
     protected function requestAuthenticationOAuth2()
     {
@@ -659,7 +668,7 @@ class ApiPlatformSdk
     /**
      * Load Token from database
      *
-     * @return App\Entity\ApiToken
+     * @return ApiToken|null
      */
     protected function loadTokenFromDb()
     {
@@ -674,12 +683,14 @@ class ApiPlatformSdk
 
     /**
      * Deletes token for specific user
-     *
      * @return void
      */
-    protected function deleteUserToken()
+    protected function deleteUserToken(): void
     {
-        return $this->apiTokenRepository->deleteUserToken($this->getLogin(), $this->getApiUrl());
+        $this->apiTokenRepository->deleteUserToken(
+            $this->getLogin(),
+            $this->getApiUrl()
+        );
     }
 
 
@@ -772,8 +783,8 @@ class ApiPlatformSdk
      * Runs an HTTP POST request to the API
      *
      * @param string $uri Request URI (without parameters)
-     * @param array $postData payload
-     * @param array $headers request HTTP headers overriding defaults
+     * @param array<string, mixed> $postData payload
+     * @param array<string, string> $headers request HTTP headers overriding defaults
      * @return mixed Associative array representing response
      */
     public function post($uri = '', $postData = [], $headers = [])
@@ -850,7 +861,7 @@ class ApiPlatformSdk
         // Create Json body
         $this->content = [
             'code' => $response->getStatusCode(),
-            'body' => (preg_match('/^20[01]$/', $response->getStatusCode()) ? $response->toArray() : null)
+            'body' => (preg_match('/^20[01]$/', (string)$response->getStatusCode()) ? $response->toArray() : null)
         ];
 
         return $this->content;
@@ -861,6 +872,7 @@ class ApiPlatformSdk
      * Runs an HTTP PUT request to the API
      *
      * @param string $uri Request URI (without parameters)
+     * @param array<string, mixed> $postData payload
      * @return mixed Associative array representing response
      */
     public function put($uri = '', $postData = [])
@@ -933,6 +945,7 @@ class ApiPlatformSdk
     /**
      * Runs an HTTP PATCH request to the API
      * @param string $uri Request URI (without parameters)
+     * @param array<string, mixed> $postData payload
      * @return mixed Associative array representing response
      */
     public function patch($uri = '', $postData = [])
@@ -1047,6 +1060,7 @@ class ApiPlatformSdk
             } else {
                 $this->queryStringAdditional .= '&' . $name . '=' . $value;
             }
+            return true;
         }
     }
 
@@ -1067,6 +1081,7 @@ class ApiPlatformSdk
             } else {
                 $this->queryStringAdditional = preg_replace('/\&' . $name . '=[a-z0-9\_\.\-\%]+/i', '', $this->queryStringAdditional);
             }
+            return true;
         }
     }
 
@@ -1085,7 +1100,7 @@ class ApiPlatformSdk
     /**
      * Returns the query string (main part)
      *
-     * @return array
+     * @return array<string, string>
      */
     protected function getQueryString()
     {
@@ -1099,13 +1114,9 @@ class ApiPlatformSdk
      */
     public function setPage($p = 1)
     {
-        if (is_numeric($p)) {
-            $this->page = $p;
-            $this->addParameter('page', $this->page);
-            return true;
-        } else {
-            return false;
-        }
+        $this->page = $p;
+        $this->addParameter('page', (string)$this->page);
+        return true;
     }
 
 
@@ -1123,9 +1134,10 @@ class ApiPlatformSdk
     /**
      * Sets the maximum page for the result list
      *
-     * @param array $content Associative array of API result
+     * @param array<mixed, mixed> $content Associative array of API result
+     * @return void
      */
-    protected function setMaxPage($content)
+    protected function setMaxPage($content): void
     {
         if (!isset($content['hydra:view']['hydra:last'])) {
             $this->maxPage = 0;
@@ -1142,9 +1154,10 @@ class ApiPlatformSdk
     /**
      * Sets the number of items total for the result list
      *
-     * @param array $content Associative array of API result
+     * @param array<mixed, mixed> $content Associative array of API result
+     * @return void
      */
-    protected function setTotalItems($content)
+    protected function setTotalItems($content): void
     {
         if (!isset($content['hydra:totalItems'])) {
             $this->totalItems = 0;
@@ -1168,11 +1181,11 @@ class ApiPlatformSdk
     /**
      * Sets the query order
      *
-     * @param string property field to sort
-     * @param string sort order sort (asc|desc)
-     * @return array Associative array of items
+     * @param string $property field to sort
+     * @param string $sort order sort (asc|desc)
+     * @return void
      */
-    public function setOrder($property, $sort)
+    public function setOrder($property, $sort): void
     {
         $this->orderProperty = $property;
         $this->orderSort = $sort;
@@ -1188,10 +1201,13 @@ class ApiPlatformSdk
     /**
      * Gets the query order
      *
-     * @return array Associative array
+     * @return  array<int, string>
      */
     public function getOrder()
     {
-        return [$this->orderProperty, $this->orderSort];
+        return [
+            $this->orderProperty,
+            $this->orderSort
+        ];
     }
 }
