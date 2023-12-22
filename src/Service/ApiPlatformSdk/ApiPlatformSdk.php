@@ -57,7 +57,7 @@ class ApiPlatformSdk
      */
     protected array $queryString = [];
     protected string $queryStringAdditional = '';
-    protected bool $concatFormat = false;
+    protected null|bool $concatFormat = null;
     protected string $format = '';
     protected string $accept = '';
     protected string $contentType = '';
@@ -105,7 +105,7 @@ class ApiPlatformSdk
         if (!$this->getAccept()) {
             $this->setAccept(self::DEFAULT_ACCEPT);
         }
-        if (!$this->getConcatFormat()) {
+        if ($this->getConcatFormat() === null) {
             $this->setConcatFormat(self::CONCAT_FORMAT);
         }
 
