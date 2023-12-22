@@ -369,7 +369,7 @@ class ApiPlatformSdk
 
 
     /**
-     * @return boolean
+     * @return bool|null
      */
     protected function getConcatFormat()
     {
