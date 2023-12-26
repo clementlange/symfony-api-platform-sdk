@@ -39,18 +39,18 @@ class ApiTokenRepository extends ServiceEntityRepository
         }
     }
 
-    
+
     /**
      * deleteAfter
      *
      * @param  int $minutes
-     * @return void
-     * 
+     * @return mixed
+     *
      * Removes obsolete tokens, older than $minutes
      */
     public function deleteAfter($minutes = 60)
     {
-        $mindate = date('Y-m-d H:i:s', mktime(date('H'),date('i') - $minutes,date('s'), date('n'), date('j'), date('Y')));
+        $mindate = date('Y-m-d H:i:s', mktime(intval(date('H')), intval(date('i')) - $minutes, intval(date('s')), intval(date('n')), intval(date('j')), intval(date('Y'))));
 
         return $this->createQueryBuilder('a')
             ->delete()
@@ -60,14 +60,14 @@ class ApiTokenRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    
+
     /**
      * deleteUserToken
      *
      * @param  string $user
      * @param  string $domain
-     * @return void
-     * 
+     * @return mixed
+     *
      * Deletes token for a specific user and domain
      */
     public function deleteUserToken($user = '', $domain = '')
@@ -81,5 +81,4 @@ class ApiTokenRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

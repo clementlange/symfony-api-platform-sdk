@@ -713,7 +713,7 @@ class ApiPlatformSdk
      */
     public function get($uri = '')
     {
-        if (!$uri) {
+        if (empty($uri)) {
             return false;
         }
 
