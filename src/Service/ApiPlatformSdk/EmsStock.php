@@ -37,8 +37,8 @@ class EmsStock extends ApiPlatformSdk
      * or use $emsstock->authenticate('login', 'password') to override credientials on the fly
      */
     private const HAS_AUTHENTICATION    = false;
-    private const DEFAULT_LOGIN         = '';
-    private const DEFAULT_PASSWORD      = '';
+    // private const DEFAULT_LOGIN         = '';
+    // private const DEFAULT_PASSWORD      = '';
 
 
     /**
@@ -55,10 +55,10 @@ class EmsStock extends ApiPlatformSdk
         $this->setContentType(self::DEFAULT_CONTENT_TYPE);
 
         // Authenticate if necessary
-        if (self::HAS_AUTHENTICATION) {
+        /* if (self::HAS_AUTHENTICATION) {
             $this->setLogin(self::DEFAULT_LOGIN);
             $this->setPassword(self::DEFAULT_PASSWORD);
-        }
+        } */
 
         // Construct parent object
         parent::__construct(
@@ -91,7 +91,7 @@ class EmsStock extends ApiPlatformSdk
     /**
      * getBrands
      * Return the brands
-     *
+     * @param int $page
      * @return mixed
      */
     public function getBrands($page = 1)
@@ -114,7 +114,7 @@ class EmsStock extends ApiPlatformSdk
     /**
      * getProducts
      * Return the products
-     *
+     * @param int $page
      * @return mixed
      */
     public function getProducts($page = 1)

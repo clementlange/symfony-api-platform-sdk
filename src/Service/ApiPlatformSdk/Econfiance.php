@@ -72,11 +72,11 @@ class Econfiance extends ApiPlatformSdk
         $this->setTokenLifetime(self::RENEW_TOKEN_MINUTES);
 
         // Authenticate if necessary
-        if (self::HAS_AUTHENTICATION) {
-            $this->setLogin(self::DEFAULT_LOGIN);
-            $this->setPassword(self::DEFAULT_PASSWORD);
-            $this->setAuthenticationUri(self::AUTHENTICATION_URI);
-        }
+        //if (self::HAS_AUTHENTICATION) {
+        $this->setLogin(self::DEFAULT_LOGIN);
+        $this->setPassword(self::DEFAULT_PASSWORD);
+        $this->setAuthenticationUri(self::AUTHENTICATION_URI);
+        //}
 
         // Construct parent object
         parent::__construct(
@@ -268,17 +268,17 @@ class Econfiance extends ApiPlatformSdk
      * @param string $customerEmail Customer email address
      * @param string|null $firstname Customer firstname
      * @param string|null $lastname Customer lastname
-     * @param boolean $mailSent If set to "true", no mail will be sent to customer (default)
+     * @param bool $mailSent If set to "true", no mail will be sent to customer (default)
      * @param string|null $customerPhone Customer phone number
      * @return mixed
      */
     public function createOrder(
-        $orderNumber = '',
-        $customerEmail = '',
-        $firstname = null,
-        $lastname = null,
-        $mailSent = true,
-        $customerPhone = null
+        string $orderNumber = '',
+        string $customerEmail = '',
+        string|null $firstname = null,
+        string|null $lastname = null,
+        bool $mailSent = true,
+        string|null $customerPhone = null
     ) {
         $this->resetParameters();
 
@@ -302,29 +302,30 @@ class Econfiance extends ApiPlatformSdk
      * Creates both an Order and a Product
      * This function requires the Order ID, so createOrder() must have been called before to get Order ID
      *
-     * @param $orderId ID order returned by createOrder
-     * @param $productName Product name
-     * @param $productReference Product reference
-     * @param $freeField Free text field
-     * @param $productImageUrl Image URL to join to the review
-     * @param $followUp ?
-     * @param $productLink Product URL to join to the review
+     * @param int $orderId ID order returned by createOrder
+     * @param string $productName Product name
+     * @param string $productReference Product reference
+     * @param string $productImageUrl Image URL to join to the review
+     * @param string $productLink Product URL to join to the review
+     * @param string $freeField Free text field
+     * @param $followUp Follow-up (0 or 1)
+     *
      * @return mixed
      */
     public function createProductOrder(
-        $orderId = 0,
-        $productName = '',
-        $productReference = '',
-        $productImageUrl = '',
-        $productLink = '',
-        $freeField = '',
-        $followUp = 0
+        int $orderId = 0,
+        string $productName = '',
+        string $productReference = '',
+        string $productImageUrl = '',
+        string $productLink = '',
+        string $freeField = '',
+        int $followUp = 0
     ) {
         $this->resetParameters();
 
         // API request
         return $this->post('product_orders', [
-            'orderParent' => '/api/orders/' . $orderId,
+            'orderParent' => '/api/orders/' . (string)$orderId,
             'name' => $productName,
             'reference' => $productReference,
             'freeField' => $freeField,
@@ -340,31 +341,31 @@ class Econfiance extends ApiPlatformSdk
      * You must know the Order ID (Order have to be already created) to pass it as IRI.
      * So createOrder() must have been called prior.
      *
-     * @param $orderId ID order returned by createOrder
-     * @param $productName Product name
-     * @param $productReference Product reference
-     * @param $productImageUrl Image URL to join to the review
-     * @param $productLink Product URL to join to the review
-     * @param $reviewContent Text content of the product review
-     * @param $reviewRating Rating (1 to 5)
-     * @param $reviewStatus Status : "pending" (awaiting moderation) or "published"
-     * @param $customerIp IP adress of customer
-     * @param $browserUserAgent Browser User-agent of Customer
-     * @param $freeField Free text field
+     * @param int $orderId ID order returned by createOrder
+     * @param string $productName Product name
+     * @param string|null $productReference Product reference
+     * @param string|null $productImageUrl Image URL to join to the review
+     * @param string|null $productLink Product URL to join to the review
+     * @param string $reviewContent Text content of the product review
+     * @param int $reviewRating Rating (1 to 5)
+     * @param string $reviewStatus Status : "pending" (awaiting moderation) or "published"
+     * @param string $customerIp IP adress of customer
+     * @param string|null $browserUserAgent Browser User-agent of Customer
+     * @param string|null $freeField Free text field
      * @return mixed
      */
     public function createProductReview(
-        $orderId = 0,
-        $productName = '',
-        $productReference = null,
-        $productImageUrl = null,
-        $productLink = null,
-        $reviewContent = '',
-        $reviewRating = 0,
-        $reviewStatus = 'pending',
-        $customerIp = '',
-        $browserUserAgent = null,
-        $freeField = null
+        int $orderId = 0,
+        string $productName = '',
+        string|null $productReference = null,
+        string|null $productImageUrl = null,
+        string|null $productLink = null,
+        string $reviewContent = '',
+        int $reviewRating = 0,
+        string $reviewStatus = 'pending',
+        string $customerIp = '',
+        string|null $browserUserAgent = null,
+        string|null $freeField = null
     ) {
         $this->resetParameters();
 
@@ -377,7 +378,7 @@ class Econfiance extends ApiPlatformSdk
 
         // API request
         return $this->post('product_reviews', [
-            'orderParent' => '/api/orders/' . $orderId,
+            'orderParent' => '/api/orders/' . (string)$orderId,
             'productName' => $productName,
             'reference' => $productReference,
             'freeField' => $freeField,
