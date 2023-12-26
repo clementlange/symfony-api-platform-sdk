@@ -84,6 +84,7 @@ class ApiPlatformSdk
     protected string $oAuth2RequestScope = '';
     protected string $oAuth2GrantType = '';
     protected int $tokenLifetime = 0;
+    protected bool $isRetriedAuthentication = false;
 
 
     /**
@@ -691,6 +692,29 @@ class ApiPlatformSdk
             $this->getLogin(),
             $this->getApiUrl()
         );
+    }
+
+
+    /**
+     * retryAuthentication
+     * In case the token expires during the request, re-authenticate and retry the request
+     *
+     * @return bool
+     */
+    protected function retryAuthentication(): bool
+    {
+        if (!$this->isRetriedAuthentication) {
+            // Re-authenticate and retry request
+            if ($this->getAuthenticationMethod() == 'jwt') {
+                $this->authenticate();
+            } else {
+                $this->authenticateOAuth2();
+            }
+            $this->isRetriedAuthentication = true;
+            return false;
+        }
+
+        return $this->isRetriedAuthentication;
     }
 
 
