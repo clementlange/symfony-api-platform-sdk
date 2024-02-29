@@ -49,7 +49,7 @@ class MyController
 	{
 		// Load store orders
 		$orders = $emonsite->getEcoOrders();
-		
+
 		// Dumping var
 		dump($orders);
 	}
@@ -80,7 +80,7 @@ class MyController
 
 		// Set API Format
 		$apiPlatformSdk->setFormat('jsonld');
-		
+
 		// If your target API requires an authentication :
 		// Set Login and Password for API Authorization, then request token
 		$apiPlatformSdk->setHasAuthentication(true);
@@ -93,7 +93,7 @@ class MyController
 		$apiPlatformSdk->setPage(3); // Add pagination (if needed) : page 3
 		$apiPlatformSdk->addParameter('provider' => '/providers/6'); // Add query string parameter : &provider=/providers/6
 		$apiPlatformSdk->addParameter('site_id' => '536424be8e905c8c5cbbf781'); // Add query string parameter : &site_id=536424be8e905c8c5cbbf781
-		
+
 		// API Request : /products
 		$products = $apiPlatformSdk->get('products');
 
@@ -189,5 +189,12 @@ Other available methods include :
 // GET Customers
 $cegid->getCustomers(?int $page);
 
-// Get
+// GET Contacts
+$cegid->getCustomers(?int $page, ?array $select, ?array $expand);
+
+// GET CustomerLocations
+$cegid->getCustomers(?int $page, ?array $select, ?array $expand);
+
+// GET CustomerLocation
+$cegid->getCustomers(string $id, ?array $select, ?array $expand);
 ```
