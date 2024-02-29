@@ -190,11 +190,11 @@ Other available methods include :
 $cegid->getCustomers(?int $page);
 
 // GET Contacts
-$cegid->getCustomers(?int $page, ?array $select, ?array $expand);
+$cegid->getContacts(?int $page, ?array $select, ?array $expand);
 
 // GET CustomerLocations
-$cegid->getCustomers(?int $page, ?array $select, ?array $expand);
+$cegid->getCustomerLocations(?int $page, ?array $select, ?array $expand);
 
 // GET CustomerLocation
-$cegid->getCustomers(string $id, ?array $select, ?array $expand);
+$cegid->getCustomerLocation(string $id, ?array $select, ?array $expand);
 ```
