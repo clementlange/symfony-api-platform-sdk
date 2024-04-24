@@ -737,8 +737,10 @@ class ApiPlatformSdk
      */
     public function get($uri = '')
     {
-        if (empty($uri)) {
+        if (!$uri) {
             return false;
+        } else {
+            $uri = trim($uri, '/');
         }
 
         $response = $this->httpClient->request('GET', $this->getApiUrl() . $uri . ($this->getConcatFormat() ? '.' . $this->getFormat() : '')
@@ -780,6 +782,12 @@ class ApiPlatformSdk
     */
     public function getSingle($uri = '', $id = '')
     {
+        if (!$uri) {
+            return false;
+        } else {
+            $uri = trim($uri, '/');
+        }
+
         $response = $this->httpClient->request('GET', $this->getApiUrl() . $uri . '/' . $id, [
             /* Removes SSL certificate verification */
             'verify_peer' => false,
@@ -815,6 +823,8 @@ class ApiPlatformSdk
     {
         if (!$uri) {
             return false;
+        } else {
+            $uri = trim($uri, '/');
         }
 
         if (!empty($postData)) {
@@ -903,6 +913,8 @@ class ApiPlatformSdk
     {
         if (!$uri) {
             return false;
+        } else {
+            $uri = trim($uri, '/');
         }
 
         if (!empty($postData)) {
@@ -976,6 +988,8 @@ class ApiPlatformSdk
     {
         if (!$uri) {
             return false;
+        } else {
+            $uri = trim($uri, '/');
         }
 
         if (!empty($postData)) {
@@ -1036,8 +1050,9 @@ class ApiPlatformSdk
     {
         if (!$uri) {
             return false;
+        } else {
+            $uri = trim($uri, '/');
         }
-        $uri = trim($uri, '/');
 
         $response = $this->httpClient->request('DELETE', $this->getApiUrl() . $uri . '/' . $id, [
             /* Removes SSL certificate verification */
