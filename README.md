@@ -5,8 +5,8 @@ PHP SDK for Symfony API Platform or other REST API, and derivated SDKs based on 
 Currently supported derivated SDKs are :
 
 - E-monsite ([www.e-monsite.com](https://www.e-monsite.com))
-- E-confiance ([www.e-monsite.com](https://www.e-confiance.fr))
-- EMS-Stock ([www.e-monsite.com](https://www.ems-stock.com))
+- E-confiance ([www.e-confiance.fr](https://www.e-confiance.fr))
+- EMS-Stock ([www.ems-stock.com](https://www.ems-stock.com))
 - CEGID / Acumatica ([help.acumatica.com](https://help.acumatica.com/(W(6))/Wiki/ShowWiki.aspx?pageid=bbb8b84b-07d7-4a69-adf8-33dc5d430b60))
 
 ## Installation
